@@ -63,13 +63,13 @@ public class Mail implements Runnable {
 
     @Override
     public void run() {
-        Properties props = new Properties();
+        /*Properties props = new Properties();
         props.put("mail.smtp.auth", "true");
         props.put("mail.smtp.starttls.enable", "true");
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");
-        Session session = Session.getDefaultInstance(props);
+        props.put("mail.smtp.port", "587");*/
+        Session session = Session.getDefaultInstance(getSMTPProps());
         session.setDebug(false);
         BodyPart texto = new MimeBodyPart();
         try {
@@ -101,5 +101,15 @@ public class Mail implements Runnable {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
         }
+    }
+
+    private Properties getSMTPProps() {
+        Properties props = new Properties();
+        props.put("mail.smtp.auth", ReadProperties.props.getProperty("mail.smtp.auth"));
+        props.put("mail.smtp.starttls.enable", ReadProperties.props.getProperty("mail.smtp.starttls.enable"));
+        props.put("mail.smtp.host", ReadProperties.props.getProperty("mail.smtp.host"));
+        props.put("mail.smtp.ssl.trust", ReadProperties.props.getProperty("mail.smtp.ssl.trust"));
+        props.put("mail.smtp.port", ReadProperties.props.getProperty("mail.smtp.port"));
+        return props;
     }
 }
