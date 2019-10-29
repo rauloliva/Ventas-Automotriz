@@ -131,5 +131,11 @@
         "table": "usuarios",
         "where": "WHERE id =",
         "value1": "[UserInput]"
+    },
+    "S010_GETVENDEDORNAME": {
+        "select": "SELECT * FROM",
+        "table": "usuarios",
+        "where": "WHERE correo =",
+        "value1": "[UserInput]"
     }
 }
