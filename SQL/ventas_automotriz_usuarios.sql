@@ -1,8 +1,8 @@
--- MySQL dump 10.13  Distrib 8.0.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.18, for Win64 (x86_64)
 --
 -- Host: localhost    Database: ventas_automotriz
 -- ------------------------------------------------------
--- Server version	8.0.17
+-- Server version	5.7.28-log
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -32,7 +32,7 @@ CREATE TABLE `usuarios` (
   `telefono` varchar(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -41,7 +41,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'cliente1','Xuq6t7Fr/Dg=','cliente1@gmail.com','Cliente','ACTIVO','3329801190','oscar ramirez salazar'),(2,'cliente2','Xuq6t7Fr/Dg=','cliente2@gmail.com','Cliente','ACTIVO','3334004560','ismael rodriguez mendoza'),(9,'admin','07WfylTarjY=','admin@gmail.com','Administrador','ACTIVO','3319804795','saul soltero'),(11,'cliente3','Xuq6t7Fr/Dg=','mario@gmail.com','Cliente','ACTIVO','338796300','mario martinez'),(12,'admin2','Xuq6t7Fr/Dg=','jesus@gmail.com','Cliente','ACTIVO','3319824765','juan jesus torres');
+INSERT INTO `usuarios` VALUES (1,'admin','Xuq6t7Fr/Dg=','jose@gmail.com','Administrador','ACTIVO','3316448120','jose angel torres'),(2,'admin2','Xuq6t7Fr/Dg=','manuel@gmail.com','Administrador','ACTIVO','45451545','manuel avila'),(3,'cliente1','Xuq6t7Fr/Dg=','ricardo@gmail.com','Cliente','ACTIVO','4578999999','ricardo');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-28 22:06:13
+-- Dump completed on 2019-10-29 12:57:56
