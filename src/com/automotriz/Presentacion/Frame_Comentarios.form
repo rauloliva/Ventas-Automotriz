@@ -651,9 +651,6 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="start2MouseClicked"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="start3">
               <Properties>
@@ -661,9 +658,6 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="start3MouseClicked"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="start4">
               <Properties>
@@ -671,9 +665,6 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="start4MouseClicked"/>
-              </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="start5">
               <Properties>
@@ -681,9 +672,6 @@
                   <Color id="Hand Cursor"/>
                 </Property>
               </Properties>
-              <Events>
-                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="start5MouseClicked"/>
-              </Events>
             </Component>
           </SubComponents>
         </Container>

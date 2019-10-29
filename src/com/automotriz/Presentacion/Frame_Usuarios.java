@@ -121,12 +121,14 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
             if (csv.writeCSV()) {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Los datos fueron exportados con exito", "Exportacion exitosa",
+                        ReadProperties.props.getProperty("msg.export.csv"),
+                        ReadProperties.props.getProperty("msg.export.csv.title"),
                         JOptionPane.INFORMATION_MESSAGE);
             } else {
                 JOptionPane.showMessageDialog(
                         this,
-                        "Ha ocurrido un problema al\nexportar los datos", "Error",
+                        ReadProperties.props.getProperty("msg.export.csv.failed"),
+                        ReadProperties.props.getProperty("msg.export.csv.failed.title"),
                         JOptionPane.INFORMATION_MESSAGE);
             }
         }
@@ -138,8 +140,8 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
             new Report("Usuarios", cnn).generateReport();
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Ha ocurrido un error al cargar el reporte\nSe ha abortado la operacion",
-                    "Error al cargar",
+                    ReadProperties.props.getProperty("usuario.msg.error.reporte"),
+                    ReadProperties.props.getProperty("usuario.msg.error.reporte.title"),
                     JOptionPane.ERROR_MESSAGE);
         }
     }
@@ -486,7 +488,8 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
         try {
             exportCSV();
         } catch (Exception e) {
-            e.printStackTrace();
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
         }
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 

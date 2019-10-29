@@ -8,7 +8,7 @@ import javax.swing.*;
 import javax.swing.border.BevelBorder;
 
 public class Frame_GetPerfil extends javax.swing.JDialog {
-
+    
     public Frame_GetPerfil(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
@@ -18,11 +18,11 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         String value = ReadProperties.props.getProperty("getPerfil.title");
         lbl_title.setText(value);
     }
-
+    
     private void initFrame() {
         this.setName(ReadProperties.props.getProperty("name.GetPerfil"));
         Logger.log("Starting " + this.getName() + " modal...");
-
+        
         lbl_close.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
@@ -36,16 +36,16 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         label.setSize(panel_top.getWidth(), panel_top.getHeight());
         panel_top.add(label);
         panel_top.setBorder(new BevelBorder(BevelBorder.RAISED));
-
+        
         panel_center.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-
+        
         lbl_admin.setVisible(false);
         lbl_cliente.setVisible(false);
-
+        
         this.setIconCliente();
         this.setIconAdmin();
     }
-
+    
     private void setIconCliente() {
         String value = ReadProperties.props.getProperty("icon.cliente");
         ImageIcon icon = new ImageIcon(getClass().getResource(value));
@@ -56,7 +56,7 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         icon = new ImageIcon(img);
         this.iconCliente.setIcon(icon);
     }
-
+    
     private void setIconAdmin() {
         String value = ReadProperties.props.getProperty("icon.admin");
         ImageIcon icon = new ImageIcon(getClass().getResource(value));
@@ -67,22 +67,18 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         icon = new ImageIcon(img);
         this.iconAdminstrador.setIcon(icon);
     }
-
+    
     private void closeProgram() {
         int option = JOptionPane.showOptionDialog(this,
-                "¿Esta seguro que desea salir del sistema?",
-                "Apagar Sistema",
+                ReadProperties.props.getProperty("system.shutdown"),
+                ReadProperties.props.getProperty("system.shutdown.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-
+        
         if (option == JOptionPane.YES_OPTION) {
-            Enumeration<Object> en = System.getProperties().keys();
-            while (en.hasMoreElements()) {
-                System.out.println(en.nextElement());
-            }
             System.exit(0);
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

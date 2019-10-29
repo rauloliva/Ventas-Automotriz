@@ -63,7 +63,8 @@ public class Peticiones {
         SUBMITCOMENTARIO("S007_SUBMITCOMENTARIO"),
         GETFEEDBACK("S008_GETFEEDBACK"),
         GETCATALOGO("S009_GETCATALOGO"),
-        GETVENDEDOR("S009_GETVENDEDOR");
+        GETVENDEDOR("S009_GETVENDEDOR"),
+        GETVENDEDORNAME("S010_GETVENDEDORNAME");
 
         private final String value;
 
@@ -160,6 +161,9 @@ public class Peticiones {
                     break;
                 case "GETVENDEDOR":
                     sqlData = GETVENDEDOR(operations, request);
+                    break;
+                case "GETVENDEDORNAME":
+                    sqlData = GETVENDEDORNAME(operations, request);
                     break;
 
             }
@@ -507,6 +511,18 @@ public class Peticiones {
             (String) operationObject.get("table"),
             (String) operationObject.get("where"),
             request.get("1").toString()
+        };
+    }
+
+    private static String[] GETVENDEDORNAME(JSONObject datadic, JSONObject request) {
+        DATADICS dic = DATADICS.GETVENDEDORNAME;
+        JSONObject operationObject = (JSONObject) datadic.get(dic.getValue());
+
+        return new String[]{
+            (String) operationObject.get("select"),
+            (String) operationObject.get("table"),
+            (String) operationObject.get("where"),
+            "'" + request.get("1").toString() + "'"
         };
     }
 }

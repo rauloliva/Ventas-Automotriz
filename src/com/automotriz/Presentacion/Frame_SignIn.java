@@ -73,6 +73,7 @@ public class Frame_SignIn extends javax.swing.JDialog {
                     typeOfMsg = Integer.parseInt(propMensaje.get("type").toString()));
             if (typeOfMsg == JOptionPane.INFORMATION_MESSAGE) {
                 //clean the fields
+                txt_name.setText(null);
                 txt_username.setText(null);
                 txt_password.setText(null);
                 txt_correo.setText(null);
@@ -85,6 +86,7 @@ public class Frame_SignIn extends javax.swing.JDialog {
                         JOptionPane.INFORMATION_MESSAGE);
             }
         } else {
+            /*FIXME: dont remember why is this for*/
             JOptionPane.showMessageDialog(this,
                     "Porfavor inicia session",
                     "Inicio de session",
@@ -155,7 +157,9 @@ public class Frame_SignIn extends javax.swing.JDialog {
         setResizable(false);
 
         lbl_title.setFont(new java.awt.Font("Dialog", 1, 22)); // NOI18N
-        lbl_title.setText("Sign In");
+        lbl_title.setText("Crear nuevo Usuario");
+
+        panelForm.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         btn_login.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         btn_login.setText("jButton1");
@@ -325,14 +329,13 @@ public class Frame_SignIn extends javax.swing.JDialog {
         panelTitleLayout.setHorizontalGroup(
             panelTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelTitleLayout.createSequentialGroup()
-                .addGroup(panelTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelTitleLayout.createSequentialGroup()
-                        .addGap(31, 31, 31)
-                        .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelTitleLayout.createSequentialGroup()
-                        .addGap(223, 223, 223)
-                        .addComponent(lbl_title)))
+                .addGap(31, 31, 31)
+                .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(32, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelTitleLayout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(lbl_title)
+                .addGap(148, 148, 148))
         );
         panelTitleLayout.setVerticalGroup(
             panelTitleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -398,7 +401,14 @@ public class Frame_SignIn extends javax.swing.JDialog {
     }//GEN-LAST:event_txt_telefonoKeyReleased
 
     private void txt_nameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_nameKeyTyped
-        // TODO add your handling code here:
+        char c = evt.getKeyChar();
+        if (/*all the capital letters*/(((int) c) >= 65 && ((int) c) <= 90)
+                || /*all the lowercase letters*/ (((int) c) >= 97 && ((int) c) <= 122)
+                || /*space*/ ((int) c) == 32) {
+            validateInputLength(txt_name, evt, "signin.length.name");
+        } else {
+            evt.consume();
+        }
     }//GEN-LAST:event_txt_nameKeyTyped
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -127,8 +127,8 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
 
     private void logOff() {
         int option = JOptionPane.showOptionDialog(this,
-                "¿Esta seguro que desea cerrar session?",
-                "Cerrar Session",
+                ReadProperties.props.getProperty("logoff"),
+                ReadProperties.props.getProperty("logoff.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SALIR", "NO"}, "NO");
 
         if (option == JOptionPane.YES_OPTION) {
@@ -148,15 +148,11 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
 
     private void closeProgram() {
         int option = JOptionPane.showOptionDialog(this,
-                "¿Esta seguro que desea salir del sistema?",
-                "Apagar Sistema",
+                ReadProperties.props.getProperty("system.shutdown"),
+                ReadProperties.props.getProperty("system.shutdown.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
 
         if (option == JOptionPane.YES_OPTION) {
-            Enumeration<Object> en = System.getProperties().keys();
-            while (en.hasMoreElements()) {
-                System.out.println(en.nextElement());
-            }
             System.exit(0);
         }
     }

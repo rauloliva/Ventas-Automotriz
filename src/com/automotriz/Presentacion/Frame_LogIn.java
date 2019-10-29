@@ -116,8 +116,8 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
 
     private void closeProgram() {
         int option = JOptionPane.showOptionDialog(this,
-                "¿Esta seguro que desea salir del sistema?",
-                "Apagar Sistema",
+                ReadProperties.props.getProperty("system.shutdown"),
+                ReadProperties.props.getProperty("system.shutdown.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
 
         if (option == JOptionPane.YES_OPTION) {

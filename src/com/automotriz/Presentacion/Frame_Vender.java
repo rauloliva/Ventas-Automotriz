@@ -111,15 +111,6 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
         }
     }
 
-    private void goToInicio() {
-        this.dispose();
-        if (session.getPerfil().equals("Administrador")) {
-            container.add(new Frame_Graph(parent, container, session));
-        } else {
-            container.add(new Frame_AddComentario(parent, container, session));
-        }
-    }
-
     /**
      * Placing all the information about the selected car from Frame_MyCars
      * modal

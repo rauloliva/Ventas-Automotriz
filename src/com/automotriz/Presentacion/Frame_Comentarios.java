@@ -69,15 +69,6 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         start5.setIcon(imageStart);
     }
 
-    private void goToInicio() {
-        this.dispose();
-        if (session.getPerfil().equals("Administrador")) {
-            container.add(new Frame_Graph(parent, container, session));
-        } else {
-            container.add(new Frame_AddComentario(parent, container, session));
-        }
-    }
-
     private void getFeedBack(String flag) {
         Validacion validacion = new Validacion(null, new ComentarioVO()).getFeedBack();
         List<ComentarioVO> comentariosVO = validacion.getComentarios();
@@ -466,32 +457,12 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         start1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         start2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        start2.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                start2MouseClicked(evt);
-            }
-        });
 
         start3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        start3.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                start3MouseClicked(evt);
-            }
-        });
 
         start4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        start4.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                start4MouseClicked(evt);
-            }
-        });
 
         start5.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        start5.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                start5MouseClicked(evt);
-            }
-        });
 
         javax.swing.GroupLayout starsPanelLayout = new javax.swing.GroupLayout(starsPanel);
         starsPanel.setLayout(starsPanelLayout);
@@ -574,22 +545,6 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
     private void btn_atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_atrasActionPerformed
         getFeedBack("back");
     }//GEN-LAST:event_btn_atrasActionPerformed
-
-    private void start2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start2MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_start2MouseClicked
-
-    private void start3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start3MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_start3MouseClicked
-
-    private void start4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start4MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_start4MouseClicked
-
-    private void start5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_start5MouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_start5MouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

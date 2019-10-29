@@ -25,7 +25,7 @@ public class Logger {
     /**
      * Writes a log message into this directory: 'logs/'
      *
-     * @param context context to set
+     * @param err context to set
      */
     public static void log(String err) {
         if (debugMode) {
@@ -45,7 +45,7 @@ public class Logger {
      * the error occurred, will be display by this method One line will be
      * written
      *
-     * @param context err that will be in the log
+     * @param err error that will be in the log
      */
     public static void error(String err) {
         if (debugMode) {
@@ -64,7 +64,7 @@ public class Logger {
      * Writes the complete error message into this directory: 'logs/' many lines
      * will be written
      *
-     * @param context err that will be in the log
+     * @param err error that will be in the log
      */
     public static void error(StackTraceElement[] err) {
         if (debugMode) {

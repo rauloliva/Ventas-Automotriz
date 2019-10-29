@@ -13,7 +13,9 @@ import com.automotriz.VO.ComentarioVO;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.GregorianCalendar;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class Validacion {
@@ -30,6 +32,12 @@ public class Validacion {
     private ArrayList<AutoVO> autosVO;
     private ArrayList<ComentarioVO> comentariosVO;
 
+    /**
+     * initializes a new Validacion object to start validating some data and
+     * parsing them in a JSON object
+     *
+     * @param data The data to validate,before sending them in queries
+     */
     public Validacion(Object[] data) {
         this.data = data;
     }
@@ -252,18 +260,11 @@ public class Validacion {
         //for this action is a requirement fot another admin
         //to allow this operation
         if (data[3].equals("Administrador")) {
-            Logger.log("New user 'Admin' (Waiting for an admin to give permission)");
+            List adminRights = getAdminCredentials();
 
-            String userAdmin = JOptionPane.showInputDialog(null,
-                    "Se requiere los permisos de un administrador\npara dar de alta este usuario",
-                    "USUARIO");
-            userAdmin = userAdmin == null ? "" : userAdmin;
-            String pwdAdmin = JOptionPane.showInputDialog(null,
-                    "Contraseña del usuario: " + userAdmin,
-                    "CONTRASEÑA");
-            pwdAdmin = pwdAdmin == null ? "" : pwdAdmin;
-
-            createRequestJSON("VALIDATEADMIN", new String[]{"id"}, new Object[]{userAdmin, pwdAdmin});
+            createRequestJSON("VALIDATEADMIN",
+                    new String[]{"id"},
+                    new Object[]{/*Username*/adminRights.get(0),/*Password*/ adminRights.get(1)});
             Logger.log("Creating new Request");
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
@@ -303,6 +304,33 @@ public class Validacion {
             }
         }
         return this;
+    }
+
+    /**
+     * Asks to the user to give admin credentials in order to proceed with the
+     * operation
+     *
+     * @return A list with the admin credentials
+     */
+    private List getAdminCredentials() {
+        Logger.log("New user 'Admin' (Waiting for an admin to give permission)");
+
+        String userAdmin = JOptionPane.showInputDialog(null,
+                "Se requiere los permisos de un administrador\npara dar de alta este usuario",
+                "USUARIO");
+        userAdmin = userAdmin == null ? "" : userAdmin;
+
+        String pwdAdmin = JOptionPane.showInputDialog(null,
+                "Contraseña del usuario: " + userAdmin,
+                "CONTRASEÑA");
+        pwdAdmin = pwdAdmin == null ? "" : pwdAdmin;
+        //ecrypts the password
+        pwdAdmin = new Hashing(pwdAdmin).encrypt();
+
+        List adminRights = new ArrayList();
+        adminRights.add(userAdmin);
+        adminRights.add(pwdAdmin);
+        return adminRights;
     }
 
     public Validacion removeUser() {
@@ -663,6 +691,20 @@ public class Validacion {
         if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
             usuariosVO = new ArrayList<>();
             usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
+        }
+        return this;
+    }
+
+    public Validacion getVendedorName() {
+        if (!isEmpty(data[0])) {
+            createRequestJSON("GETVENDEDORNAME", null);
+            Peticiones peticion = new Peticiones(requestJSON);
+            peticion.setObjectVO(objVo);
+            JSONObject response = peticion.getResult();
+            if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+                usuariosVO = new ArrayList<>();
+                usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
+            }
         }
         return this;
     }

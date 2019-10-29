@@ -78,22 +78,6 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame {
         lbl_start5.setIcon((Icon) startEmpty);
     }
 
-    private void validateInputLength(JTextField field, java.awt.event.KeyEvent evt, String props) {
-        Validacion validacion = new Validacion(new Object[]{
-            field.getText().trim(),
-            ReadProperties.props.getProperty(props),
-            evt
-        }).validateInputLength();
-
-        HashMap propMensaje = validacion.getMessage();
-        if (propMensaje != null) {
-            JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    Integer.parseInt(propMensaje.get("type").toString()));
-        }
-    }
-
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
