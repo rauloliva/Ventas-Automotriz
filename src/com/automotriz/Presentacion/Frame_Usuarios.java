@@ -476,7 +476,6 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
         Frame_EditUser e = new Frame_EditUser(null, true, getUser());
         e.setLocationRelativeTo(this);
         e.setVisible(true);
-
     }//GEN-LAST:event_tbl_usuariosMouseClicked
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed

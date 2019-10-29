@@ -64,8 +64,9 @@ public class Hashing {
         }
         return decryptedText;
     }
-    /*public static void main(String[] args) {
-        Hashing m = new Hashing("admin");
+    public static void main(String[] args) {
+        Hashing m = new Hashing("07WfylTarjY=");
         System.out.println(m.encrypt());
-    }*/
+        System.out.println(m.decrypt());
+    }
 }

@@ -10,14 +10,16 @@ public class Session implements Serializable {
     private String mail;
     private String telefono;
     private String perfil;
+    private String nombre;
 
-    public Session(int id, String username, String password, String mail, String telefono, String perfil) {
+    public Session(int id, String username, String password, String mail, String telefono, String perfil, String nombre) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.mail = mail;
         this.telefono = telefono;
         this.perfil = perfil;
+        this.nombre = nombre;
     }
 
     public Session() {
@@ -69,6 +71,14 @@ public class Session implements Serializable {
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
     }
 
     @Override

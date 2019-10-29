@@ -137,7 +137,8 @@ public class GestorDB {
                             rs.getString("contrasena"),
                             rs.getString("correo"),
                             rs.getString("telefono"),
-                            rs.getString("perfil")
+                            rs.getString("perfil"),
+                            rs.getString("nombre")
                     );
                 } else if (objVO instanceof UsuarioVO) {
                     obj[i] = new UsuarioVO(
@@ -147,7 +148,8 @@ public class GestorDB {
                             rs.getString("correo"),
                             rs.getString("perfil"),
                             rs.getString("estatus"),
-                            rs.getString("telefono")
+                            rs.getString("telefono"),
+                            rs.getString("nombre")
                     );
                 } else if (objVO instanceof AutoVO) {
                     obj[i] = new AutoVO(

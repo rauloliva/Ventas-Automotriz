@@ -10,12 +10,6 @@
         "field2": "AND contrasena=",
         "value2": "[UserInput]"
     },
-    "S001_INSERTUSAURIO": {
-        "insert": "INSERT INTO",
-        "table": "Usuarios",
-        "from": "(usuario,contrasena,correo,perfil,estatus,telefono) VALUES",
-        "values": "[UserInput]"
-    },
     "S001_BLOCKUSER": {
         "update": "UPDATE",
         "table": "Usuarios",
@@ -36,7 +30,7 @@
     "S002_CREATENEWUSER": {
         "insert": "INSERT INTO",
         "table": "usuarios",
-        "columns": "(usuario,contrasena,correo,perfil,estatus,telefono)",
+        "columns": "(usuario,contrasena,correo,perfil,estatus,telefono,nombre)",
         "values": "VALUES",
         "value": "[UserInput]"
     },

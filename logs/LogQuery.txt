@@ -1,3 +1,2 @@
- - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'cliente1' AND contrasena= 'Xuq6t7Fr/Dg='
- - QUERY - SELECT * FROM autos WHERE id_usuario != 1 AND estatus = 'ENVENTA'
- - QUERY - SELECT * FROM usuarios WHERE id = 9
+ - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'admin' AND contrasena= '07WfylTarjY='
+ - QUERY - SELECT * FROM usuarios

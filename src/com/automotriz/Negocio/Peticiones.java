@@ -278,7 +278,8 @@ public class Peticiones {
             + "'" + request.get("3").toString() + "',"
             + "'" + request.get("4").toString() + "',"
             + "'ACTIVO',"
-            + "'" + request.get("5").toString() + "')"
+            + "'" + request.get("5").toString() + "',"
+            + "'" + request.get("6").toString() + "')"
         };
     }
 

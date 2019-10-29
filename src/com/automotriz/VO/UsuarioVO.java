@@ -13,9 +13,10 @@ public class UsuarioVO implements Serializable {
     private String perfil;
     private String estatus;
     private String telefono;
+    private String nombre;
     private static final int nFields = 5;
 
-    public UsuarioVO(int id, String usuario, String contraseña, String correo, String perfil, String estatus, String telefono) {
+    public UsuarioVO(int id, String usuario, String contraseña, String correo, String perfil, String estatus, String telefono, String nombre) {
         this.id = id;
         this.usuario = usuario;
         this.contraseña = contraseña;
@@ -23,6 +24,7 @@ public class UsuarioVO implements Serializable {
         this.perfil = perfil;
         this.estatus = estatus;
         this.telefono = telefono;
+        this.nombre = nombre;
     }
 
     public UsuarioVO() {
@@ -84,6 +86,14 @@ public class UsuarioVO implements Serializable {
         this.telefono = telefono;
     }
 
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
     @Override
     public String toString() {
         return "UsuarioVO{" + "id=" + id + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", correo=" + correo + ", perfil=" + perfil + ", estatus=" + estatus + ", telefono=" + telefono + '}';
@@ -104,6 +114,7 @@ public class UsuarioVO implements Serializable {
             usuariosMatrix[i][2] = usuarios.get(i).getPerfil();
             usuariosMatrix[i][3] = usuarios.get(i).getEstatus();
             usuariosMatrix[i][4] = usuarios.get(i).getTelefono();
+            usuariosMatrix[i][5] = usuarios.get(i).getNombre();
         }
         return saveMatrixOnList(usuariosMatrix);
     }

@@ -20,9 +20,6 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     private Thread hilo;
 
     public Frame_EnviarCorreo(JFrame parent, JDesktopPane container, Session session, String dest) {
-
-        //UIManager.put("ProgressBar.selectionBackground",Color.BLUE);
-        //UIManager.put("Progress.selectionForeground",Color.GREEN);
         initComponents();
         this.parent = parent;
         this.container = container;

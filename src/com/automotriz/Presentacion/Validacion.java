@@ -239,7 +239,8 @@ public class Validacion {
         boolean allowAdmin = false;
 
         Logger.log("validating " + form + " form ");
-        if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || data[3].equals("--Selecccionar--") || isEmpty(data[4])) {
+        if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || data[3].equals("--Selecccionar--") || isEmpty(data[4])
+                || isEmpty(data[5])) {
             writeMessages(new Object[]{
                 "signin.msg.error.emptyFields",
                 "signin.msg.error.emptyFields.title",
@@ -252,7 +253,7 @@ public class Validacion {
         //to allow this operation
         if (data[3].equals("Administrador")) {
             Logger.log("New user 'Admin' (Waiting for an admin to give permission)");
-            
+
             String userAdmin = JOptionPane.showInputDialog(null,
                     "Se requiere los permisos de un administrador\npara dar de alta este usuario",
                     "USUARIO");
@@ -260,7 +261,7 @@ public class Validacion {
             String pwdAdmin = JOptionPane.showInputDialog(null,
                     "Contraseña del usuario: " + userAdmin,
                     "CONTRASEÑA");
-            pwdAdmin = pwdAdmin == null ? "" : pwdAdmin ;
+            pwdAdmin = pwdAdmin == null ? "" : pwdAdmin;
 
             createRequestJSON("VALIDATEADMIN", new String[]{"id"}, new Object[]{userAdmin, pwdAdmin});
             Logger.log("Creating new Request");
