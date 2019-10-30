@@ -79,14 +79,16 @@ public class GestorDB {
         if (conexion.getConnectionStatus() == Conexion.CONEXION_SUCCESS) {
             Logger.log("Connection Success");
             LoggerQuery.logQuery(this.query);
-            if (this.query.charAt(0) == GestorDB.SELECT) {
-                return SELECT(conexion, request);
-            } else if (this.query.charAt(0) == GestorDB.INSERT) {
-                return INSERT(conexion, request);
-            } else if (this.query.charAt(0) == GestorDB.UPDATE) {
-                return UPDATE(conexion, request);
+            switch (this.query.charAt(0)) {
+                case GestorDB.SELECT:
+                    return SELECT(conexion);
+                case GestorDB.INSERT:
+                    return INSERT(conexion, request);
+                case GestorDB.UPDATE:
+                    return UPDATE(conexion, request);
+                default:
+                    return new JSONObject();
             }
-
         }
         Logger.error("Connection Failure");
         return null;
@@ -114,11 +116,10 @@ public class GestorDB {
      * Executes a SELECT SQL query
      *
      * @param conexion The database connection
-     * @param request The JSON request that acts as a request
      * @return A JSON object that acts as a response created by the
      * 'createResponseJSON' method
      */
-    private JSONObject SELECT(Conexion conexion, JSONObject request) {
+    private JSONObject SELECT(Conexion conexion) {
         cnn = conexion.getConnection();
         try {
             Logger.log("Applying SELECT query");
