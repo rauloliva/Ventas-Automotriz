@@ -83,6 +83,19 @@ public class Peticiones {
     }
 
     /**
+     * Sends an email to destinatarios with a attached file
+     *
+     * @param destinatarios
+     * @param asunto
+     * @param mensaje
+     */
+    public static void sendMail(String destinatarios, String asunto, String mensaje, File file) {
+        Mail mail = new Mail(destinatarios, asunto, mensaje);
+        mail.attachFiles(file.getName(), file.getAbsolutePath());
+        mail.send();
+    }
+
+    /**
      * Creates a new request to the server
      *
      * @param datadic The datadic that contains the query

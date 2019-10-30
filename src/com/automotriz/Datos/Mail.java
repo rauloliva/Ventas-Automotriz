@@ -24,7 +24,6 @@ public class Mail implements Runnable {
     private String asunto;
     private String mensaje;
     private String fileName;
-    private String filePath;
     private DataHandler dataHandler;
 
     /**
@@ -46,7 +45,6 @@ public class Mail implements Runnable {
      */
     public void attachFiles(String fileName, String filePath) {
         this.fileName = fileName;
-        this.filePath = filePath;
         dataHandler = new DataHandler(new FileDataSource(filePath));
     }
 
@@ -63,12 +61,6 @@ public class Mail implements Runnable {
 
     @Override
     public void run() {
-        /*Properties props = new Properties();
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-        props.put("mail.smtp.host", "smtp.gmail.com");
-        props.put("mail.smtp.ssl.trust", "smtp.gmail.com");
-        props.put("mail.smtp.port", "587");*/
         Session session = Session.getDefaultInstance(getSMTPProps());
         session.setDebug(false);
         BodyPart texto = new MimeBodyPart();
@@ -96,6 +88,11 @@ public class Mail implements Runnable {
                 t.sendMessage(message, message.getAllRecipients());
                 t.close();
                 Logger.log("Mail to " + address + " has been sent");
+
+                JOptionPane.showMessageDialog(null,
+                        "Correo enviado a " + address + " con exito",
+                        "Correo Enviado",
+                        JOptionPane.INFORMATION_MESSAGE);
             }
         } catch (Exception e) {
             Logger.error(e.getMessage());

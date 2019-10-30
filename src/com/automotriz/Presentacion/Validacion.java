@@ -10,6 +10,7 @@ import org.json.simple.JSONObject;
 import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.VO.ComentarioVO;
+import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -704,6 +705,25 @@ public class Validacion {
             if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
                 usuariosVO = new ArrayList<>();
                 usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
+            }
+        }
+        return this;
+    }
+
+    public Validacion sendMailToVendedor() {
+        if (!isEmpty(data[0]) && !isEmpty(data[1]) && !isEmpty(data[2])) {
+
+            if (data[3] != null) {
+                Peticiones.sendMail(
+                        data[0].toString(),
+                        data[1].toString(),
+                        data[2].toString(),
+                        (File) data[3]);
+            } else {
+                Peticiones.sendMail(
+                        data[0].toString(),
+                        data[1].toString(),
+                        data[2].toString());
             }
         }
         return this;

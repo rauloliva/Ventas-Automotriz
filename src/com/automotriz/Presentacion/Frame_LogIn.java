@@ -455,17 +455,3 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
     public static javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
-
-class Wait implements Runnable {
-
-    public static Thread hilo;
-
-    public Wait() {
-        hilo = new Thread(this);
-        hilo.start();
-    }
-
-    public void run() {
-
-    }
-}
