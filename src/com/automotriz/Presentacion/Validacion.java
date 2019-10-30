@@ -10,18 +10,16 @@ import org.json.simple.JSONObject;
 import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.VO.ComentarioVO;
-import java.io.File;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class Validacion {
 
-    public static final int triesAllowed = 3;
+    public static final int ATTEMPTS_ALLOWED = 3;
     public static int loginTries = 0;
     private HashMap messageProps;
     private Object[] data;
@@ -148,7 +146,7 @@ public class Validacion {
                 //counting the number of tries attempting to log in
                 loginTries++;
                 Logger.log("Attempt " + loginTries + " to get access");
-                if (loginTries == triesAllowed) {
+                if (loginTries == ATTEMPTS_ALLOWED) {
                     Logger.log("Blocking user");
                     writeMessages(new Object[]{
                         "login.msg.bloquear",
@@ -447,9 +445,11 @@ public class Validacion {
                     //send the notification to the user
                     String bodyMessage = ReadProperties.props.getProperty("email.msg.userActived")
                             .replace("*", new Hashing(codigo.toString()).decrypt());
-                    Peticiones.sendMail(data[4].toString(),
+                    Peticiones.sendMail(
+                            data[4].toString(),
                             "VEHICLE SELL| USUARIO REACTIVADO",
-                            bodyMessage);
+                            bodyMessage,
+                            null);
 
                     writeMessages(new Object[]{
                         "editUser.msg.userActivado",
@@ -712,19 +712,17 @@ public class Validacion {
 
     public Validacion sendMailToVendedor() {
         if (!isEmpty(data[0]) && !isEmpty(data[1]) && !isEmpty(data[2])) {
-
-            if (data[3] != null) {
-                Peticiones.sendMail(
-                        data[0].toString(),
-                        data[1].toString(),
-                        data[2].toString(),
-                        (File) data[3]);
-            } else {
-                Peticiones.sendMail(
-                        data[0].toString(),
-                        data[1].toString(),
-                        data[2].toString());
-            }
+            Peticiones.sendMail(
+                    data[0].toString(),
+                    data[1].toString(),
+                    data[2].toString(),
+                    data[3]);
+        } else {
+            writeMessages(new Object[]{
+                "mail.empty.fields",
+                "mail.empty.fields.title",
+                JOptionPane.WARNING_MESSAGE
+            });
         }
         return this;
     }

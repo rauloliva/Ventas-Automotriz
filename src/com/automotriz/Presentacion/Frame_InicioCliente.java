@@ -157,7 +157,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         wallpaper.stop();
         this.dispose();
-        container.add(new Frame_Catalogo(parent, container, session));
+        container.add(new Frame_Catalogo2(parent, container, session));
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menu_feedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_feedbackActionPerformed

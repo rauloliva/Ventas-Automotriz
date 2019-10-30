@@ -14,10 +14,10 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
-
+    
     public static String perfil = "";
     private Thread hilo;
-
+    
     public Frame_LogIn() {
         initComponents();
         try {
@@ -44,19 +44,20 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
         }
-
+        
         while (perfil.equals("")) {
             this.setTitle("Perfil: " + perfil);
+            lbl_title_frame.setText("Inicio de session: " + perfil);
         }
         this.setTitle("Perfil: " + perfil);
     }
-
+    
     private void initFrame() throws Exception {
         //getting the application properties
         ReadProperties.loadApplicationProps();
         //init logs
         Logger.start();
-
+        
         String name = ReadProperties.props.getProperty("name.logIn");
         this.setName(name);
         this.setTitle(name);
@@ -65,9 +66,9 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         LoggerQuery.start();
         this.setLocationRelativeTo(this);
         registrarLabelsDesign();
-
+        
         this.initGetPerfil();
-
+        
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.grey")));
 
         //Setting an image for the panel above
@@ -75,15 +76,15 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
                 .getResource(ReadProperties.props.getProperty("icon.wallpaper"))));
         label.setSize(panelTitle.getWidth(), panelTitle.getHeight());
         panelTitle.add(label);
-
+        
         panelForm.setBorder(new BevelBorder(BevelBorder.RAISED));
-
+        
         String value = ReadProperties.props.getProperty("login.title");
         lbl_title.setText(value);
-
+        
         value = ReadProperties.props.getProperty("login.boton.login");
         btn_entrar.setText(value);
-
+        
         value = ReadProperties.props.getProperty("login.boton.cerrar");
         btn_atras.setText(value);
         lbl_close.setIcon(
@@ -102,38 +103,38 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         lbl_registrar_aqui.setForeground(Color.blue.darker());
         lbl_registrar_aqui.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
-
+    
     private void initGetPerfil() {
         Frame_GetPerfil h = new Frame_GetPerfil(this, true);
         h.setLocationRelativeTo(this);
         h.setVisible(true);
     }
-
+    
     private void gotToSignIn() {
         Frame_SignIn signIn = new Frame_SignIn(this, true);
         signIn.setVisible(true);
     }
-
+    
     private void closeProgram() {
         int option = JOptionPane.showOptionDialog(this,
                 ReadProperties.props.getProperty("system.shutdown"),
                 ReadProperties.props.getProperty("system.shutdown.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-
+        
         if (option == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }
-
+    
     public void validacion() {
         Validacion validacion = new Validacion(new Object[]{
             txt_username.getText().trim(),
             new Hashing(txt_password.getText().trim()).encrypt(),
             perfil
         }, new Session()).validarLogIn();
-
+        
         HashMap propMensaje = validacion.getMessage();
-
+        
         if (propMensaje != null) { //if an error message is ready to show up
             JOptionPane.showMessageDialog(this,
                     propMensaje.get("message").toString(),
@@ -145,7 +146,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
             new Frame_Inicio(validacion.getSession());
         }
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -165,6 +166,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         lbl_registrar_aqui = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lbl_close = new javax.swing.JLabel();
+        lbl_title_frame = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -298,18 +300,28 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
             }
         });
 
+        lbl_title_frame.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        lbl_title_frame.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_title_frame.setText("jLabel3");
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap()
+                .addComponent(lbl_title_frame)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(lbl_close, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(22, 22, 22))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(lbl_close, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(lbl_title_frame)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout mainPanelLayout = new javax.swing.GroupLayout(mainPanel);
@@ -448,10 +460,11 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
     private javax.swing.JLabel lbl_msg_registar;
     private javax.swing.JLabel lbl_registrar_aqui;
     private javax.swing.JLabel lbl_title;
+    private javax.swing.JLabel lbl_title_frame;
     private javax.swing.JPanel mainPanel;
     private javax.swing.JPanel panelForm;
     private javax.swing.JPanel panelTitle;
-    public static javax.swing.JPasswordField txt_password;
-    public static javax.swing.JTextField txt_username;
+    private javax.swing.JPasswordField txt_password;
+    private javax.swing.JTextField txt_username;
     // End of variables declaration//GEN-END:variables
 }
