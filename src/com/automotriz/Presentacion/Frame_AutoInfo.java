@@ -116,7 +116,6 @@ public class Frame_AutoInfo extends javax.swing.JDialog {
             imgs = new ArrayList();
             image = new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.noImage")));
         }
-        //ImageIcon image = new ImageIcon(imageURL);
         Image img = image.getImage();
         img = img.getScaledInstance(299, 242, Image.SCALE_DEFAULT);
         lbl_imagenes.setIcon(new ImageIcon(img));
@@ -124,7 +123,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog {
     }
 
     private boolean hasNext() {
-        return count_imgs == imgs.size();
+        return count_imgs + 1 == imgs.size();
     }
 
     private void atrasAction() {
