@@ -3,19 +3,22 @@ package com.automotriz.Presentacion;
 import com.automotriz.VO.AutoVO;
 import com.automotriz.VO.Session;
 import java.awt.Color;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
 public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable {
-
+    
     private JFrame parent;
     private JDesktopPane container;
     private Session session;
     private List<AutoVO> autosVO;
-
+    
     public Frame_Catalogo(JFrame parent, JDesktopPane container, Session session) {
         initComponents();
         this.parent = parent;
@@ -24,15 +27,20 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         initFrame();
         this.setVisible(true);
     }
-
+    
     private void initFrame() {
         panelFiltros.setVisible(false);
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         getCatalogo("");
+        setMarcas();
+        setModeloValue();
+        setColores();
+        setCambios();
+        enableFiltros(false);
         //
         new Thread(this).start();
     }
-
+    
     @Override
     public void run() {
         while (true) {
@@ -48,7 +56,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             System.out.print("");
         }
     }
-
+    
     private void getCatalogo(String flag) {
         Validacion validacion = new Validacion(new Object[]{
             session.getId()
@@ -70,7 +78,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 {lbl_marca11, lbl_modelo11, lbl_precio11, lbl_imagenes11},
                 {lbl_marca12, lbl_modelo12, lbl_precio12, lbl_imagenes12}
             }, autosVO, btn_atras, btn_siguiente);
-
+            
             if (flag.equals("")) {
                 model.constructCatalogoModel();
             } else if (flag.equals("next")) {
@@ -83,7 +91,58 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             btn_siguiente.setEnabled(false);
         }
     }
-
+    
+    private void setMarcas() {
+        cmb_marca.addItem("--Seleccionar--");
+        String marcas[] = ReadProperties.props.getProperty("vender.marcas").split(";");
+        for (String marca : marcas) {
+            cmb_marca.addItem(marca);
+        }
+        cmb_marca.addItem("Otros");
+    }
+    
+    private void setModeloValue() {
+        Calendar c = new GregorianCalendar();
+        int year = c.get(Calendar.YEAR);
+        spn_modelo.setValue(year);
+        //set a range to the modelo
+        SpinnerNumberModel model1 = new SpinnerNumberModel(year, 1950, year, 1.0);
+        spn_modelo.setModel(model1);
+    }
+    
+    private void setColores() {
+        cmb_color.addItem("--Seleccionar--");
+        String colores[] = ReadProperties.props.getProperty("vender.colores").split(";");
+        for (String color : colores) {
+            cmb_color.addItem(color);
+        }
+    }
+    
+    private void setCambios() {
+        cmb_cambio.addItem("--Seleccionar--");
+        String cambios[] = ReadProperties.props.getProperty("vender.cambios").split(";");
+        for (String cambio : cambios) {
+            cmb_cambio.addItem(cambio);
+        }
+    }
+    
+    private void enableFiltros(boolean flag) {
+        cmb_marca.setEnabled(flag);
+        cmb_cambio.setEnabled(flag);
+        cmb_color.setEnabled(flag);
+        spn_modelo.setEnabled(flag);
+        btn_filtrar.setEnabled(flag);
+        btn_cleanFields.setEnabled(flag);
+        btn_listarTodo.setEnabled(!flag);
+    }
+    
+    private void clearFiltros() {
+        cmb_marca.setSelectedItem("--Seleccionar--");
+        cmb_color.setSelectedItem("--Seleccionar--");
+        cmb_cambio.setSelectedItem("--Seleccionar--");
+        spn_modelo.setValue(0);
+    }
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -92,6 +151,18 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         jScrollPane1 = new javax.swing.JScrollPane();
         jPanel1 = new javax.swing.JPanel();
         panelFiltros = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        cmb_marca = new javax.swing.JComboBox<>();
+        jLabel2 = new javax.swing.JLabel();
+        spn_modelo = new javax.swing.JSpinner();
+        jLabel3 = new javax.swing.JLabel();
+        cmb_color = new javax.swing.JComboBox<>();
+        jLabel4 = new javax.swing.JLabel();
+        cmb_cambio = new javax.swing.JComboBox<>();
+        btn_filtrar = new javax.swing.JButton();
+        chb_filtar = new javax.swing.JCheckBox();
+        btn_listarTodo = new javax.swing.JButton();
+        btn_cleanFields = new javax.swing.JButton();
         btn_atras = new javax.swing.JButton();
         btn_siguiente = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
@@ -158,16 +229,116 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         btn_filtros = new javax.swing.JButton();
 
         panelFiltros.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        panelFiltros.setPreferredSize(new java.awt.Dimension(520, 118));
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        jLabel1.setText("Marca");
+
+        cmb_marca.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        jLabel2.setText("Modelo");
+
+        spn_modelo.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        spn_modelo.setModel(new javax.swing.SpinnerNumberModel(0, 0, null, 1));
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        jLabel3.setText("Color");
+
+        cmb_color.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+        jLabel4.setText("Cambio");
+
+        cmb_cambio.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
+
+        btn_filtrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btn_filtrar.setText("Filtrar");
+        btn_filtrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_filtrarActionPerformed(evt);
+            }
+        });
+
+        chb_filtar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        chb_filtar.setText("Usar Filtros");
+        chb_filtar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                chb_filtarActionPerformed(evt);
+            }
+        });
+
+        btn_listarTodo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btn_listarTodo.setText("Listar Todo");
+        btn_listarTodo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_listarTodoActionPerformed(evt);
+            }
+        });
+
+        btn_cleanFields.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        btn_cleanFields.setText("Limpiar");
+        btn_cleanFields.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cleanFieldsActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout panelFiltrosLayout = new javax.swing.GroupLayout(panelFiltros);
         panelFiltros.setLayout(panelFiltrosLayout);
         panelFiltrosLayout.setHorizontalGroup(
             panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(panelFiltrosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(btn_filtrar)
+                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmb_marca, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(18, 18, 18)
+                .addComponent(jLabel2)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                        .addComponent(spn_modelo, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel3))
+                    .addComponent(chb_filtar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                        .addComponent(cmb_color, javax.swing.GroupLayout.PREFERRED_SIZE, 235, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel4)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(cmb_cambio, javax.swing.GroupLayout.PREFERRED_SIZE, 209, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(panelFiltrosLayout.createSequentialGroup()
+                        .addComponent(btn_listarTodo)
+                        .addGap(79, 79, 79)
+                        .addComponent(btn_cleanFields)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         panelFiltrosLayout.setVerticalGroup(
             panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 100, Short.MAX_VALUE)
+            .addGroup(panelFiltrosLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1)
+                    .addComponent(cmb_marca, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel2)
+                    .addComponent(spn_modelo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel3)
+                    .addComponent(cmb_color, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel4)
+                    .addComponent(cmb_cambio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_filtrar)
+                    .addComponent(chb_filtar)
+                    .addComponent(btn_listarTodo)
+                    .addComponent(btn_cleanFields))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         btn_atras.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -853,7 +1024,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                                 .addComponent(panelAuto11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(panelAuto12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(0, 2, Short.MAX_VALUE))
+                                .addGap(0, 0, Short.MAX_VALUE))
                             .addGroup(jPanel3Layout.createSequentialGroup()
                                 .addComponent(panelAuto7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -900,7 +1071,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panelFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(panelFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, 1138, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(387, 387, 387)
                         .addComponent(btn_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -908,16 +1079,16 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                         .addComponent(btn_siguiente)
                         .addGap(85, 85, 85)
                         .addComponent(btn_filtros)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addGap(0, 235, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(panelFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, 106, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_atras)
                     .addComponent(btn_siguiente)
@@ -1140,17 +1311,87 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         if (btn_filtros.getText().equalsIgnoreCase("Mostrar Filtros")) {
             panelFiltros.setVisible(true);
             btn_filtros.setText("Ocultar Filtros");
+            panelFiltros.setSize(400, 118);
+            pack();
         } else {
             panelFiltros.setVisible(false);
             btn_filtros.setText("Mostrar Filtros");
         }
     }//GEN-LAST:event_btn_filtrosActionPerformed
 
+    private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
+        /*resetTable();
+        Validacion validacion = new Validacion(new Object[]{
+            txt_username.getText().trim(),
+            txt_telefono.getText().trim(),
+            cmb_estatus.getSelectedItem().toString() == "--Seleccionar--"
+            ? cmb_estatus.getSelectedItem().toString() : cmb_estatus.getSelectedItem().toString().toUpperCase(),
+            cmb_perfil.getSelectedItem().toString()
+        }, new UsuarioVO());
+        
+        validacion.setTableModel(model);
+        validacion.filtrarUsuarios();
+        tbl_usuarios.setModel(validacion.getTableModel());
+        
+        HashMap propMensaje = validacion.getMessage();
+        
+        if (propMensaje != null) { //if an error message is ready to show up
+            //if there is no user, dont show the table
+            scrollTable.setVisible(false);
+            JOptionPane.showMessageDialog(this,
+                    propMensaje.get("message").toString(),
+                    propMensaje.get("title").toString(),
+                    Integer.parseInt(propMensaje.get("type").toString()));
+            
+        } else {
+            //show the table with the data
+            scrollTable.setVisible(true);
+            pack();
+            usuariosVO = validacion.getUsuarios();
+        }*/
+    }//GEN-LAST:event_btn_filtrarActionPerformed
+
+    private void chb_filtarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb_filtarActionPerformed
+        if (chb_filtar.isSelected()) {
+            enableFiltros(true);
+            btn_listarTodo.setEnabled(false);
+        } else {
+            enableFiltros(false);
+            btn_listarTodo.setEnabled(true);
+        }
+    }//GEN-LAST:event_chb_filtarActionPerformed
+
+    private void btn_listarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_listarTodoActionPerformed
+        /*resetTable();
+        Validacion validacion = new Validacion(null, new UsuarioVO());
+        validacion.setTableModel(model);
+        validacion.filtrarUsuarios();
+        tbl_usuarios.setModel(validacion.getTableModel());
+        usuariosVO = validacion.getUsuarios();
+        scrollTable.setVisible(true);
+        pack();*/
+    }//GEN-LAST:event_btn_listarTodoActionPerformed
+
+    private void btn_cleanFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cleanFieldsActionPerformed
+        clearFiltros();
+    }//GEN-LAST:event_btn_cleanFieldsActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_atras;
+    private javax.swing.JButton btn_cleanFields;
+    private javax.swing.JButton btn_filtrar;
     private javax.swing.JButton btn_filtros;
+    private javax.swing.JButton btn_listarTodo;
     private javax.swing.JButton btn_siguiente;
+    private javax.swing.JCheckBox chb_filtar;
+    private javax.swing.JComboBox<String> cmb_cambio;
+    private javax.swing.JComboBox<String> cmb_color;
+    private javax.swing.JComboBox<String> cmb_marca;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -1216,5 +1457,6 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private javax.swing.JPanel panelAuto9;
     private javax.swing.JPanel panelContent;
     private javax.swing.JPanel panelFiltros;
+    private javax.swing.JSpinner spn_modelo;
     // End of variables declaration//GEN-END:variables
 }
