@@ -1,10 +1,11 @@
 package com.automotriz.Presentacion;
 
 import com.automotriz.VO.AutoVO;
-import javax.swing.*;
 import com.automotriz.VO.Session;
 import java.awt.Color;
 import java.util.List;
+import javax.swing.JDesktopPane;
+import javax.swing.JFrame;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 
@@ -20,13 +21,18 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         this.parent = parent;
         this.container = container;
         this.session = session;
-        this.setVisible(true);
         initFrame();
+        this.setVisible(true);
     }
 
-    /**
-     *
-     */
+    private void initFrame() {
+        panelFiltros.setVisible(false);
+        panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
+        getCatalogo("");
+        //
+        new Thread(this).start();
+    }
+
     @Override
     public void run() {
         while (true) {
@@ -43,20 +49,13 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }
     }
 
-    private void initFrame() {
-        panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-        getCatalogo("");
-        //
-        new Thread(this).start();
-    }
-
     private void getCatalogo(String flag) {
         Validacion validacion = new Validacion(new Object[]{
             session.getId()
         }, new AutoVO()).getCatalogo();
         autosVO = validacion.getAutos();
         if (autosVO != null) {
-            lbl_empty_catalogo.setText(null);
+            //lbl_empty_catalogo.setText(null);
             DataModel model = new DataModel(new Object[][]{
                 {lbl_marca1, lbl_modelo1, lbl_precio1, lbl_imagenes1},
                 {lbl_marca2, lbl_modelo2, lbl_precio2, lbl_imagenes2},
@@ -90,7 +89,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void initComponents() {
 
         panelContent = new javax.swing.JPanel();
-        panelCatalogo = new javax.swing.JPanel();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        jPanel1 = new javax.swing.JPanel();
+        panelFiltros = new javax.swing.JPanel();
+        btn_atras = new javax.swing.JButton();
+        btn_siguiente = new javax.swing.JButton();
+        jPanel3 = new javax.swing.JPanel();
         panelAuto1 = new javax.swing.JPanel();
         lbl_marca1 = new javax.swing.JLabel();
         lbl_modelo1 = new javax.swing.JLabel();
@@ -151,13 +155,38 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         lbl_modelo12 = new javax.swing.JLabel();
         lbl_precio12 = new javax.swing.JLabel();
         lbl_imagenes12 = new javax.swing.JLabel();
-        lbl_empty_catalogo = new javax.swing.JLabel();
-        btn_atras = new javax.swing.JButton();
-        btn_siguiente = new javax.swing.JButton();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        btn_filtros = new javax.swing.JButton();
 
-        panelCatalogo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+        panelFiltros.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        javax.swing.GroupLayout panelFiltrosLayout = new javax.swing.GroupLayout(panelFiltros);
+        panelFiltros.setLayout(panelFiltrosLayout);
+        panelFiltrosLayout.setHorizontalGroup(
+            panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 0, Short.MAX_VALUE)
+        );
+        panelFiltrosLayout.setVerticalGroup(
+            panelFiltrosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
+        btn_atras.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_atras.setText("Atras");
+        btn_atras.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_atrasActionPerformed(evt);
+            }
+        });
+
+        btn_siguiente.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_siguiente.setText("Siguiente");
+        btn_siguiente.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_siguienteActionPerformed(evt);
+            }
+        });
+
+        jPanel3.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         panelAuto1.setBorder(javax.swing.BorderFactory.createEtchedBorder(new java.awt.Color(102, 102, 102), new java.awt.Color(0, 0, 0)));
         panelAuto1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -795,122 +824,127 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        javax.swing.GroupLayout panelCatalogoLayout = new javax.swing.GroupLayout(panelCatalogo);
-        panelCatalogo.setLayout(panelCatalogoLayout);
-        panelCatalogoLayout.setHorizontalGroup(
-            panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCatalogoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCatalogoLayout.createSequentialGroup()
-                        .addComponent(panelAuto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAuto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAuto3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
-                        .addComponent(panelAuto4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelCatalogoLayout.createSequentialGroup()
-                        .addComponent(panelAuto5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAuto6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAuto7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelAuto8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(panelCatalogoLayout.createSequentialGroup()
-                        .addComponent(panelAuto9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAuto10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(panelAuto11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(panelAuto12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        panelCatalogoLayout.setVerticalGroup(
-            panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelCatalogoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelAuto4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelAuto3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelAuto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelAuto9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(panelAuto1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelCatalogoLayout.createSequentialGroup()
-                        .addGap(51, 51, 51)
-                        .addComponent(panelAuto8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelCatalogoLayout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(panelAuto7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panelAuto6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(panelAuto5, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 59, Short.MAX_VALUE)
-                .addGroup(panelCatalogoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(panelAuto9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelAuto10, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelAuto11, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(panelAuto12, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(18, 18, 18)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelAuto10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(1, 1, 1)
+                        .addComponent(panelAuto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(panelAuto3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(panelAuto4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGap(25, 25, 25)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(panelAuto11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(panelAuto12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(0, 2, Short.MAX_VALUE))
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(panelAuto7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(panelAuto8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(1202, 1202, 1202))
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelAuto1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(panelAuto5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto8, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(panelAuto9, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto10, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto11, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(panelAuto12, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
-        lbl_empty_catalogo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        lbl_empty_catalogo.setForeground(new java.awt.Color(255, 51, 0));
-        lbl_empty_catalogo.setText("El catalogo se encuentra vacio");
-
-        btn_atras.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        btn_atras.setText("Atras");
-        btn_atras.addActionListener(new java.awt.event.ActionListener() {
+        btn_filtros.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        btn_filtros.setText("Mostrar Filtros");
+        btn_filtros.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_filtros.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_atrasActionPerformed(evt);
+                btn_filtrosActionPerformed(evt);
             }
         });
 
-        btn_siguiente.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        btn_siguiente.setText("Siguiente");
-        btn_siguiente.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btn_siguienteActionPerformed(evt);
-            }
-        });
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(panelFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGap(387, 387, 387)
+                        .addComponent(btn_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(119, 119, 119)
+                        .addComponent(btn_siguiente)
+                        .addGap(85, 85, 85)
+                        .addComponent(btn_filtros)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(panelFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btn_atras)
+                    .addComponent(btn_siguiente)
+                    .addComponent(btn_filtros))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        jScrollPane1.setViewportView(jPanel1);
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelContentLayout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelContentLayout.createSequentialGroup()
-                        .addComponent(lbl_empty_catalogo, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(142, 142, 142)
-                        .addComponent(btn_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(119, 119, 119)
-                        .addComponent(btn_siguiente))
-                    .addComponent(panelCatalogo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(40, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContentLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 1177, Short.MAX_VALUE)
+                .addContainerGap())
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelContentLayout.createSequentialGroup()
-                .addGap(6, 6, 6)
-                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(btn_atras)
-                        .addComponent(btn_siguiente))
-                    .addComponent(lbl_empty_catalogo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(panelCatalogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
+                .addGap(23, 23, 23)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 549, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(30, Short.MAX_VALUE))
         );
-
-        jMenu1.setText("File");
-        jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
-        jMenuBar1.add(jMenu1);
-
-        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -934,6 +968,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         getCatalogo("next");
     }//GEN-LAST:event_btn_siguienteActionPerformed
 
+    private void panelAuto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto1MouseClicked
+        if (!lbl_marca1.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(0), container, session);
+        }
+    }//GEN-LAST:event_panelAuto1MouseClicked
+
     private void panelAuto1MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto1MouseEntered
         panelAuto1.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }//GEN-LAST:event_panelAuto1MouseEntered
@@ -941,6 +981,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void panelAuto1MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto1MouseExited
         panelAuto1.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto1MouseExited
+
+    private void panelAuto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto2MouseClicked
+        if (!lbl_marca2.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(1), container, session);
+        }
+    }//GEN-LAST:event_panelAuto2MouseClicked
 
     private void panelAuto2MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto2MouseEntered
         panelAuto2.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -950,6 +996,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelAuto2.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto2MouseExited
 
+    private void panelAuto3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto3MouseClicked
+        if (!lbl_marca3.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(2), container, session);
+        }
+    }//GEN-LAST:event_panelAuto3MouseClicked
+
     private void panelAuto3MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto3MouseEntered
         panelAuto3.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }//GEN-LAST:event_panelAuto3MouseEntered
@@ -957,6 +1009,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void panelAuto3MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto3MouseExited
         panelAuto3.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto3MouseExited
+
+    private void panelAuto4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto4MouseClicked
+        if (!lbl_marca4.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(3), container, session);
+        }
+    }//GEN-LAST:event_panelAuto4MouseClicked
 
     private void panelAuto4MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto4MouseEntered
         panelAuto4.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -966,6 +1024,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelAuto4.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto4MouseExited
 
+    private void panelAuto5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto5MouseClicked
+        if (!lbl_marca5.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(4), container, session);
+        }
+    }//GEN-LAST:event_panelAuto5MouseClicked
+
     private void panelAuto5MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto5MouseEntered
         panelAuto5.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }//GEN-LAST:event_panelAuto5MouseEntered
@@ -973,6 +1037,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void panelAuto5MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto5MouseExited
         panelAuto5.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto5MouseExited
+
+    private void panelAuto6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto6MouseClicked
+        if (!lbl_marca6.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(5), container, session);
+        }
+    }//GEN-LAST:event_panelAuto6MouseClicked
 
     private void panelAuto6MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto6MouseEntered
         panelAuto6.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -982,6 +1052,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelAuto6.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto6MouseExited
 
+    private void panelAuto7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto7MouseClicked
+        if (!lbl_marca7.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(6), container, session);
+        }
+    }//GEN-LAST:event_panelAuto7MouseClicked
+
     private void panelAuto7MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto7MouseEntered
         panelAuto7.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }//GEN-LAST:event_panelAuto7MouseEntered
@@ -989,6 +1065,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void panelAuto7MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto7MouseExited
         panelAuto7.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto7MouseExited
+
+    private void panelAuto8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto8MouseClicked
+        if (!lbl_marca8.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(7), container, session);
+        }
+    }//GEN-LAST:event_panelAuto8MouseClicked
 
     private void panelAuto8MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto8MouseEntered
         panelAuto8.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -998,6 +1080,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelAuto8.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto8MouseExited
 
+    private void panelAuto9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto9MouseClicked
+        if (!lbl_marca9.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(8), container, session);
+        }
+    }//GEN-LAST:event_panelAuto9MouseClicked
+
     private void panelAuto9MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto9MouseEntered
         panelAuto9.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }//GEN-LAST:event_panelAuto9MouseEntered
@@ -1005,6 +1093,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void panelAuto9MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto9MouseExited
         panelAuto9.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto9MouseExited
+
+    private void panelAuto10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto10MouseClicked
+        if (!lbl_marca10.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(9), container, session);
+        }
+    }//GEN-LAST:event_panelAuto10MouseClicked
 
     private void panelAuto10MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto10MouseEntered
         panelAuto10.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -1014,6 +1108,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelAuto10.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto10MouseExited
 
+    private void panelAuto11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto11MouseClicked
+        if (!lbl_marca11.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(10), container, session);
+        }
+    }//GEN-LAST:event_panelAuto11MouseClicked
+
     private void panelAuto11MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto11MouseEntered
         panelAuto11.setBorder(new BevelBorder(BevelBorder.LOWERED));
     }//GEN-LAST:event_panelAuto11MouseEntered
@@ -1021,6 +1121,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private void panelAuto11MouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto11MouseExited
         panelAuto11.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto11MouseExited
+
+    private void panelAuto12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto12MouseClicked
+        if (!lbl_marca12.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(11), container, session);
+        }
+    }//GEN-LAST:event_panelAuto12MouseClicked
 
     private void panelAuto12MouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto12MouseEntered
         panelAuto12.setBorder(new BevelBorder(BevelBorder.LOWERED));
@@ -1030,84 +1136,24 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelAuto12.setBorder(new EtchedBorder(EtchedBorder.LOWERED, Color.BLACK, Color.BLACK));
     }//GEN-LAST:event_panelAuto12MouseExited
 
-    private void panelAuto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto1MouseClicked
-        if (!lbl_marca1.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(0), container, session);
+    private void btn_filtrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrosActionPerformed
+        if (btn_filtros.getText().equalsIgnoreCase("Mostrar Filtros")) {
+            panelFiltros.setVisible(true);
+            btn_filtros.setText("Ocultar Filtros");
+        } else {
+            panelFiltros.setVisible(false);
+            btn_filtros.setText("Mostrar Filtros");
         }
-    }//GEN-LAST:event_panelAuto1MouseClicked
+    }//GEN-LAST:event_btn_filtrosActionPerformed
 
-    private void panelAuto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto2MouseClicked
-        if (!lbl_marca2.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(1), container, session);
-        }
-    }//GEN-LAST:event_panelAuto2MouseClicked
-
-    private void panelAuto3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto3MouseClicked
-        if (!lbl_marca3.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(2), container, session);
-        }
-    }//GEN-LAST:event_panelAuto3MouseClicked
-
-    private void panelAuto4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto4MouseClicked
-        if (!lbl_marca4.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(3), container, session);
-        }
-    }//GEN-LAST:event_panelAuto4MouseClicked
-
-    private void panelAuto5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto5MouseClicked
-        if (!lbl_marca5.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(4), container, session);
-        }
-    }//GEN-LAST:event_panelAuto5MouseClicked
-
-    private void panelAuto6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto6MouseClicked
-        if (!lbl_marca6.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(5), container, session);
-        }
-    }//GEN-LAST:event_panelAuto6MouseClicked
-
-    private void panelAuto7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto7MouseClicked
-        if (!lbl_marca7.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(6), container, session);
-        }
-    }//GEN-LAST:event_panelAuto7MouseClicked
-
-    private void panelAuto8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto8MouseClicked
-        if (!lbl_marca8.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(7), container, session);
-        }
-    }//GEN-LAST:event_panelAuto8MouseClicked
-
-    private void panelAuto9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto9MouseClicked
-        if (!lbl_marca9.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(8), container, session);
-        }
-    }//GEN-LAST:event_panelAuto9MouseClicked
-
-    private void panelAuto10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto10MouseClicked
-        if (!lbl_marca10.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(9), container, session);
-        }
-    }//GEN-LAST:event_panelAuto10MouseClicked
-
-    private void panelAuto11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto11MouseClicked
-        if (!lbl_marca11.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(10), container, session);
-        }
-    }//GEN-LAST:event_panelAuto11MouseClicked
-
-    private void panelAuto12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto12MouseClicked
-        if (!lbl_marca12.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(11), container, session);
-        }
-    }//GEN-LAST:event_panelAuto12MouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_atras;
+    private javax.swing.JButton btn_filtros;
     private javax.swing.JButton btn_siguiente;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JLabel lbl_empty_catalogo;
+    private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel3;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lbl_imagenes1;
     private javax.swing.JLabel lbl_imagenes10;
     private javax.swing.JLabel lbl_imagenes11;
@@ -1168,7 +1214,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     private javax.swing.JPanel panelAuto7;
     private javax.swing.JPanel panelAuto8;
     private javax.swing.JPanel panelAuto9;
-    private javax.swing.JPanel panelCatalogo;
     private javax.swing.JPanel panelContent;
+    private javax.swing.JPanel panelFiltros;
     // End of variables declaration//GEN-END:variables
 }

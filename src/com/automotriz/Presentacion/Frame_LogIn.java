@@ -300,7 +300,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
             }
         });
 
-        lbl_title_frame.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        lbl_title_frame.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         lbl_title_frame.setForeground(new java.awt.Color(255, 255, 255));
         lbl_title_frame.setText("jLabel3");
 
@@ -317,7 +317,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_close, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 46, Short.MAX_VALUE)
+            .addComponent(lbl_close, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_title_frame)

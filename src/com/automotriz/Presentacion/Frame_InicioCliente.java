@@ -84,6 +84,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
         menu_verPerfil.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menu_verPerfil.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/perfil.png"))); // NOI18N
         menu_verPerfil.setText("Ver Perfil");
+        menu_verPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menu_verPerfil.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_verPerfilActionPerformed(evt);
@@ -98,6 +99,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
 
         menu_vender.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menu_vender.setText("Vender");
+        menu_vender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menu_vender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_venderActionPerformed(evt);
@@ -108,6 +110,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
         jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/catalogo.png"))); // NOI18N
         jMenuItem1.setText("Ver Catalogo");
+        jMenuItem1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -117,6 +120,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
 
         menu_feedback.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menu_feedback.setText("Añadir Comentario");
+        menu_feedback.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menu_feedback.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 menu_feedbackActionPerformed(evt);
@@ -157,7 +161,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         wallpaper.stop();
         this.dispose();
-        container.add(new Frame_Catalogo2(parent, container, session));
+        container.add(new Frame_Catalogo(parent, container, session));
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menu_feedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_feedbackActionPerformed

@@ -3,36 +3,19 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-<<<<<<< HEAD
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_InicioCliente.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Loading.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/application.properties</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Datos/Mail.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Hashing.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_LogIn.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Negocio/Peticiones.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/logs/%5B2910201920432%5DLog.txt</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_GetPerfil.java</file>
-            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Loading.java</file>
-            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/application.properties</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_EnviarCorreo.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Validacion.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/logs/%5B2910201920474%5DLog.txt</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Inicio.java</file>
-=======
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/VO/Session.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Report.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/VO/ComentarioVO.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/test/Test/testScroll.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_LogIn.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Validacion.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Negocio/Peticiones.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/ReadProperties.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/application.properties</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Hashing.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Catalogo2.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_InicioCliente.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/VO/AutoVO.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Datos/GestorDB.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Catalogo.java</file>
-            <file>file:/C:/Users/A0786299/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Inicio.java</file>
->>>>>>> 20421969e4358de9806c370acf4789627bbaaef3
         </group>
     </open-files>
 </project-private>

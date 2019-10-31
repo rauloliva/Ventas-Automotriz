@@ -176,6 +176,7 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
         lbl_date = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setUndecorated(true);
 
         lbl_company_name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbl_company_name.setText("jLabel1");
