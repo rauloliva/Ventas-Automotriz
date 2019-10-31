@@ -5,7 +5,6 @@ import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Image;
 import java.util.Calendar;
-import java.util.Enumeration;
 import java.util.GregorianCalendar;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -45,8 +44,11 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
         int second = c.get(Calendar.SECOND);
+        //getting either AM or PM
+        String time = (hour >= 1 && hour < 12) ? "AM" : "PM";
         return day + "/" + month + "/" + year + "  " + hour + ":"
-                + (minute >= 0 && minute <= 9 ? "0" + minute : minute) + ":" + second;
+                + (minute >= 0 && minute <= 9 ? "0" + minute : minute) + ":"
+                + (second >= 0 && second <= 9 ? "0" + second : second) + " " + time;
     }
 
     private void initFrame() {
@@ -174,7 +176,6 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
         lbl_date = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setUndecorated(true);
 
         lbl_company_name.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         lbl_company_name.setText("jLabel1");

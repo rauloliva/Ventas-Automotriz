@@ -3,6 +3,7 @@ package com.automotriz.Presentacion;
 import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.logger.Logger;
+import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.util.Calendar;
@@ -12,6 +13,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 
 public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Runnable {
@@ -20,9 +22,10 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     private JDesktopPane container;
     private Session session;
     private String destinatario;
-    private Thread hilo = new Thread();
-    private File fileAttached;
+    private Thread hiloProgress = new Thread();
+    private File fileAttached = null;
     private Thread hiloSend;
+    private String vendedorName;
 
     public Frame_EnviarCorreo(JFrame parent, JDesktopPane container, Session session, String dest) {
         initComponents();
@@ -35,13 +38,14 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     }
 
     private void initFrame() {
+        panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         txt_mail_origen.setText(session.getMail());
         txt_mail_dest.setText(destinatario);
         attachFile_loader.setValue(0);
         attachFile_loader.setStringPainted(true);
         lbl_send.setIcon(
                 new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.email")))
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.sendEmail")))
                                 .getImage()
                                 .getScaledInstance(53, 41, Image.SCALE_DEFAULT)
                 )
@@ -62,7 +66,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
      * @return the body message
      */
     private String setBodyMsg() {
-        String vendedorName = getNombreVendedor();
+        vendedorName = vendedorName == null ? getNombreVendedor() : vendedorName;
 
         Calendar c = new GregorianCalendar();
         int hour = c.get(Calendar.HOUR_OF_DAY);
@@ -92,16 +96,18 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
 
     @Override
     public void run() {
+        //this part pf the thread is for sending the email
         try {
             if (hiloSend != null) {
                 hiloSend.sleep(500);
                 sendMail();
-                //hiloSend = null;
             }
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
         }
+
+        //this part of the thread is for loading the progress of the JProgressBar
         if (hiloSend == null) {
             int i = 0;
             try {
@@ -109,10 +115,10 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
                     // fill the menu bar 
                     attachFile_loader.setValue(i + 10);
                     // delay the thread 
-                    hilo.sleep(500);
+                    hiloProgress.sleep(500);
                     i += 20;
                 }
-                hilo.stop();
+                hiloProgress.stop();
             } catch (Exception e) {
                 Logger.error(e.getMessage());
                 Logger.error(e.getStackTrace());
@@ -130,8 +136,8 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
 
             //starts the thread the fill the progressBar
             attachFile_loader.setValue(0);
-            hilo = new Thread(this);
-            hilo.start();
+            hiloProgress = new Thread(this);
+            hiloProgress.start();
         }
     }
 
@@ -146,8 +152,22 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
 
         HashMap props = validacion.getMessage();
         if (props != null) {
-
+            JOptionPane.showMessageDialog(this,
+                    props.get("message").toString(),
+                    props.get("title").toString(),
+                    Integer.parseInt(props.get("type").toString()));
+        } else {
+            cleanForm();
         }
+        lbl_send.setBorder(new BevelBorder(BevelBorder.RAISED));
+    }
+
+    private void cleanForm() {
+        txt_asunto.setText(null);
+        txa_mensaje.setText(setBodyMsg());
+        lbl_attachedFileName.setText("Ningun archivo seleccionado");
+        fileAttached = null;
+        attachFile_loader.setValue(0);
     }
 
     @SuppressWarnings("unchecked")
@@ -275,7 +295,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel4.setText("Titulo");
 
-        txt_asunto.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txt_asunto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -318,7 +338,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 349, Short.MAX_VALUE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 351, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -375,7 +395,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     }//GEN-LAST:event_lbl_attachFileMouseClicked
 
     private void lbl_sendMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_sendMouseClicked
-        if (!hilo.isAlive()) {
+        if (!hiloProgress.isAlive()) {
             Frame_Loading.main(null);
             hiloSend = new Thread(this);
             hiloSend.start();
@@ -387,7 +407,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     }//GEN-LAST:event_lbl_attachFileMouseExited
 
     private void lbl_sendMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_sendMouseExited
-        lbl_attachFile.setBorder(new BevelBorder(BevelBorder.RAISED));
+        lbl_send.setBorder(new BevelBorder(BevelBorder.RAISED));
     }//GEN-LAST:event_lbl_sendMouseExited
 
 

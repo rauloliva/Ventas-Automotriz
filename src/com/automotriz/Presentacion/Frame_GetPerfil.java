@@ -3,7 +3,6 @@ package com.automotriz.Presentacion;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Image;
-import java.util.Enumeration;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 

@@ -9,7 +9,7 @@ public class Conexion {
     public static final int CONEXION_SUCCESS = 0;
     public static final int CONEXION_FAILURE = 1;
     private Connection cnn;
-    private int connectionStatus;
+    private final int connectionStatus;
 
     public Conexion() {
         Logger.log("Connecting to Database");

@@ -16,7 +16,7 @@ public class Peticiones {
     /**
      * The file that contains the SQL queries
      */
-    private static final String jsonFile = "OperationsIdentifier.json";
+    private static final String JSON_FILE = "OperationsIdentifier.json";
 
     public static final int LOGIN_REQUEST = 0;
     public static final int UPDATE_REQUEST = 1;
@@ -46,7 +46,6 @@ public class Peticiones {
      * All the constants that are related to the queries names
      */
     enum DATADICS {
-
         VALIDATEUSER("S001_VALIDATEUSER"),
         BLOCKUSER("S001_BLOCKUSER"),
         VALIDATEUSERNAME("S002_VALIDATEUSERNAME"),
@@ -77,21 +76,20 @@ public class Peticiones {
         }
     };
 
-    public static void sendMail(String destinatarios, String asunto, String mensaje) {
-        Mail mail = new Mail(destinatarios, asunto, mensaje);
-        mail.send();
-    }
-
     /**
      * Sends an email to destinatarios with a attached file
      *
      * @param destinatarios
      * @param asunto
      * @param mensaje
+     * @param objFile
      */
-    public static void sendMail(String destinatarios, String asunto, String mensaje, File file) {
+    public static void sendMail(String destinatarios, String asunto, String mensaje, Object objFile) {
         Mail mail = new Mail(destinatarios, asunto, mensaje);
-        mail.attachFiles(file.getName(), file.getAbsolutePath());
+        if (objFile != null) {
+            File file = (File) objFile;
+            mail.attachFiles(file.getName(), file.getAbsolutePath());
+        }
         mail.send();
     }
 
@@ -116,7 +114,7 @@ public class Peticiones {
         JSONParser jsonParser = new JSONParser();
         try {
             Logger.log("Reading OperationsIdentifier file");
-            FileReader reader = new FileReader(jsonFile);
+            FileReader reader = new FileReader(JSON_FILE);
             JSONObject operations = (JSONObject) jsonParser.parse(reader);
             String[] sqlData = null;
             Logger.log("Reading datadic " + datadic);
@@ -178,7 +176,6 @@ public class Peticiones {
                 case "GETVENDEDORNAME":
                     sqlData = GETVENDEDORNAME(operations, request);
                     break;
-
             }
             //returns the query from operationsIdentifier
             return formQuery(sqlData);
@@ -204,7 +201,6 @@ public class Peticiones {
             } else {
                 newImagesPath += currentPath + ";";
             }
-
         }
         request.put("9", newImagesPath);
         return request;

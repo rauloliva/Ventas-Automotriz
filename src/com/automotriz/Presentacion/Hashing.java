@@ -10,20 +10,25 @@ import org.apache.commons.codec.binary.Base64;
 
 public class Hashing {
 
-    private final String UNICODE_FORMAT = "UTF8";
-    private final String myEncryptionScheme = "DESede";
+    private final String UNICODE_FORMAT = ReadProperties.props.getProperty("hash.format");
+    private final String SCHEME = ReadProperties.props.getProperty("hash.scheme");
+    private final String KEY = ReadProperties.props.getProperty("hash.key");
     private Cipher cipher;
-    private final String myEncryptionKey = "ThisIsSpartaThisIsSparta";
     private SecretKey key;
     private String str;
 
+    /**
+     * Initializes the necessary objects to hash the String str
+     *
+     * @param str the string to hash
+     */
     public Hashing(String str) {
         try {
             this.str = str;
-            byte[] arrayBytes = myEncryptionKey.getBytes(UNICODE_FORMAT);
+            byte[] arrayBytes = KEY.getBytes(UNICODE_FORMAT);
             KeySpec ks = new DESedeKeySpec(arrayBytes);
-            SecretKeyFactory skf = SecretKeyFactory.getInstance(myEncryptionScheme);
-            cipher = Cipher.getInstance(myEncryptionScheme);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(SCHEME);
+            cipher = Cipher.getInstance(SCHEME);
             key = skf.generateSecret(ks);
         } catch (Exception e) {
             Logger.error(e.getMessage());

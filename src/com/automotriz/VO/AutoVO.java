@@ -17,7 +17,7 @@ public class AutoVO implements Serializable {
     private String color;
     private String estatus;
     private int id_usuario;
-    private static final int nFields = 5;
+    private static final int TOTAL_FIELDS = 5;
 
     public AutoVO(int id, int modelo, String imagenes, int kilometros, String descripcion, String marca, String cambio, double precio, String color, String estatus, int id_usuario) {
         this.id = id;
@@ -131,7 +131,7 @@ public class AutoVO implements Serializable {
      * @return a list of a String matrix
      */
     public static List<String[][]> usuariosAsMatrix(List<AutoVO> autos) {
-        String[][] usuariosMatrix = new String[autos.size()][nFields];
+        String[][] usuariosMatrix = new String[autos.size()][TOTAL_FIELDS];
 
         for (int i = 0; i < autos.size(); i++) {
             usuariosMatrix[i][0] = autos.get(i).getMarca();

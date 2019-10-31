@@ -6,10 +6,9 @@ import java.util.*;
 
 public class Excel {
 
-    private String url;
+    private final String url;
     private String[] header;
     private List<String[][]> data;
-    private int[] positions;
 
     /**
      * Creates a new object for exporting a CSV file

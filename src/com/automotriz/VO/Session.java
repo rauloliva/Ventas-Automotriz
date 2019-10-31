@@ -85,5 +85,4 @@ public class Session implements Serializable {
     public String toString() {
         return "Session{" + "id=" + id + ", username=" + username + ", password=" + password + ", mail=" + mail + ", telefono=" + telefono + ", perfil=" + perfil + '}';
     }
-
 }

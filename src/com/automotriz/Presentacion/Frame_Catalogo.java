@@ -1031,74 +1031,74 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }//GEN-LAST:event_panelAuto12MouseExited
 
     private void panelAuto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto1MouseClicked
-        if (!lbl_marca1.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(0), container,session);
+        if (!lbl_marca1.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(0), container, session);
         }
     }//GEN-LAST:event_panelAuto1MouseClicked
 
     private void panelAuto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto2MouseClicked
-        if (!lbl_marca2.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(1), container,session);
+        if (!lbl_marca2.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(1), container, session);
         }
     }//GEN-LAST:event_panelAuto2MouseClicked
 
     private void panelAuto3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto3MouseClicked
-        if (!lbl_marca3.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(2), container,session);
+        if (!lbl_marca3.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(2), container, session);
         }
     }//GEN-LAST:event_panelAuto3MouseClicked
 
     private void panelAuto4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto4MouseClicked
-        if (!lbl_marca4.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(3), container,session);
+        if (!lbl_marca4.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(3), container, session);
         }
     }//GEN-LAST:event_panelAuto4MouseClicked
 
     private void panelAuto5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto5MouseClicked
-        if (!lbl_marca5.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(4), container,session);
+        if (!lbl_marca5.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(4), container, session);
         }
     }//GEN-LAST:event_panelAuto5MouseClicked
 
     private void panelAuto6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto6MouseClicked
-        if (!lbl_marca6.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(5), container,session);
+        if (!lbl_marca6.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(5), container, session);
         }
     }//GEN-LAST:event_panelAuto6MouseClicked
 
     private void panelAuto7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto7MouseClicked
-        if (!lbl_marca7.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(6), container,session);
+        if (!lbl_marca7.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(6), container, session);
         }
     }//GEN-LAST:event_panelAuto7MouseClicked
 
     private void panelAuto8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto8MouseClicked
-        if (!lbl_marca8.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(7), container,session);
+        if (!lbl_marca8.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(7), container, session);
         }
     }//GEN-LAST:event_panelAuto8MouseClicked
 
     private void panelAuto9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto9MouseClicked
-        if (!lbl_marca9.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(8), container,session);
+        if (!lbl_marca9.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(8), container, session);
         }
     }//GEN-LAST:event_panelAuto9MouseClicked
 
     private void panelAuto10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto10MouseClicked
-        if (!lbl_marca10.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(9), container,session);
+        if (!lbl_marca10.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(9), container, session);
         }
     }//GEN-LAST:event_panelAuto10MouseClicked
 
     private void panelAuto11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto11MouseClicked
-        if (!lbl_marca11.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(10), container,session);
+        if (!lbl_marca11.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(10), container, session);
         }
     }//GEN-LAST:event_panelAuto11MouseClicked
 
     private void panelAuto12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto12MouseClicked
-        if (!lbl_marca12.getText().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(11), container,session);
+        if (!lbl_marca12.getText().trim().equals("Marca:")) {
+            new Frame_AutoInfo(parent, true, autosVO.get(11), container, session);
         }
     }//GEN-LAST:event_panelAuto12MouseClicked
 

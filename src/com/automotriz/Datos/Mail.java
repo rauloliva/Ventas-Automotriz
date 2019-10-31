@@ -17,8 +17,8 @@ import com.automotriz.logger.Logger;
 
 public class Mail implements Runnable {
 
-    private static final String correoPrincipal = ReadProperties.props.getProperty("main.mail");
-    private static final String contraPrincipal = ReadProperties.props.getProperty("main.mail.pwd");
+    private static final String CORREO_PRINCIPAL = ReadProperties.props.getProperty("main.mail");
+    private static final String PWD_PRINCIPAL = ReadProperties.props.getProperty("main.mail.pwd");
 
     private String[] destinatarios;
     private String asunto;
@@ -79,24 +79,21 @@ public class Mail implements Runnable {
                 multiParte.addBodyPart(texto);
 
                 MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(correoPrincipal));
+                message.setFrom(new InternetAddress(CORREO_PRINCIPAL));
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(address));
                 message.setSubject(asunto);
                 message.setContent(multiParte);
                 Transport t = session.getTransport("smtp");
-                t.connect(correoPrincipal, contraPrincipal);
+                t.connect(CORREO_PRINCIPAL, PWD_PRINCIPAL);
                 t.sendMessage(message, message.getAllRecipients());
                 t.close();
                 Logger.log("Mail to " + address + " has been sent");
-
-                JOptionPane.showMessageDialog(null,
-                        "Correo enviado a " + address + " con exito",
-                        "Correo Enviado",
-                        JOptionPane.INFORMATION_MESSAGE);
+                success(address);
             }
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
+            failure();
         }
     }
 
@@ -108,5 +105,24 @@ public class Mail implements Runnable {
         props.put("mail.smtp.ssl.trust", ReadProperties.props.getProperty("mail.smtp.ssl.trust"));
         props.put("mail.smtp.port", ReadProperties.props.getProperty("mail.smtp.port"));
         return props;
+    }
+
+    /**
+     * Show a message of success with the email that were sent
+     *
+     * @param emailDest
+     */
+    private void success(String emailDest) {
+        JOptionPane.showMessageDialog(null,
+                ReadProperties.props.getProperty("mail.msg.success").replace("*", emailDest),
+                ReadProperties.props.getProperty("mail.msg.success.title"),
+                JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void failure() {
+        JOptionPane.showMessageDialog(null,
+                ReadProperties.props.getProperty("mail.msg.failure"),
+                ReadProperties.props.getProperty("mail.msg.failure.title"),
+                JOptionPane.ERROR_MESSAGE);
     }
 }
