@@ -10,16 +10,9 @@ import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.*;
 import com.automotriz.Datos.Mail;
+import com.automotriz.Constantes.Constants;
 
 public class Peticiones {
-
-    /**
-     * The file that contains the SQL queries
-     */
-    private static final String JSON_FILE = "OperationsIdentifier.json";
-
-    public static final int LOGIN_REQUEST = 0;
-    public static final int UPDATE_REQUEST = 1;
 
     private String query;
     private JSONObject request;
@@ -114,7 +107,7 @@ public class Peticiones {
         JSONParser jsonParser = new JSONParser();
         try {
             Logger.log("Reading OperationsIdentifier file");
-            FileReader reader = new FileReader(JSON_FILE);
+            FileReader reader = new FileReader(Constants.JSON_FILE);
             JSONObject operations = (JSONObject) jsonParser.parse(reader);
             String[] sqlData = null;
             Logger.log("Reading datadic " + datadic);

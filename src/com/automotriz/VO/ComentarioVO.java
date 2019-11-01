@@ -2,10 +2,10 @@ package com.automotriz.VO;
 
 public class ComentarioVO {
 
-    String nombre;
-    String comentario;
-    int valoracion;
-    String fecha;
+    private String nombre;
+    private String comentario;
+    private int valoracion;
+    private String fecha;
 
     public ComentarioVO(String nombre, String comentario, int valoracion, String fecha) {
         this.nombre = nombre;

@@ -3,6 +3,7 @@ package com.automotriz.VO;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import com.automotriz.Constantes.Constants;
 
 public class UsuarioVO implements Serializable {
 
@@ -14,7 +15,7 @@ public class UsuarioVO implements Serializable {
     private String estatus;
     private String telefono;
     private String nombre;
-    private static final int nFields = 5;
+    
 
     public UsuarioVO(int id, String usuario, String contraseña, String correo, String perfil, String estatus, String telefono, String nombre) {
         this.id = id;
@@ -106,7 +107,7 @@ public class UsuarioVO implements Serializable {
      * @return a list of a String matrix
      */
     public static List<String[][]> usuariosAsMatrix(List<UsuarioVO> usuarios) {
-        String[][] usuariosMatrix = new String[usuarios.size()][nFields];
+        String[][] usuariosMatrix = new String[usuarios.size()][Constants.NUM_FIELDS];
 
         for (int i = 0; i < usuarios.size(); i++) {
             usuariosMatrix[i][0] = usuarios.get(i).getUsuario();

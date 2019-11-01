@@ -14,11 +14,9 @@ import javax.mail.internet.MimeMultipart;
 import javax.swing.*;
 import com.automotriz.Presentacion.ReadProperties;
 import com.automotriz.logger.Logger;
+import com.automotriz.Constantes.Constants;
 
 public class Mail implements Runnable {
-
-    private static final String CORREO_PRINCIPAL = ReadProperties.props.getProperty("main.mail");
-    private static final String PWD_PRINCIPAL = ReadProperties.props.getProperty("main.mail.pwd");
 
     private String[] destinatarios;
     private String asunto;
@@ -79,12 +77,12 @@ public class Mail implements Runnable {
                 multiParte.addBodyPart(texto);
 
                 MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(CORREO_PRINCIPAL));
+                message.setFrom(new InternetAddress(Constants.CORREO_PRINCIPAL));
                 message.addRecipient(Message.RecipientType.TO, new InternetAddress(address));
                 message.setSubject(asunto);
                 message.setContent(multiParte);
                 Transport t = session.getTransport("smtp");
-                t.connect(CORREO_PRINCIPAL, PWD_PRINCIPAL);
+                t.connect(Constants.CORREO_PRINCIPAL, Constants.PWD_PRINCIPAL);
                 t.sendMessage(message, message.getAllRecipients());
                 t.close();
                 Logger.log("Mail to " + address + " has been sent");

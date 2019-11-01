@@ -8,24 +8,14 @@ import java.sql.*;
 import com.automotriz.logger.Logger;
 import com.automotriz.logger.LoggerQuery;
 import org.json.simple.JSONObject;
+import com.automotriz.Constantes.Constants;
 
 public class GestorDB {
-
-    public static final int QUERY_SUCCESS = 0;
-    public static final int QUERY_FAILURE = 1;
-
-    public static final int QUERY_GOT_NOTHING = 10;
-    public static final int QUERY_GOT_SOMETHING = 11;
-
-    private static final char SELECT = 'S';
-    private static final char INSERT = 'I';
-    private static final char UPDATE = 'U';
 
     private String query;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private Connection cnn;
-
     private Object objVO;
 
     public GestorDB() {
@@ -60,7 +50,7 @@ public class GestorDB {
         Logger.log("Requesting the database connection");
         Connection con = null;
         Conexion conexion = new Conexion();
-        if (conexion.getConnectionStatus() == Conexion.CONEXION_SUCCESS) {
+        if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
             con = conexion.getConnection();
             Logger.log("Retunning the database connection");
         }
@@ -76,15 +66,15 @@ public class GestorDB {
     public JSONObject sendQuery(JSONObject request) {
         Conexion conexion = new Conexion();
 
-        if (conexion.getConnectionStatus() == Conexion.CONEXION_SUCCESS) {
+        if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
             Logger.log("Connection Success");
             LoggerQuery.logQuery(this.query);
             switch (this.query.charAt(0)) {
-                case GestorDB.SELECT:
+                case Constants.SELECT:
                     return SELECT(conexion);
-                case GestorDB.INSERT:
+                case Constants.INSERT:
                     return INSERT(conexion, request);
-                case GestorDB.UPDATE:
+                case Constants.UPDATE:
                     return UPDATE(conexion, request);
                 default:
                     return new JSONObject();
@@ -104,11 +94,11 @@ public class GestorDB {
     private JSONObject createResponseJSON(Object[] values) {
         JSONObject response = new JSONObject();
         if (values == null || values.length == 0) {
-            response.put("estatus", QUERY_GOT_NOTHING);
+            response.put("estatus", Constants.QUERY_GOT_NOTHING);
             return response;
         }
         response.put("obj", values);
-        response.put("estatus", QUERY_GOT_SOMETHING);
+        response.put("estatus", Constants.QUERY_GOT_SOMETHING);
         return response;
     }
 
@@ -205,7 +195,7 @@ public class GestorDB {
             Logger.log("Applying INSERT query");
             ps = cnn.prepareStatement(query);
             int res = ps.executeUpdate();
-            request.put("response", (res > 0) ? QUERY_SUCCESS : QUERY_FAILURE);
+            request.put("response", (res > 0) ? Constants.QUERY_SUCCESS : Constants.QUERY_FAILURE);
             return request;
         } catch (Exception e) {
             Logger.error(e.getMessage());
@@ -235,7 +225,7 @@ public class GestorDB {
             Logger.log("Applying UPDATE query");
             ps = cnn.prepareStatement(query);
             int res = ps.executeUpdate();
-            request.put("response", (res > 0) ? QUERY_SUCCESS : QUERY_FAILURE);
+            request.put("response", (res > 0) ? Constants.QUERY_SUCCESS : Constants.QUERY_FAILURE);
             return request;
 
         } catch (Exception e) {

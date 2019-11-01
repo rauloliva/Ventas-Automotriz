@@ -3,11 +3,10 @@ package com.automotriz.Datos;
 import java.sql.*;
 import com.automotriz.Presentacion.ReadProperties;
 import com.automotriz.logger.Logger;
+import com.automotriz.Constantes.Constants;
 
 public class Conexion {
 
-    public static final int CONEXION_SUCCESS = 0;
-    public static final int CONEXION_FAILURE = 1;
     private Connection cnn;
     private final int connectionStatus;
 
@@ -26,7 +25,7 @@ public class Conexion {
                     + "?useTimezone=true&serverTimezone=UTC",
                     credentials[3],
                     credentials[4]);
-            return CONEXION_SUCCESS;
+            return Constants.CONEXION_SUCCESS;
         } catch (Exception e) {
             Logger.error(e.toString());
             Logger.error(e.getStackTrace());
@@ -37,7 +36,7 @@ public class Conexion {
             } catch (Exception ex) {
                 Logger.error(ex.toString());
                 Logger.error(ex.getStackTrace());
-                return CONEXION_FAILURE;
+                return Constants.CONEXION_FAILURE;
             }
         }
     }
@@ -51,7 +50,7 @@ public class Conexion {
                 + "?useTimezone=true&serverTimezone=UTC",
                 credentials[3],
                 credentials[4]);
-        return CONEXION_SUCCESS;
+        return Constants.CONEXION_SUCCESS;
     }
 
     private static String[] readCredentials() {
