@@ -79,6 +79,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
         jMenuBar1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         menuVerPerfil.setText("Perfil");
+        menuVerPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menuVerPerfil.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
         menu_verPerfil.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -95,6 +96,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
         jMenuBar1.add(menuVerPerfil);
 
         jMenu1.setText("Opciones");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 20)); // NOI18N
 
         menu_vender.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N

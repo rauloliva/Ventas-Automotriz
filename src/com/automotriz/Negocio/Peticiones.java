@@ -325,7 +325,8 @@ public class Peticiones {
             + "contrasena='" + request.get("2") + "', "
             + "correo='" + request.get("3") + "', "
             + "perfil='" + request.get("4") + "', "
-            + "telefono='" + request.get("5") + "'",
+            + "telefono='" + request.get("5") + "',"
+            + "nombre='" + request.get("6") + "'",
             (String) operationObject.get("where"),
             (String) operationObject.get("field1"),
             "'" + request.get("1").toString() + "'"

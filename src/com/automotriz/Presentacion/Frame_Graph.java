@@ -51,12 +51,13 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 542, Short.MAX_VALUE)
+            .addGap(0, 561, Short.MAX_VALUE)
         );
 
         jMenuBar1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
 
         menuVerPerfil.setText("Perfil");
+        menuVerPerfil.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menuVerPerfil.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
         jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
@@ -73,6 +74,7 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         jMenuBar1.add(menuVerPerfil);
 
         jMenu1.setText("Opciones");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
         jMenuItem4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N

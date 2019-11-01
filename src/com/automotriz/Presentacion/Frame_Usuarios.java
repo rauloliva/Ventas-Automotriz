@@ -336,16 +336,18 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panel_filtros, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 331, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(24, Short.MAX_VALUE))
+                .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 349, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(27, Short.MAX_VALUE))
         );
 
         jMenu1.setText("Perfil");
+        jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
         jMenuItem1.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/perfil.png"))); // NOI18N
         jMenuItem1.setText("Ver mi Perfil");
+        jMenuItem1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem1ActionPerformed(evt);
@@ -356,11 +358,13 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
         jMenuBar1.add(jMenu1);
 
         jMenu2.setText("Opciones");
+        jMenu2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu2.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
         jMenuItem2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/reporte.png"))); // NOI18N
         jMenuItem2.setText("Generar Reporte");
+        jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -371,6 +375,7 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/download.png"))); // NOI18N
         jMenuItem3.setText("Exportar CSV");
+        jMenuItem3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
