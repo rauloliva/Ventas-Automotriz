@@ -5,16 +5,13 @@ import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.util.HashMap;
 import javax.swing.*;
+import com.automotriz.Constantes.Constants;
 
 public class Frame_AddComentario extends javax.swing.JInternalFrame {
 
     private JFrame parent;
     private JDesktopPane container;
     private Session session;
-    private final Object startFilled = new ImageIcon(this.getClass()
-            .getResource(ReadProperties.props.getProperty("icon.filledStart")));
-    private final Object startEmpty = new ImageIcon(this.getClass()
-            .getResource(ReadProperties.props.getProperty("icon.emptyStart")));
     private int valoracion = 0;
 
     public Frame_AddComentario(JFrame parent, JDesktopPane container, Session session) {
@@ -35,11 +32,11 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame {
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelStars.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         //initicializong starts 
-        lbl_start1.setIcon((Icon) startEmpty);
-        lbl_start2.setIcon((Icon) startEmpty);
-        lbl_start3.setIcon((Icon) startEmpty);
-        lbl_start4.setIcon((Icon) startEmpty);
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start1.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start2.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start3.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start4.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
     }
 
     private void submit() {
@@ -71,11 +68,11 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame {
         txt_nombre.setEnabled(true);
         chb_anonimo.setSelected(false);
         txa_comentarios.setText(null);
-        lbl_start1.setIcon((Icon) startEmpty);
-        lbl_start2.setIcon((Icon) startEmpty);
-        lbl_start3.setIcon((Icon) startEmpty);
-        lbl_start4.setIcon((Icon) startEmpty);
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start1.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start2.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start3.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start4.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
     }
 
     @SuppressWarnings("unchecked")
@@ -339,60 +336,60 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame {
     }//GEN-LAST:event_btn_submitActionPerformed
 
     private void lbl_start1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_start1MouseClicked
-        lbl_start1.setIcon((Icon) startFilled);
+        lbl_start1.setIcon((Icon) Constants.STAR_FILLED);
         //empty the last 4 starts
-        lbl_start2.setIcon((Icon) startEmpty);
-        lbl_start3.setIcon((Icon) startEmpty);
-        lbl_start4.setIcon((Icon) startEmpty);
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start2.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start3.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start4.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
         valoracion = 1;
     }//GEN-LAST:event_lbl_start1MouseClicked
 
     private void lbl_start2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_start2MouseClicked
-        lbl_start1.setIcon((Icon) startFilled);
-        lbl_start2.setIcon((Icon) startFilled);
+        lbl_start1.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start2.setIcon((Icon) Constants.STAR_FILLED);
         //empty the last 3 starts
-        lbl_start3.setIcon((Icon) startEmpty);
-        lbl_start4.setIcon((Icon) startEmpty);
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start3.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start4.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
         valoracion = 2;
     }//GEN-LAST:event_lbl_start2MouseClicked
 
     private void lbl_start3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_start3MouseClicked
-        lbl_start1.setIcon((Icon) startFilled);
-        lbl_start2.setIcon((Icon) startFilled);
-        lbl_start3.setIcon((Icon) startFilled);
+        lbl_start1.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start2.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start3.setIcon((Icon) Constants.STAR_FILLED);
         //empty the last 2 starts
-        lbl_start4.setIcon((Icon) startEmpty);
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start4.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
         valoracion = 3;
     }//GEN-LAST:event_lbl_start3MouseClicked
 
     private void lbl_start4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_start4MouseClicked
-        lbl_start1.setIcon((Icon) startFilled);
-        lbl_start2.setIcon((Icon) startFilled);
-        lbl_start3.setIcon((Icon) startFilled);
-        lbl_start4.setIcon((Icon) startFilled);
+        lbl_start1.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start2.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start3.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start4.setIcon((Icon) Constants.STAR_FILLED);
         //empty the last start
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
         valoracion = 4;
     }//GEN-LAST:event_lbl_start4MouseClicked
 
     private void lbl_start5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_start5MouseClicked
-        lbl_start1.setIcon((Icon) startFilled);
-        lbl_start2.setIcon((Icon) startFilled);
-        lbl_start3.setIcon((Icon) startFilled);
-        lbl_start4.setIcon((Icon) startFilled);
-        lbl_start5.setIcon((Icon) startFilled);
+        lbl_start1.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start2.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start3.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start4.setIcon((Icon) Constants.STAR_FILLED);
+        lbl_start5.setIcon((Icon) Constants.STAR_FILLED);
         valoracion = 5;
     }//GEN-LAST:event_lbl_start5MouseClicked
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        lbl_start1.setIcon((Icon) startEmpty);
-        lbl_start2.setIcon((Icon) startEmpty);
-        lbl_start3.setIcon((Icon) startEmpty);
-        lbl_start4.setIcon((Icon) startEmpty);
-        lbl_start5.setIcon((Icon) startEmpty);
+        lbl_start1.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start2.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start3.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start4.setIcon((Icon) Constants.STAR_EMPTY);
+        lbl_start5.setIcon((Icon) Constants.STAR_EMPTY);
         valoracion = 0;
     }//GEN-LAST:event_jButton1ActionPerformed
 

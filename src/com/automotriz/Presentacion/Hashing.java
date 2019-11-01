@@ -7,12 +7,10 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.DESedeKeySpec;
 import org.apache.commons.codec.binary.Base64;
+import com.automotriz.Constantes.Constants;
 
 public class Hashing {
 
-    private final String UNICODE_FORMAT = ReadProperties.props.getProperty("hash.format");
-    private final String SCHEME = ReadProperties.props.getProperty("hash.scheme");
-    private final String KEY = ReadProperties.props.getProperty("hash.key");
     private Cipher cipher;
     private SecretKey key;
     private String str;
@@ -25,10 +23,10 @@ public class Hashing {
     public Hashing(String str) {
         try {
             this.str = str;
-            byte[] arrayBytes = KEY.getBytes(UNICODE_FORMAT);
+            byte[] arrayBytes = Constants.KEY.getBytes(Constants.UNICODE_FORMAT);
             KeySpec ks = new DESedeKeySpec(arrayBytes);
-            SecretKeyFactory skf = SecretKeyFactory.getInstance(SCHEME);
-            cipher = Cipher.getInstance(SCHEME);
+            SecretKeyFactory skf = SecretKeyFactory.getInstance(Constants.SCHEME);
+            cipher = Cipher.getInstance(Constants.SCHEME);
             key = skf.generateSecret(ks);
         } catch (Exception e) {
             Logger.error(e.getMessage());
@@ -42,7 +40,7 @@ public class Hashing {
             try {
                 Logger.log("Encrypting String...");
                 cipher.init(Cipher.ENCRYPT_MODE, key);
-                byte[] plainText = str.getBytes(UNICODE_FORMAT);
+                byte[] plainText = str.getBytes(Constants.UNICODE_FORMAT);
                 byte[] encryptedText = cipher.doFinal(plainText);
                 encryptedString = new String(Base64.encodeBase64(encryptedText));
             } catch (Exception e) {

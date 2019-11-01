@@ -4,17 +4,16 @@ import javax.swing.*;
 import com.automotriz.VO.*;
 import java.awt.Color;
 import java.util.*;
+import com.automotriz.Constantes.Constants;
 
 public class DataModel {
 
-    private static final int COMMENTS_PER_PAGE = 4;
-    private static final int AUTOS_PER_PAGE = 12;
     private static boolean firstBack = false;
+    private static int indice = 0;
     private Object[][] components;
     private JButton back;
     private JButton next;
     private Object data;
-    private static int indice = 0;
     private List<ComentarioVO> comentariosVO;
     private List<AutoVO> autosVO;
 
@@ -63,7 +62,7 @@ public class DataModel {
             this.back.setEnabled(indice != 0);
 
             for (int row = 0; row < comentariosVO.size(); row++) {
-                if ((row + 1) <= COMMENTS_PER_PAGE && indice < comentariosVO.size()) {
+                if ((row + 1) <= Constants.COMMENTS_PER_PAGE && indice < comentariosVO.size()) {
                     JLabel lbl_nombre = (JLabel) components[row][0];
                     JLabel lbl_fecha = (JLabel) components[row][1];
                     JLabel lbl_valoracion = (JLabel) components[row][2];
@@ -96,7 +95,7 @@ public class DataModel {
             this.back.setEnabled(indice != 0);
 
             for (int row = 0; row < autosVO.size(); row++) {
-                if ((row + 1) <= AUTOS_PER_PAGE && indice < autosVO.size()) {
+                if ((row + 1) <= Constants.AUTOS_PER_PAGE && indice < autosVO.size()) {
                     JLabel lbl_marca = (JLabel) components[row][0];
                     JLabel lbl_modelo = (JLabel) components[row][1];
                     JLabel lbl_precio = (JLabel) components[row][2];
@@ -124,7 +123,7 @@ public class DataModel {
             //
             res = !firstBack ? 2 : 1;
             for (indice = row = indice - res; row >= 0; row--, i++) {
-                if (i < COMMENTS_PER_PAGE) {
+                if (i < Constants.COMMENTS_PER_PAGE) {
                     JLabel lbl_nombre = (JLabel) components[i][0];
                     JLabel lbl_fecha = (JLabel) components[i][1];
                     JLabel lbl_valoracion = (JLabel) components[i][2];
@@ -146,7 +145,7 @@ public class DataModel {
             otherwise the button will be enabled
              */
             this.back.setEnabled((indice < 0 ? 0 : indice) != 0);
-            indice = COMMENTS_PER_PAGE;
+            indice = Constants.COMMENTS_PER_PAGE;
             this.next.setEnabled(true);
         }
     }
@@ -159,7 +158,7 @@ public class DataModel {
             //
             res = !firstBack ? 2 : 1;
             for (indice = row = indice - res; row >= 0; row--, i++) {
-                if (i < AUTOS_PER_PAGE) {
+                if (i < Constants.AUTOS_PER_PAGE) {
                     JLabel lbl_marca = (JLabel) components[row][0];
                     JLabel lbl_modelo = (JLabel) components[row][1];
                     JLabel lbl_precio = (JLabel) components[row][2];
@@ -178,7 +177,7 @@ public class DataModel {
             otherwise the button will be enabled
              */
             this.back.setEnabled((indice < 0 ? 0 : indice) != 0);
-            indice = AUTOS_PER_PAGE;
+            indice = Constants.AUTOS_PER_PAGE;
             this.next.setEnabled(true);
         }
     }

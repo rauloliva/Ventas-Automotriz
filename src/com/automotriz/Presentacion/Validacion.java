@@ -3,7 +3,6 @@ package com.automotriz.Presentacion;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import com.automotriz.Negocio.Peticiones;
-import com.automotriz.Datos.GestorDB;
 import com.automotriz.VO.AutoVO;
 import com.automotriz.logger.Logger;
 import org.json.simple.JSONObject;
@@ -16,6 +15,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import com.automotriz.Constantes.Constants;
 
 public class Validacion {
 
@@ -136,7 +136,7 @@ public class Validacion {
 
         if (!response.isEmpty()) {
 
-            if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_NOTHING) {
+            if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
                 writeMessages(new Object[]{
                     "login.msg.error.auth",
                     "login.msg.error.auth.title",
@@ -161,7 +161,7 @@ public class Validacion {
                     JSONObject result = peticion.getResult();
 
                     if (!result.isEmpty()) {
-                        if (((int) result.get("response")) == GestorDB.QUERY_SUCCESS) {
+                        if (((int) result.get("response")) == Constants.QUERY_SUCCESS) {
                             writeMessages(new Object[]{
                                 "login.msg.bloquear",
                                 "login.msg.bloquear.title",
@@ -225,7 +225,7 @@ public class Validacion {
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
             if (!response.isEmpty()) {
-                if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+                if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
                     Logger.log("Username already exists");
                     writeMessages(new Object[]{
                         "signin.msg.usernameExists",
@@ -267,7 +267,7 @@ public class Validacion {
             Logger.log("Creating new Request");
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
-            if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_NOTHING) {
+            if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
                 writeMessages(new Object[]{
                     "signin.msg.error.permissionDenied",
                     "signin.msg.error.permissionDenied.title",
@@ -289,7 +289,7 @@ public class Validacion {
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
             if (!response.isEmpty()) {
-                if (((int) response.get("response")) == GestorDB.QUERY_SUCCESS) {
+                if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                     writeMessages(new Object[]{
                         datadic.equals("CREATENEWUSER")
                         ? "signin.msg.userCreated" : "perfil.msg.userUpdated",
@@ -340,7 +340,7 @@ public class Validacion {
         Peticiones peticion = new Peticiones(requestJSON);
         JSONObject response = peticion.getResult();
         if (!response.isEmpty()) {
-            if (((int) response.get("response")) == GestorDB.QUERY_SUCCESS) {
+            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
                     "perfil.msg.userDeleted",
                     "perfil.msg.userDeleted.title",
@@ -367,7 +367,7 @@ public class Validacion {
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
         JSONObject response = peticion.getResult();
-        if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             Logger.log("Creating rows for the table");
             usuariosVO = new ArrayList<>();
 
@@ -524,7 +524,7 @@ public class Validacion {
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
 
-            if (((int) response.get("response")) == GestorDB.QUERY_SUCCESS) {
+            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
                     "vender.msg.autoUpdated",
                     "vender.msg.autoUpdated.title",
@@ -542,7 +542,7 @@ public class Validacion {
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
 
-            if (((int) response.get("response")) == GestorDB.QUERY_SUCCESS) {
+            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
                     "vender.msg.autoInserted",
                     "vender.msg.autoInserted.title",
@@ -566,7 +566,7 @@ public class Validacion {
         peticion.setObjectVO(objVo);
         JSONObject response = peticion.getResult();
 
-        if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
 
             autosVO = new ArrayList<>();
             Object[] objArray = (Object[]) response.get("obj");
@@ -639,7 +639,7 @@ public class Validacion {
         createRequestJSON("SUBMITCOMENTARIO", null);
         Peticiones peticion = new Peticiones(requestJSON);
         JSONObject response = peticion.getResult();
-        if (((int) response.get("response")) == GestorDB.QUERY_SUCCESS) {
+        if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
             writeMessages(new Object[]{
                 "clientView.msg.submit.successfully",
                 "clientView.msg.submit.successfully.title",
@@ -654,7 +654,7 @@ public class Validacion {
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
         JSONObject response = peticion.getResult();
-        if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             Object[] obj = (Object[]) response.get("obj");
             comentariosVO = new ArrayList<>();
             for (Object vo : obj) {
@@ -674,7 +674,7 @@ public class Validacion {
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
         JSONObject response = peticion.getResult();
-        if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             Object[] obj = (Object[]) response.get("obj");
             autosVO = new ArrayList<>();
             for (Object vo : obj) {
@@ -689,7 +689,7 @@ public class Validacion {
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
         JSONObject response = peticion.getResult();
-        if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             usuariosVO = new ArrayList<>();
             usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
         }
@@ -702,7 +702,7 @@ public class Validacion {
             Peticiones peticion = new Peticiones(requestJSON);
             peticion.setObjectVO(objVo);
             JSONObject response = peticion.getResult();
-            if (((int) response.get("estatus")) == GestorDB.QUERY_GOT_SOMETHING) {
+            if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
                 usuariosVO = new ArrayList<>();
                 usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
             }

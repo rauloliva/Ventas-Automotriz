@@ -63,7 +63,6 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }, new AutoVO()).getCatalogo();
         autosVO = validacion.getAutos();
         if (autosVO != null) {
-            //lbl_empty_catalogo.setText(null);
             DataModel model = new DataModel(new Object[][]{
                 {lbl_marca1, lbl_modelo1, lbl_precio1, lbl_imagenes1},
                 {lbl_marca2, lbl_modelo2, lbl_precio2, lbl_imagenes2},
