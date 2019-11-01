@@ -1,1 +1,1 @@
- - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'admin' AND contrasena= '07WfylTarjY='
+ - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'cliente1' AND contrasena= 'Xuq6t7Fr/Dg='
