@@ -13,11 +13,10 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import com.automotriz.Constantes.Constants;
 
-public class Validacion {
+public class Validacion implements Runnable {
 
     public static final int ATTEMPTS_ALLOWED = 3;
     public static int loginTries = 0;
@@ -30,6 +29,7 @@ public class Validacion {
     private ArrayList<UsuarioVO> usuariosVO;
     private ArrayList<AutoVO> autosVO;
     private ArrayList<ComentarioVO> comentariosVO;
+    public static Thread hiloVaidacion;
 
     /**
      * initializes a new Validacion object to start validating some data and
@@ -243,11 +243,10 @@ public class Validacion {
     }
 
     public Validacion validateForm(String form, String datadic) {
-        boolean allowAdmin = false;
+        boolean allow = false;
 
         Logger.log("validating " + form + " form ");
-        if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || data[3].equals("--Selecccionar--") || isEmpty(data[4])
-                || isEmpty(data[5])) {
+        if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || isEmpty(data[3]) || isEmpty(data[4]) || isEmpty(data[5])) {
             writeMessages(new Object[]{
                 "signin.msg.error.emptyFields",
                 "signin.msg.error.emptyFields.title",
@@ -255,33 +254,18 @@ public class Validacion {
             });
             return this;
         }
-
-        //for this action is a requirement fot another admin
-        //to allow this operation
-        if (data[3].equals("Administrador")) {
-            List adminRights = getAdminCredentials();
-
-            createRequestJSON("VALIDATEADMIN",
-                    new String[]{"id"},
-                    new Object[]{/*Username*/adminRights.get(0),/*Password*/ adminRights.get(1)});
-            Logger.log("Creating new Request");
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
-            if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
-                writeMessages(new Object[]{
-                    "signin.msg.error.permissionDenied",
-                    "signin.msg.error.permissionDenied.title",
-                    JOptionPane.ERROR_MESSAGE
-                });
-            } else {
-                allowAdmin = true;
-            }
+        if (data[3].toString().equals("Administrador") && datadic.equals("CREATENEWUSER")) {
+            Frame_Credentials credentials = new Frame_Credentials(null, true);
+            hiloVaidacion = new Thread(this);
+            /*stop this thread until the admin give their adminRights*/
+            hiloVaidacion.stop();
+            allow = credentials.isAllowed();
         } else {
-            allowAdmin = true;
+            allow = true;
         }
 
-        if (allowAdmin) {
-            //the usename and password's admin  correct 
+        //admin rigths
+        if (allow) {
             Logger.log("Creating new Request");
             messageProps = new HashMap();
             createRequestJSON(datadic, null);
@@ -305,31 +289,37 @@ public class Validacion {
         return this;
     }
 
-    /**
-     * Asks to the user to give admin credentials in order to proceed with the
-     * operation
-     *
-     * @return A list with the admin credentials
-     */
-    private List getAdminCredentials() {
-        Logger.log("New user 'Admin' (Waiting for an admin to give permission)");
+    @Override
+    public void run() {
+        System.out.println("isResume");
+    }
 
-        String userAdmin = JOptionPane.showInputDialog(null,
-                "Se requiere los permisos de un administrador\npara dar de alta este usuario",
-                "USUARIO");
-        userAdmin = userAdmin == null ? "" : userAdmin;
+    public Validacion validateAdminRights(String username, String password) {
+        //for this action is a requirement fot another admin
+        //to allow this operation
+        if (isEmpty(username) || isEmpty(password)) {
+            writeMessages(new Object[]{
+                "signin.msg.error.emptyFields",
+                "signin.msg.error.emptyFields.title",
+                JOptionPane.WARNING_MESSAGE
+            });
+            return this;
+        }
 
-        String pwdAdmin = JOptionPane.showInputDialog(null,
-                "Contraseña del usuario: " + userAdmin,
-                "CONTRASEÑA");
-        pwdAdmin = pwdAdmin == null ? "" : pwdAdmin;
-        //ecrypts the password
-        pwdAdmin = new Hashing(pwdAdmin).encrypt();
-
-        List adminRights = new ArrayList();
-        adminRights.add(userAdmin);
-        adminRights.add(pwdAdmin);
-        return adminRights;
+        createRequestJSON("VALIDATEADMIN",
+                new String[]{"id"},
+                new Object[]{username, password});
+        Logger.log("Creating new Request");
+        Peticiones peticion = new Peticiones(requestJSON);
+        JSONObject response = peticion.getResult();
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
+            writeMessages(new Object[]{
+                "signin.msg.error.permissionDenied",
+                "signin.msg.error.permissionDenied.title",
+                JOptionPane.ERROR_MESSAGE
+            });
+        }
+        return this;
     }
 
     public Validacion removeUser() {

@@ -20,7 +20,7 @@ public class Frame_SignIn extends javax.swing.JDialog {
 
     private void initFrame() {
         this.setLocationRelativeTo(this);
-        String name = ReadProperties.props.getProperty("name.SignIn");
+        String name = ReadProperties.props.getProperty("name.SignIn") + Frame_LogIn.perfil;
         this.setName(name);
         this.setTitle(name);
         Logger.log("Starting " + this.getName() + " frame...");
@@ -33,16 +33,6 @@ public class Frame_SignIn extends javax.swing.JDialog {
 
         value = ReadProperties.props.getProperty("signin.boton.crear");
         btn_crear.setText(value);
-
-        loadPerfiles();
-    }
-
-    private void loadPerfiles() {
-        cmb_perfil.addItem("--Selecccionar--");
-        String[] perfiles = ReadProperties.props.getProperty("app.perfiles").split(";");
-        for (String perfil : perfiles) {
-            cmb_perfil.addItem(perfil);
-        }
     }
 
     private void initGetPerfil() {
@@ -58,7 +48,7 @@ public class Frame_SignIn extends javax.swing.JDialog {
             /*Sending the encrypted password */
             new Hashing(txt_password.getText().trim()).encrypt(),
             txt_correo.getText().trim(),
-            cmb_perfil.getSelectedItem().toString(),
+            Frame_LogIn.perfil,
             txt_telefono.getText(),
             txt_name.getText()
         }).validateForm("the SignIn", "CREATENEWUSER");
@@ -77,7 +67,6 @@ public class Frame_SignIn extends javax.swing.JDialog {
                 txt_username.setText(null);
                 txt_password.setText(null);
                 txt_correo.setText(null);
-                cmb_perfil.setSelectedItem("--Selecccionar--");
                 txt_telefono.setText(null);
                 //message to specify to go back to log in
                 JOptionPane.showMessageDialog(this,
@@ -144,8 +133,6 @@ public class Frame_SignIn extends javax.swing.JDialog {
         txt_password = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         txt_correo = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        cmb_perfil = new javax.swing.JComboBox();
         jLabel5 = new javax.swing.JLabel();
         txt_telefono = new javax.swing.JTextField();
         btn_crear = new javax.swing.JButton();
@@ -207,11 +194,6 @@ public class Frame_SignIn extends javax.swing.JDialog {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
-        jLabel4.setText("Perfil");
-
-        cmb_perfil.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
         jLabel5.setText("Telefono");
 
@@ -253,9 +235,6 @@ public class Frame_SignIn extends javax.swing.JDialog {
                 .addContainerGap()
                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelFormLayout.createSequentialGroup()
-                        .addComponent(jLabel4)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(panelFormLayout.createSequentialGroup()
                         .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(panelFormLayout.createSequentialGroup()
                                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -263,7 +242,6 @@ public class Frame_SignIn extends javax.swing.JDialog {
                                     .addComponent(jLabel5))
                                 .addGap(86, 86, 86)
                                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(cmb_perfil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(txt_correo)
                                     .addComponent(txt_telefono)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFormLayout.createSequentialGroup()
@@ -276,12 +254,12 @@ public class Frame_SignIn extends javax.swing.JDialog {
                                     .addComponent(txt_password, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
                                     .addComponent(txt_username)
                                     .addComponent(txt_name)))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelFormLayout.createSequentialGroup()
-                                .addGap(18, 18, 18)
+                            .addGroup(panelFormLayout.createSequentialGroup()
+                                .addGap(13, 13, 13)
                                 .addComponent(btn_login, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(btn_crear, javax.swing.GroupLayout.PREFERRED_SIZE, 172, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(9, 9, 9)))
+                                .addGap(10, 10, 10)))
                         .addGap(34, 34, 34))
                     .addGroup(panelFormLayout.createSequentialGroup()
                         .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -309,19 +287,15 @@ public class Frame_SignIn extends javax.swing.JDialog {
                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_correo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(26, 26, 26)
-                .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_perfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(31, 31, 31)
+                .addGap(32, 32, 32)
                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(42, 42, 42)
+                .addGap(35, 35, 35)
                 .addGroup(panelFormLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btn_crear)
                     .addComponent(btn_login))
-                .addContainerGap(40, Short.MAX_VALUE))
+                .addContainerGap(25, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelTitleLayout = new javax.swing.GroupLayout(panelTitle);
@@ -344,7 +318,7 @@ public class Frame_SignIn extends javax.swing.JDialog {
                 .addComponent(lbl_title)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(panelForm, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -355,9 +329,7 @@ public class Frame_SignIn extends javax.swing.JDialog {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panelTitle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
@@ -414,11 +386,9 @@ public class Frame_SignIn extends javax.swing.JDialog {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_crear;
     private javax.swing.JButton btn_login;
-    private javax.swing.JComboBox cmb_perfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel lbl_title;
