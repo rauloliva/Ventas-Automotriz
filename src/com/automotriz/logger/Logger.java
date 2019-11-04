@@ -15,11 +15,10 @@ public class Logger {
      * starts reading the application.properties file
      */
     public static void start() {
-        ReadProperties.loadApplicationProps();
         debugMode = Boolean.parseBoolean(ReadProperties.props.getProperty("mode.debug"));
         new File(dirName).mkdir();
         logFile = dirName + "/" + getDateFileName() + "Log.txt";
-
+        System.out.println("Debug Mode " + (debugMode ? "Activated" : "Disabled"));
     }
 
     /**

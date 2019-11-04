@@ -1,6 +1,5 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -8,22 +7,16 @@ import java.awt.Font;
 import java.awt.Image;
 import java.util.HashMap;
 import javax.swing.*;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_Perfil extends javax.swing.JInternalFrame {
-    
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
-    
-    public Frame_Perfil(JFrame parent, JDesktopPane container, Session session) {
+
+    public Frame_Perfil() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         setVisible(true);
         initFrame();
     }
-    
+
     private void editarCampos(boolean flag) {
         txt_username.setEditable(flag);
         txt_name.setEditable(flag);
@@ -33,7 +26,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         txt_telefono.setEditable(flag);
         btn_saveChanges.setEnabled(flag);
     }
-    
+
     private void initFrame() {
         String name = ReadProperties.props.getProperty("name.Perfil");
         this.setName(name);
@@ -42,10 +35,10 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         this.panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         //disable all the fields
         editarCampos(false);
-        
+
         loadPerfiles();
         loadSession();
-        if (session.getPerfil().equals("Administrador")) {
+        if (global.getSession().getPerfil().equals("Administrador")) {
             //creating a new Menu item object 
             JMenuItem usuariosOption = new JMenuItem();
             usuariosOption.setText("Usuarios");
@@ -60,7 +53,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
             usuariosOption.setVisible(true);
             menu_options.add(usuariosOption);
         }
-        
+
         btn_saveChanges.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.guardar")))
@@ -69,30 +62,30 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                 )
         );
     }
-    
+
     private void loadPerfiles() {
         String[] perfiles = ReadProperties.props.getProperty("app.perfiles").split(";");
         for (String perfil : perfiles) {
             cmb_perfil.addItem(perfil);
         }
     }
-    
+
     private void loadSession() {
-        txt_username.setText(session.getUsername());
-        txt_name.setText(session.getNombre());
-        txt_password.setText(new Hashing(session.getPassword()).decrypt());
-        txt_correo.setText(session.getMail());
-        cmb_perfil.setSelectedItem(session.getPerfil().toString());
-        txt_telefono.setText(session.getTelefono());
+        txt_username.setText(global.getSession().getUsername());
+        txt_name.setText(global.getSession().getNombre());
+        txt_password.setText(new Hashing(global.getSession().getPassword()).decrypt());
+        txt_correo.setText(global.getSession().getMail());
+        cmb_perfil.setSelectedItem(global.getSession().getPerfil().toString());
+        txt_telefono.setText(global.getSession().getTelefono());
     }
-    
+
     private void validateInputLength(JTextField field, java.awt.event.KeyEvent evt, String props) {
         Validacion validacion = new Validacion(new Object[]{
             field.getText().trim(),
             ReadProperties.props.getProperty(props),
             evt
         }).validateInputLength();
-        
+
         HashMap propMensaje = validacion.getMessage();
         if (propMensaje != null) {
             JOptionPane.showMessageDialog(this,
@@ -101,7 +94,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                     Integer.parseInt(propMensaje.get("type").toString()));
         }
     }
-    
+
     private void updateUser() {
         Validacion validacion = new Validacion(new Object[]{
             txt_username.getText().trim(),
@@ -111,9 +104,9 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
             txt_telefono.getText(),
             txt_name.getText().trim()
         }).validateForm("the update user", "UPDATEUSER");
-        
+
         HashMap propMensaje = validacion.getMessage();
-        
+
         if (propMensaje != null) { //if a message is ready to show up
             int typeOfMsg;
             JOptionPane.showMessageDialog(this,
@@ -126,7 +119,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                         ReadProperties.props.getProperty("perfil.msg.sessionOver"),
                         ReadProperties.props.getProperty("perfil.msg.sessionOver.title"),
                         JOptionPane.INFORMATION_MESSAGE);
-                parent.dispose();
+                global.getParent().dispose();
                 Frame_LogIn.main(null);
             }
         } else {
@@ -136,7 +129,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-    
+
     private void deleteAccount() {
         int option = JOptionPane.showOptionDialog(this,
                 ReadProperties.props.getProperty("perfil.msg.question.userDelete"),
@@ -144,12 +137,12 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE, null,
                 new Object[]{"SI", "NO"}, "NO");
-        
+
         if (option == JOptionPane.YES_OPTION) {
             Validacion validacion = new Validacion(new Object[]{
-                session.getUsername()
+                global.getSession().getUsername()
             }).removeUser();
-            
+
             HashMap message = validacion.getMessage();
             if (message != null) {
                 JOptionPane.showMessageDialog(this,
@@ -158,7 +151,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                         Integer.parseInt(message.get("type").toString()));
 
                 //Close the session
-                parent.dispose();
+                global.getParent().dispose();
                 Frame_LogIn.main(null);
             } else {
                 JOptionPane.showMessageDialog(this,
@@ -168,21 +161,21 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
             }
         }
     }
-    
+
     private void goToInicio() {
         this.dispose();
-        if (session.getPerfil().equals("Administrador")) {
-            container.add(new Frame_Graph(parent, container, session));
+        if (global.getSession().getPerfil().equals("Administrador")) {
+            global.getContainer().add(new Frame_Graph());
         } else {
-            container.add(new Frame_AddComentario(parent, container, session));
+            global.getContainer().add(new Frame_InicioCliente());
         }
     }
-    
+
     private void verUsuarios() {
         this.dispose();
-        container.add(new Frame_Usuarios(parent, container, session));
+        global.getContainer().add(new Frame_Usuarios());
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

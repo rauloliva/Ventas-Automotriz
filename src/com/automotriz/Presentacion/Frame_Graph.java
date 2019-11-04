@@ -1,21 +1,15 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
+import java.awt.Image;
 import javax.swing.*;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_Graph extends javax.swing.JInternalFrame {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
-
-    public Frame_Graph(JFrame parent, JDesktopPane container, Session session) {
+    public Frame_Graph() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         setVisible(true);
         initGraph();
     }
@@ -28,6 +22,13 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         Graph graph = new Graph(panelContent);
         graph.setGraphBarra();
+        menu_vender.setIcon(
+                new ImageIcon(
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.vender")))
+                                .getImage()
+                                .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
+                )
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -39,7 +40,7 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         menuVerPerfil = new javax.swing.JMenu();
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        menu_vender = new javax.swing.JMenuItem();
         jMenuItem2 = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
@@ -77,15 +78,15 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         jMenu1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenu1.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
-        jMenuItem4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jMenuItem4.setText("Vender");
-        jMenuItem4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
+        menu_vender.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        menu_vender.setText("Vender");
+        menu_vender.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu_vender.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem4ActionPerformed(evt);
+                menu_venderActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem4);
+        jMenu1.add(menu_vender);
 
         jMenuItem2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem2.setText("Ver Comentarios");
@@ -128,22 +129,22 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         this.dispose();
-        container.add(new Frame_Perfil(parent, container, session));
+        global.getContainer().add(new Frame_Perfil());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
-    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+    private void menu_venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_venderActionPerformed
         this.dispose();
-        container.add(new Frame_Vender(parent, container, session));
-    }//GEN-LAST:event_jMenuItem4ActionPerformed
+        global.getContainer().add(new Frame_Vender());
+    }//GEN-LAST:event_menu_venderActionPerformed
 
     private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
         this.dispose();
-        container.add(new Frame_Comentarios(parent, container, session));
+        global.getContainer().add(new Frame_Comentarios());
     }//GEN-LAST:event_jMenuItem2ActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         this.dispose();
-        container.add(new Frame_Catalogo(parent, container, session));
+        global.getContainer().add(new Frame_Catalogo());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
 
@@ -153,8 +154,8 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
     private javax.swing.JMenu menuVerPerfil;
+    private javax.swing.JMenuItem menu_vender;
     private javax.swing.JPanel panelContent;
     // End of variables declaration//GEN-END:variables
 }

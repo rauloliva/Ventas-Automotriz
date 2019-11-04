@@ -1,26 +1,18 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Image;
 import java.util.Properties;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_InicioCliente extends javax.swing.JInternalFrame {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
     private Wallpaper wallpaper;
 
-    public Frame_InicioCliente(JFrame parent, JDesktopPane container, Session session) {
+    public Frame_InicioCliente() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         initFrame();
         setVisible(true);
     }
@@ -151,25 +143,25 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame {
     private void menu_verPerfilActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_verPerfilActionPerformed
         wallpaper.stop();
         this.dispose();
-        container.add(new Frame_Perfil(parent, container, session));
+        global.getContainer().add(new Frame_Perfil());
     }//GEN-LAST:event_menu_verPerfilActionPerformed
 
     private void menu_venderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_venderActionPerformed
         wallpaper.stop();
         this.dispose();
-        container.add(new Frame_Vender(parent, container, session));
+        global.getContainer().add(new Frame_Vender());
     }//GEN-LAST:event_menu_venderActionPerformed
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
         wallpaper.stop();
         this.dispose();
-        container.add(new Frame_Catalogo(parent, container, session));
+        global.getContainer().add(new Frame_Catalogo());
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
     private void menu_feedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_feedbackActionPerformed
         wallpaper.stop();
         this.dispose();
-        container.add(new Frame_AddComentario(parent, container, session));
+        global.getContainer().add(new Frame_AddComentario());
     }//GEN-LAST:event_menu_feedbackActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

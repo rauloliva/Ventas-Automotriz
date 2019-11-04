@@ -15,7 +15,6 @@ public class LoggerQuery {
      * starts reading the application.properties file
      */
     public static void start() {
-        ReadProperties.loadApplicationProps();
         debugMode = Boolean.parseBoolean(ReadProperties.props.getProperty("mode.query.debug"));
         new File(dirName).mkdir();
         logFile = dirName + "/" + "LogQuery.txt";

@@ -1,6 +1,6 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
+import com.automotriz.Constantes.Global;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Image;
@@ -10,11 +10,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import static com.automotriz.Constantes.Global.global;
+import com.automotriz.VO.Session;
 
 public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
 
-    private Session session;
     private Thread hiloDate;
+    private Session session;
 
     public Frame_Inicio(Session session) {
         initComponents();
@@ -52,6 +54,8 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
     }
 
     private void initFrame() {
+        //initialize the global variables (parent, container, session)
+        initGlobal();
         //Start the date thread
         hiloDate = new Thread(this);
         hiloDate.start();
@@ -64,7 +68,7 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
         );
 
         String name;
-        if (session.getPerfil().equals("Cliente")) {
+        if (global.getSession().getPerfil().equals("Cliente")) {
             name = ReadProperties.props.getProperty("name.InicioCliente");
         } else {
             name = ReadProperties.props.getProperty("name.Inicio");
@@ -95,25 +99,28 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
         panelTitle.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
 
         lbl_company_name.setText(ReadProperties.props.getProperty("company.name"));
-        lbl_usuario.setText("Usuario: " + session.getUsername().toUpperCase());
-        lbl_perfil.setText("Perfil: " + session.getPerfil());
+        lbl_usuario.setText("Usuario: " + global.getSession().getUsername().toUpperCase());
+        lbl_perfil.setText("Perfil: " + global.getSession().getPerfil());
 
         //shows the graph only to administrators
-        if (session.getPerfil().equals("Administrador")) {
+        if (global.getSession().getPerfil().equals("Administrador")) {
             initGraph();
         } else {
             initClientFrame();
         }
-
         setLogo();
     }
 
+    private void initGlobal() {
+        new Global(this, menusPanel, session);
+    }
+
     private void initGraph() {
-        menusPanel.add(new Frame_Graph(this, menusPanel, session));
+        menusPanel.add(new Frame_Graph());
     }
 
     private void initClientFrame() {
-        menusPanel.add(new Frame_InicioCliente(this, menusPanel, session));
+        menusPanel.add(new Frame_InicioCliente());
     }
 
     private void setLogo() {
@@ -141,10 +148,10 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
 
     private void goToInicio() {
         menusPanel.removeAll();
-        if (session.getPerfil().equals("Administrador")) {
-            menusPanel.add(new Frame_Graph(this, menusPanel, session));
+        if (global.getSession().getPerfil().equals("Administrador")) {
+            menusPanel.add(new Frame_Graph());
         } else {
-            menusPanel.add(new Frame_InicioCliente(this, menusPanel, session));
+            menusPanel.add(new Frame_InicioCliente());
         }
     }
 

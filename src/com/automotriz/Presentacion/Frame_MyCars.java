@@ -1,30 +1,22 @@
 package com.automotriz.Presentacion;
 
+import static com.automotriz.Constantes.Global.global;
 import com.automotriz.VO.AutoVO;
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class Frame_MyCars extends javax.swing.JDialog {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
     private DefaultTableModel model;
     private ArrayList<AutoVO> autosVO;
 
-    public Frame_MyCars(java.awt.Frame parent, boolean modal, JDesktopPane container, Session session) {
+    public Frame_MyCars(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.parent = (JFrame) parent;
-        this.container = container;
-        this.session = session;
         setLocationRelativeTo(null);
         initFrame();
     }
@@ -47,7 +39,7 @@ public class Frame_MyCars extends javax.swing.JDialog {
     private void getCars() {
         setTable();
         model = (DefaultTableModel) tbl_cars.getModel();
-        Validacion validacion = new Validacion(new Object[]{session.getId()}, new AutoVO());
+        Validacion validacion = new Validacion(new Object[]{global.getSession().getId()}, new AutoVO());
 
         validacion.setTableModel(model);
         validacion.listUserAutos();
@@ -165,8 +157,8 @@ public class Frame_MyCars extends javax.swing.JDialog {
 
     private void tbl_carsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_carsMouseClicked
         this.dispose();
-        container.removeAll();
-        container.add(new Frame_Vender(parent, container, session, getSelectedCar()));
+        global.getContainer().removeAll();
+        global.getContainer().add(new Frame_Vender(getSelectedCar()));
     }//GEN-LAST:event_tbl_carsMouseClicked
 
 

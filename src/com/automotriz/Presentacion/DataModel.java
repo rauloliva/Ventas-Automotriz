@@ -105,7 +105,7 @@ public class DataModel {
                     lbl_marca.setText("Marca: " + auto.getMarca());
                     lbl_modelo.setText("Modelo: " + auto.getModelo());
                     lbl_precio.setText("Precio: " + auto.getPrecio());
-                    lbl_imagenes.setText("Imagenes: " + auto.getImagenes().split(";").length);
+                    lbl_imagenes.setText("Imagenes: " + (auto.getImagenes().split(";").length - 1));
                 }
             }
 

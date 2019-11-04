@@ -1,6 +1,5 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
@@ -10,28 +9,21 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Runnable {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
     private String destinatario;
     private Thread hiloProgress = new Thread();
     private File fileAttached = null;
     private Thread hiloSend;
     private String vendedorName;
 
-    public Frame_EnviarCorreo(JFrame parent, JDesktopPane container, Session session, String dest) {
+    public Frame_EnviarCorreo(String dest) {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         destinatario = dest;
         initFrame();
         setVisible(true);
@@ -39,7 +31,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
 
     private void initFrame() {
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-        txt_mail_origen.setText(session.getMail());
+        txt_mail_origen.setText(global.getSession().getMail());
         txt_mail_dest.setText(destinatario);
         attachFile_loader.setValue(0);
         attachFile_loader.setStringPainted(true);

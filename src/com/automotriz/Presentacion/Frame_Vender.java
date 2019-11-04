@@ -1,5 +1,6 @@
 package com.automotriz.Presentacion;
 
+import static com.automotriz.Constantes.Global.global;
 import com.automotriz.VO.AutoVO;
 import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
@@ -19,9 +20,6 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Frame_Vender extends javax.swing.JInternalFrame {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
     private DefaultListModel imagesName;
     /*As key will be the Name's image
       and the value will be the abosotute path's image
@@ -29,22 +27,16 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
     private HashMap imagesPath;
     private AutoVO autoVO;
 
-    public Frame_Vender(JFrame parent, JDesktopPane container, Session session) {
+    public Frame_Vender() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         this.imagesPath = new HashMap();
         this.imagesName = new DefaultListModel();
         setVisible(true);
         initFrame();
     }
 
-    public Frame_Vender(JFrame parent, JDesktopPane container, Session session, AutoVO autoVO) {
+    public Frame_Vender(AutoVO autoVO) {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         this.autoVO = autoVO;
         this.imagesPath = new HashMap();
         this.imagesName = new DefaultListModel();
@@ -61,7 +53,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
 
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.grey")));
-        txt_dueño.setText(session.getUsername().toUpperCase());
+        txt_dueño.setText(global.getSession().getUsername().toUpperCase());
         setModeloValue();
         setMarcas();
         setCambios();
@@ -201,7 +193,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
             cmb_color.getSelectedItem().toString(),
             txa_descripcion.getText(),
             imagesPath,
-            session.getId()
+            global.getSession().getId()
         }).saveAutomobile(false);
 
         HashMap message = validacion.getMessage();
@@ -236,12 +228,12 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
     }
 
     private void modificarAuto() {
-        new Frame_MyCars(parent, true, container, session);
+        new Frame_MyCars(global.getParent(), true);
     }
 
     private void seePreview() {
         String imagePath = imagesPath.get(lst_images.getSelectedValue()).toString();
-        new Frame_PreviewImage(parent, true, imagePath);
+        new Frame_PreviewImage(global.getParent(), true, imagePath);
     }
 
     private void saveChanges() {

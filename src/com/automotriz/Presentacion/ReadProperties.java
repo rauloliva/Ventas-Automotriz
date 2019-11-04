@@ -17,6 +17,7 @@ public class ReadProperties {
             InputStream in = new FileInputStream("application.properties");
             props = new Properties();
             props.load(in);
+            System.out.println("Application properties Initialized");
         } catch (Exception e) {
             Logger.error(e.toString());
             Logger.error(e.getStackTrace());

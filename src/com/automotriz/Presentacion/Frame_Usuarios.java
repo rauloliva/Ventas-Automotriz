@@ -1,6 +1,5 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
@@ -10,34 +9,27 @@ import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_Usuarios extends javax.swing.JInternalFrame {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
     private DefaultTableModel model;
     private ArrayList<UsuarioVO> usuariosVO;
     private int count = 0;
 
-    public Frame_Usuarios(JFrame parent, JDesktopPane container, Session session) {
+    public Frame_Usuarios() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         setVisible(true);
         initFrame();
     }
 
     private void goToPerfil() {
         this.dispose();
-        container.add(new Frame_Perfil(parent, container, session));
+        global.getContainer().add(new Frame_Perfil());
     }
 
     private void initFrame() {

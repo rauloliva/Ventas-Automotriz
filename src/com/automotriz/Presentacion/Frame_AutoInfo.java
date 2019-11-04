@@ -1,7 +1,6 @@
 package com.automotriz.Presentacion;
 
 import com.automotriz.VO.AutoVO;
-import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
@@ -11,27 +10,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_AutoInfo extends javax.swing.JDialog {
 
     private AutoVO auto;
     private List<String> imgs;
     private int count_imgs = 0;
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
 
-    public Frame_AutoInfo(java.awt.Frame parent, boolean modal, AutoVO auto, JDesktopPane container, Session session) {
+    public Frame_AutoInfo(java.awt.Frame parent, boolean modal, AutoVO auto) {
         super(parent, modal);
-        this.parent = (JFrame) parent;
-        this.container = container;
-        this.session = session;
         this.auto = auto;
         initComponents();
         initFrame();
@@ -173,13 +165,12 @@ public class Frame_AutoInfo extends javax.swing.JDialog {
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"CONTINUAR", "NO"}, "NO");
 
         if (option == JOptionPane.YES_OPTION) {
-            for (JInternalFrame frame : container.getAllFrames()) {
+            for (JInternalFrame frame : global.getContainer().getAllFrames()) {
                 frame.dispose();
             }
-            container.removeAll();
+            global.getContainer().removeAll();
             this.dispose();
-            container.add(new Frame_EnviarCorreo(parent, container, session,
-                    lbl_correo_vendedor.getText().replace("Correo:", "").trim()));
+            global.getContainer().add(new Frame_EnviarCorreo(lbl_correo_vendedor.getText().replace("Correo:", "").trim()));
         }
     }
 

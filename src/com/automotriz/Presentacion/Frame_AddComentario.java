@@ -1,23 +1,17 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.util.HashMap;
 import javax.swing.*;
 import com.automotriz.Constantes.Constants;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_AddComentario extends javax.swing.JInternalFrame {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
     private int valoracion = 0;
 
-    public Frame_AddComentario(JFrame parent, JDesktopPane container, Session session) {
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
+    public Frame_AddComentario() {
         initComponents();
         setVisible(true);
         initFrame();
@@ -45,7 +39,7 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame {
             chb_anonimo.isSelected(),
             txa_comentarios.getText(),
             valoracion,
-            session.getId(),
+            global.getSession().getId(),
             Validacion.generateDate()
         }).submitComentario();
 

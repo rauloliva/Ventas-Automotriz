@@ -1,35 +1,28 @@
 package com.automotriz.Presentacion;
 
 import com.automotriz.VO.AutoVO;
-import com.automotriz.VO.Session;
 import java.awt.Color;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.List;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable {
-    
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
+
     private List<AutoVO> autosVO;
-    
-    public Frame_Catalogo(JFrame parent, JDesktopPane container, Session session) {
+
+    public Frame_Catalogo() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         initFrame();
         this.setVisible(true);
     }
-    
+
     private void initFrame() {
         panelFiltros.setVisible(false);
+        panelFiltros.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         getCatalogo("");
         setMarcas();
@@ -40,7 +33,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         //
         new Thread(this).start();
     }
-    
+
     @Override
     public void run() {
         while (true) {
@@ -56,10 +49,10 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             System.out.print("");
         }
     }
-    
+
     private void getCatalogo(String flag) {
         Validacion validacion = new Validacion(new Object[]{
-            session.getId()
+            global.getSession().getId()
         }, new AutoVO()).getCatalogo();
         autosVO = validacion.getAutos();
         if (autosVO != null) {
@@ -77,7 +70,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 {lbl_marca11, lbl_modelo11, lbl_precio11, lbl_imagenes11},
                 {lbl_marca12, lbl_modelo12, lbl_precio12, lbl_imagenes12}
             }, autosVO, btn_atras, btn_siguiente);
-            
+
             if (flag.equals("")) {
                 model.constructCatalogoModel();
             } else if (flag.equals("next")) {
@@ -90,7 +83,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             btn_siguiente.setEnabled(false);
         }
     }
-    
+
     private void setMarcas() {
         cmb_marca.addItem("--Seleccionar--");
         String marcas[] = ReadProperties.props.getProperty("vender.marcas").split(";");
@@ -99,7 +92,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }
         cmb_marca.addItem("Otros");
     }
-    
+
     private void setModeloValue() {
         Calendar c = new GregorianCalendar();
         int year = c.get(Calendar.YEAR);
@@ -108,7 +101,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         SpinnerNumberModel model1 = new SpinnerNumberModel(year, 1950, year, 1.0);
         spn_modelo.setModel(model1);
     }
-    
+
     private void setColores() {
         cmb_color.addItem("--Seleccionar--");
         String colores[] = ReadProperties.props.getProperty("vender.colores").split(";");
@@ -116,7 +109,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             cmb_color.addItem(color);
         }
     }
-    
+
     private void setCambios() {
         cmb_cambio.addItem("--Seleccionar--");
         String cambios[] = ReadProperties.props.getProperty("vender.cambios").split(";");
@@ -124,7 +117,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             cmb_cambio.addItem(cambio);
         }
     }
-    
+
     private void enableFiltros(boolean flag) {
         cmb_marca.setEnabled(flag);
         cmb_cambio.setEnabled(flag);
@@ -134,14 +127,76 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         btn_cleanFields.setEnabled(flag);
         btn_listarTodo.setEnabled(!flag);
     }
-    
+
     private void clearFiltros() {
         cmb_marca.setSelectedItem("--Seleccionar--");
         cmb_color.setSelectedItem("--Seleccionar--");
         cmb_cambio.setSelectedItem("--Seleccionar--");
         spn_modelo.setValue(0);
     }
-    
+
+    private void resetCatalogo() {
+        lbl_marca1.setText("Marca:");
+        lbl_modelo1.setText("Modelo:");
+        lbl_precio1.setText("Precio:");
+        lbl_imagenes1.setText("Imagenes:");
+
+        lbl_marca2.setText("Marca:");
+        lbl_modelo2.setText("Modelo:");
+        lbl_precio2.setText("Precio:");
+        lbl_imagenes2.setText("Imagenes:");
+
+        lbl_marca3.setText("Marca:");
+        lbl_modelo3.setText("Modelo:");
+        lbl_precio3.setText("Precio:");
+        lbl_imagenes3.setText("Imagenes:");
+
+        lbl_marca4.setText("Marca:");
+        lbl_modelo4.setText("Modelo:");
+        lbl_precio4.setText("Precio:");
+        lbl_imagenes4.setText("Imagenes:");
+
+        lbl_marca5.setText("Marca:");
+        lbl_modelo5.setText("Modelo:");
+        lbl_precio5.setText("Precio:");
+        lbl_imagenes5.setText("Imagenes:");
+
+        lbl_marca6.setText("Marca:");
+        lbl_modelo6.setText("Modelo:");
+        lbl_precio6.setText("Precio:");
+        lbl_imagenes6.setText("Imagenes:");
+
+        lbl_marca7.setText("Marca:");
+        lbl_modelo7.setText("Modelo:");
+        lbl_precio7.setText("Precio:");
+        lbl_imagenes7.setText("Imagenes:");
+
+        lbl_marca8.setText("Marca:");
+        lbl_modelo8.setText("Modelo:");
+        lbl_precio8.setText("Precio:");
+        lbl_imagenes8.setText("Imagenes:");
+
+        lbl_marca9.setText("Marca:");
+        lbl_modelo9.setText("Modelo:");
+        lbl_precio9.setText("Precio:");
+        lbl_imagenes9.setText("Imagenes:");
+
+        lbl_marca10.setText("Marca:");
+        lbl_modelo10.setText("Modelo:");
+        lbl_precio10.setText("Precio:");
+        lbl_imagenes10.setText("Imagenes:");
+
+        lbl_marca11.setText("Marca:");
+        lbl_modelo11.setText("Modelo:");
+        lbl_precio11.setText("Precio:");
+        lbl_imagenes11.setText("Imagenes:");
+
+        lbl_marca12.setText("Marca:");
+        lbl_modelo12.setText("Modelo:");
+        lbl_precio12.setText("Precio:");
+        lbl_imagenes12.setText("Imagenes:");
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -253,6 +308,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
         btn_filtrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_filtrar.setText("Filtrar");
+        btn_filtrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_filtrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filtrarActionPerformed(evt);
@@ -261,6 +317,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
         chb_filtar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         chb_filtar.setText("Usar Filtros");
+        chb_filtar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         chb_filtar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chb_filtarActionPerformed(evt);
@@ -269,6 +326,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
         btn_listarTodo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_listarTodo.setText("Listar Todo");
+        btn_listarTodo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_listarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_listarTodoActionPerformed(evt);
@@ -277,6 +335,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
         btn_cleanFields.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_cleanFields.setText("Limpiar");
+        btn_cleanFields.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_cleanFields.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cleanFieldsActionPerformed(evt);
@@ -337,7 +396,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                     .addComponent(chb_filtar)
                     .addComponent(btn_listarTodo)
                     .addComponent(btn_cleanFields))
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(17, Short.MAX_VALUE))
         );
 
         btn_atras.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
@@ -1070,7 +1129,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panelFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, 1138, Short.MAX_VALUE))
+                        .addComponent(panelFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, 1138, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(387, 387, 387)
                         .addComponent(btn_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1079,7 +1138,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                         .addGap(85, 85, 85)
                         .addComponent(btn_filtros)
                         .addGap(0, 235, Short.MAX_VALUE))
-                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 1150, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -1140,7 +1199,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto1MouseClicked
         if (!lbl_marca1.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(0), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(0));
         }
     }//GEN-LAST:event_panelAuto1MouseClicked
 
@@ -1154,7 +1213,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto2MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto2MouseClicked
         if (!lbl_marca2.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(1), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(1));
         }
     }//GEN-LAST:event_panelAuto2MouseClicked
 
@@ -1168,7 +1227,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto3MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto3MouseClicked
         if (!lbl_marca3.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(2), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(2));
         }
     }//GEN-LAST:event_panelAuto3MouseClicked
 
@@ -1182,7 +1241,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto4MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto4MouseClicked
         if (!lbl_marca4.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(3), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(3));
         }
     }//GEN-LAST:event_panelAuto4MouseClicked
 
@@ -1196,7 +1255,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto5MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto5MouseClicked
         if (!lbl_marca5.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(4), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(4));
         }
     }//GEN-LAST:event_panelAuto5MouseClicked
 
@@ -1210,7 +1269,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto6MouseClicked
         if (!lbl_marca6.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(5), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(5));
         }
     }//GEN-LAST:event_panelAuto6MouseClicked
 
@@ -1224,7 +1283,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto7MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto7MouseClicked
         if (!lbl_marca7.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(6), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(6));
         }
     }//GEN-LAST:event_panelAuto7MouseClicked
 
@@ -1238,7 +1297,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto8MouseClicked
         if (!lbl_marca8.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(7), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(7));
         }
     }//GEN-LAST:event_panelAuto8MouseClicked
 
@@ -1252,7 +1311,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto9MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto9MouseClicked
         if (!lbl_marca9.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(8), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(8));
         }
     }//GEN-LAST:event_panelAuto9MouseClicked
 
@@ -1266,7 +1325,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto10MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto10MouseClicked
         if (!lbl_marca10.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(9), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(9));
         }
     }//GEN-LAST:event_panelAuto10MouseClicked
 
@@ -1280,7 +1339,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto11MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto11MouseClicked
         if (!lbl_marca11.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(10), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(10));
         }
     }//GEN-LAST:event_panelAuto11MouseClicked
 
@@ -1294,7 +1353,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void panelAuto12MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_panelAuto12MouseClicked
         if (!lbl_marca12.getText().trim().equals("Marca:")) {
-            new Frame_AutoInfo(parent, true, autosVO.get(11), container, session);
+            new Frame_AutoInfo(global.getParent(), true, autosVO.get(11));
         }
     }//GEN-LAST:event_panelAuto12MouseClicked
 
@@ -1319,8 +1378,8 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }//GEN-LAST:event_btn_filtrosActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
-        /*resetTable();
-        Validacion validacion = new Validacion(new Object[]{
+        resetCatalogo();
+        /*Validacion validacion = new Validacion(new Object[]{
             txt_username.getText().trim(),
             txt_telefono.getText().trim(),
             cmb_estatus.getSelectedItem().toString() == "--Seleccionar--"
@@ -1361,14 +1420,9 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }//GEN-LAST:event_chb_filtarActionPerformed
 
     private void btn_listarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_listarTodoActionPerformed
-        /*resetTable();
-        Validacion validacion = new Validacion(null, new UsuarioVO());
-        validacion.setTableModel(model);
-        validacion.filtrarUsuarios();
-        tbl_usuarios.setModel(validacion.getTableModel());
-        usuariosVO = validacion.getUsuarios();
-        scrollTable.setVisible(true);
-        pack();*/
+//        resetCatalogo();
+        DataModel.resetIndice();
+        getCatalogo("");
     }//GEN-LAST:event_btn_listarTodoActionPerformed
 
     private void btn_cleanFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cleanFieldsActionPerformed

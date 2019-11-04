@@ -5,20 +5,11 @@ import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.ImageIcon;
-import javax.swing.JDesktopPane;
-import javax.swing.JFrame;
 
 public class Frame_Comentarios extends javax.swing.JInternalFrame implements Runnable {
 
-    private JFrame parent;
-    private JDesktopPane container;
-    private Session session;
-
-    public Frame_Comentarios(JFrame parent, JDesktopPane container, Session session) {
+    public Frame_Comentarios() {
         initComponents();
-        this.parent = parent;
-        this.container = container;
-        this.session = session;
         this.setVisible(true);
         initFrame();
         this.setTitle("Comentarios");
@@ -42,7 +33,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
             /*
             somehow putting this line the thread works correctly
              */
-            System.out.println("");
+            int garbageVar = 0;
         }
     }
 
@@ -519,7 +510,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
                     .addComponent(starsPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(41, Short.MAX_VALUE))
+                .addContainerGap(65, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -530,9 +521,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(panelContent, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
