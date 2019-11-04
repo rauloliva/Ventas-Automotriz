@@ -12,14 +12,17 @@ import com.automotriz.logger.LoggerQuery;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import static com.automotriz.Constantes.Global.global;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
-    
+
     public static String perfil = "";
     private Thread hilo;
-    
+
     public Frame_LogIn() {
         initComponents();
+        //reset the value from global variables
+        global = null;
         try {
             new Thread(this).start();
             this.initFrame();
@@ -44,20 +47,20 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
         }
-        
+
         while (perfil.equals("")) {
             this.setTitle("Perfil: " + perfil);
             lbl_title_frame.setText("Inicio de session: " + perfil);
         }
         this.setTitle("Perfil: " + perfil);
     }
-    
+
     private void initFrame() throws Exception {
         //getting the application properties
         ReadProperties.loadApplicationProps();
         //init logs
         Logger.start();
-        
+
         String name = ReadProperties.props.getProperty("name.logIn");
         this.setName(name);
         this.setTitle(name);
@@ -66,9 +69,9 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         LoggerQuery.start();
         this.setLocationRelativeTo(this);
         registrarLabelsDesign();
-        
+
         this.initGetPerfil();
-        
+
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.grey")));
 
         //Setting an image for the panel above
@@ -76,15 +79,15 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
                 .getResource(ReadProperties.props.getProperty("icon.wallpaper"))));
         label.setSize(panelTitle.getWidth(), panelTitle.getHeight());
         panelTitle.add(label);
-        
+
         panelForm.setBorder(new BevelBorder(BevelBorder.RAISED));
-        
+
         String value = ReadProperties.props.getProperty("login.title");
         lbl_title.setText(value);
-        
+
         value = ReadProperties.props.getProperty("login.boton.login");
         btn_entrar.setText(value);
-        
+
         value = ReadProperties.props.getProperty("login.boton.cerrar");
         btn_atras.setText(value);
         lbl_close.setIcon(
@@ -103,38 +106,38 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         lbl_registrar_aqui.setForeground(Color.blue.darker());
         lbl_registrar_aqui.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
-    
+
     private void initGetPerfil() {
         Frame_GetPerfil h = new Frame_GetPerfil(this, true);
         h.setLocationRelativeTo(this);
         h.setVisible(true);
     }
-    
+
     private void gotToSignIn() {
         Frame_SignIn signIn = new Frame_SignIn(this, true);
         signIn.setVisible(true);
     }
-    
+
     private void closeProgram() {
         int option = JOptionPane.showOptionDialog(this,
                 ReadProperties.props.getProperty("system.shutdown"),
                 ReadProperties.props.getProperty("system.shutdown.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-        
+
         if (option == JOptionPane.YES_OPTION) {
             System.exit(0);
         }
     }
-    
+
     public void validacion() {
         Validacion validacion = new Validacion(new Object[]{
             txt_username.getText().trim(),
             new Hashing(txt_password.getText().trim()).encrypt(),
             perfil
         }, new Session()).validarLogIn();
-        
+
         HashMap propMensaje = validacion.getMessage();
-        
+
         if (propMensaje != null) { //if an error message is ready to show up
             JOptionPane.showMessageDialog(this,
                     propMensaje.get("message").toString(),
@@ -146,7 +149,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
             new Frame_Inicio(validacion.getSession());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -193,6 +196,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
 
         btn_entrar.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         btn_entrar.setText("jButton1");
+        btn_entrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_entrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_entrarActionPerformed(evt);
@@ -201,6 +205,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
 
         btn_atras.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         btn_atras.setText("jButton2");
+        btn_atras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_atras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_atrasActionPerformed(evt);
@@ -390,7 +395,6 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         //start again the thread to catch the profile
         new Thread(this).start();
         new Frame_GetPerfil(this, true).setVisible(true);
-
     }//GEN-LAST:event_btn_atrasActionPerformed
 
     private void lbl_registrar_aquiMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_registrar_aquiMouseMoved

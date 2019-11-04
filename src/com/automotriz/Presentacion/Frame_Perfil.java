@@ -22,7 +22,6 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         txt_name.setEditable(flag);
         txt_password.setEditable(flag);
         txt_correo.setEditable(flag);
-        cmb_perfil.setEnabled(flag);
         txt_telefono.setEditable(flag);
         btn_saveChanges.setEnabled(flag);
     }
@@ -36,7 +35,6 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         //disable all the fields
         editarCampos(false);
 
-        loadPerfiles();
         loadSession();
         if (global.getSession().getPerfil().equals("Administrador")) {
             //creating a new Menu item object 
@@ -63,19 +61,11 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         );
     }
 
-    private void loadPerfiles() {
-        String[] perfiles = ReadProperties.props.getProperty("app.perfiles").split(";");
-        for (String perfil : perfiles) {
-            cmb_perfil.addItem(perfil);
-        }
-    }
-
     private void loadSession() {
         txt_username.setText(global.getSession().getUsername());
         txt_name.setText(global.getSession().getNombre());
         txt_password.setText(new Hashing(global.getSession().getPassword()).decrypt());
         txt_correo.setText(global.getSession().getMail());
-        cmb_perfil.setSelectedItem(global.getSession().getPerfil().toString());
         txt_telefono.setText(global.getSession().getTelefono());
     }
 
@@ -100,7 +90,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
             txt_username.getText().trim(),
             new Hashing(txt_password.getText().trim()).encrypt(),
             txt_correo.getText().trim(),
-            cmb_perfil.getSelectedItem().toString(),
+            global.getSession().getPerfil(),
             txt_telefono.getText(),
             txt_name.getText().trim()
         }).validateForm("the update user", "UPDATEUSER");
@@ -188,8 +178,6 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         txt_password = new javax.swing.JPasswordField();
         jLabel3 = new javax.swing.JLabel();
         txt_correo = new javax.swing.JTextField();
-        jLabel4 = new javax.swing.JLabel();
-        cmb_perfil = new javax.swing.JComboBox();
         txt_telefono = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         chb_editarCampos = new javax.swing.JCheckBox();
@@ -235,11 +223,6 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
             }
         });
 
-        jLabel4.setFont(new java.awt.Font("Dialog", 1, 20)); // NOI18N
-        jLabel4.setText("Perfil");
-
-        cmb_perfil.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-
         txt_telefono.setFont(new java.awt.Font("Dialog", 0, 18)); // NOI18N
         txt_telefono.setHorizontalAlignment(javax.swing.JTextField.CENTER);
         txt_telefono.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -284,42 +267,32 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(109, 109, 109)
+                .addGap(77, 77, 77)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(chb_editarCampos)
                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(jPanel1Layout.createSequentialGroup()
-                            .addComponent(chb_editarCampos)
-                            .addGap(0, 0, Short.MAX_VALUE))
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                            .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jLabel2))
+                            .addGap(30, 30, 30))
                         .addGroup(jPanel1Layout.createSequentialGroup()
                             .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel2))
-                                    .addGap(60, 60, 60)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(txt_password, javax.swing.GroupLayout.DEFAULT_SIZE, 266, Short.MAX_VALUE)
-                                        .addComponent(txt_username)
-                                        .addComponent(txt_name)))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGap(169, 169, 169)
-                                    .addComponent(cmb_perfil, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addComponent(jLabel4)
-                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 386, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanel1Layout.createSequentialGroup()
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel3)
-                                        .addComponent(jLabel5))
-                                    .addGap(86, 86, 86)
-                                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addGroup(jPanel1Layout.createSequentialGroup()
-                                            .addComponent(btn_saveChanges)
-                                            .addGap(0, 0, Short.MAX_VALUE))
-                                        .addComponent(txt_correo)
-                                        .addComponent(txt_telefono))))
-                            .addGap(109, 109, 109)))))
+                                .addComponent(jLabel3)
+                                .addComponent(jLabel5))
+                            .addGap(56, 56, 56))))
+                .addGap(62, 62, 62)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btn_saveChanges)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(txt_username, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                            .addComponent(txt_name, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 300, Short.MAX_VALUE)
+                            .addComponent(txt_password, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_correo, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txt_telefono, javax.swing.GroupLayout.Alignment.LEADING))))
+                .addContainerGap(152, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -340,11 +313,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_correo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cmb_perfil, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(30, 30, 30)
+                .addGap(34, 34, 34)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txt_telefono, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -352,7 +321,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
                 .addComponent(chb_editarCampos)
                 .addGap(18, 18, 18)
                 .addComponent(btn_saveChanges, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(54, 54, 54))
+                .addGap(97, 97, 97))
         );
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
@@ -362,7 +331,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
             .addGroup(panelContentLayout.createSequentialGroup()
                 .addGap(257, 257, 257)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(275, Short.MAX_VALUE))
+                .addContainerGap(198, Short.MAX_VALUE))
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -441,11 +410,9 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btn_saveChanges;
     private javax.swing.JCheckBox chb_editarCampos;
-    private javax.swing.JComboBox cmb_perfil;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JMenuBar jMenuBar1;
