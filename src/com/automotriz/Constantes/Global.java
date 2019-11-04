@@ -27,7 +27,6 @@ public class Global {
     }
 
     public Global() {
-
     }
 
     public JFrame getParent() {
