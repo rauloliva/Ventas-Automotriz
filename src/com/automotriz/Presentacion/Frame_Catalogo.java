@@ -217,7 +217,6 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }
 
     private void filtrar() {
-        //resetCatalogo();
         DataModel.resetIndice();
         Validacion validacion = new Validacion(new Object[]{
             cmb_marca.getSelectedItem().toString(),

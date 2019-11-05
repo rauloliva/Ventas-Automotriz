@@ -2,7 +2,6 @@ package com.automotriz.Presentacion;
 
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.VO.AutoVO;
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.io.File;
@@ -10,9 +9,7 @@ import java.sql.Connection;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileFilter;

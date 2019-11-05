@@ -291,7 +291,6 @@ public class Validacion implements Runnable {
 
     @Override
     public void run() {
-        System.out.println("isResume");
     }
 
     public Validacion validateAdminRights(String username, String password) {

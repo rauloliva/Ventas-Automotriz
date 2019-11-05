@@ -19,7 +19,6 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
 
     private DefaultTableModel model;
     private ArrayList<UsuarioVO> usuariosVO;
-    private int count = 0;
 
     public Frame_Usuarios() {
         initComponents();
