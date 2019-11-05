@@ -9,6 +9,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import static com.automotriz.Constantes.Global.global;
+import javax.swing.JPanel;
 
 public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable {
 
@@ -55,6 +56,10 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             global.getSession().getId()
         }, new AutoVO()).getCatalogo();
         autosVO = validacion.getAutos();
+        setCatalogo(flag);
+    }
+
+    private void setCatalogo(String flag) {
         if (autosVO != null) {
             DataModel model = new DataModel(new Object[][]{
                 {lbl_marca1, lbl_modelo1, lbl_precio1, lbl_imagenes1},
@@ -71,6 +76,20 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 {lbl_marca12, lbl_modelo12, lbl_precio12, lbl_imagenes12}
             }, autosVO, btn_atras, btn_siguiente);
 
+            model.setPaneles(new JPanel[]{
+                panelAuto1,
+                panelAuto2,
+                panelAuto3,
+                panelAuto4,
+                panelAuto5,
+                panelAuto6,
+                panelAuto7,
+                panelAuto8,
+                panelAuto9,
+                panelAuto10,
+                panelAuto11,
+                panelAuto12
+            });
             if (flag.equals("")) {
                 model.constructCatalogoModel();
             } else if (flag.equals("next")) {
@@ -195,6 +214,21 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         lbl_modelo12.setText("Modelo:");
         lbl_precio12.setText("Precio:");
         lbl_imagenes12.setText("Imagenes:");
+    }
+
+    private void filtrar() {
+        //resetCatalogo();
+        DataModel.resetIndice();
+        Validacion validacion = new Validacion(new Object[]{
+            cmb_marca.getSelectedItem().toString(),
+            spn_modelo.getValue().toString(),
+            cmb_color.getSelectedItem().toString(),
+            cmb_cambio.getSelectedItem().toString(),
+            global.getSession().getId()
+        }, new AutoVO()).filtrarAutos();
+
+        autosVO = validacion.getAutos();
+        setCatalogo("");
     }
 
     @SuppressWarnings("unchecked")
@@ -1378,35 +1412,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }//GEN-LAST:event_btn_filtrosActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
-        resetCatalogo();
-        /*Validacion validacion = new Validacion(new Object[]{
-            txt_username.getText().trim(),
-            txt_telefono.getText().trim(),
-            cmb_estatus.getSelectedItem().toString() == "--Seleccionar--"
-            ? cmb_estatus.getSelectedItem().toString() : cmb_estatus.getSelectedItem().toString().toUpperCase(),
-            cmb_perfil.getSelectedItem().toString()
-        }, new UsuarioVO());
-        
-        validacion.setTableModel(model);
-        validacion.filtrarUsuarios();
-        tbl_usuarios.setModel(validacion.getTableModel());
-        
-        HashMap propMensaje = validacion.getMessage();
-        
-        if (propMensaje != null) { //if an error message is ready to show up
-            //if there is no user, dont show the table
-            scrollTable.setVisible(false);
-            JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    Integer.parseInt(propMensaje.get("type").toString()));
-            
-        } else {
-            //show the table with the data
-            scrollTable.setVisible(true);
-            pack();
-            usuariosVO = validacion.getUsuarios();
-        }*/
+        filtrar();
     }//GEN-LAST:event_btn_filtrarActionPerformed
 
     private void chb_filtarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb_filtarActionPerformed
@@ -1420,7 +1426,6 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }//GEN-LAST:event_chb_filtarActionPerformed
 
     private void btn_listarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_listarTodoActionPerformed
-//        resetCatalogo();
         DataModel.resetIndice();
         getCatalogo("");
     }//GEN-LAST:event_btn_listarTodoActionPerformed

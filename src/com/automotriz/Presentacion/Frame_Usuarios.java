@@ -197,6 +197,7 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
 
         btn_filtrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_filtrar.setText("Filtrar");
+        btn_filtrar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_filtrar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_filtrarActionPerformed(evt);
@@ -205,6 +206,7 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
 
         chb_filtar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         chb_filtar.setText("Usar Filtros");
+        chb_filtar.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         chb_filtar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chb_filtarActionPerformed(evt);
@@ -213,6 +215,7 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
 
         btn_listarTodo.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_listarTodo.setText("Listar Todo");
+        btn_listarTodo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_listarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_listarTodoActionPerformed(evt);
@@ -221,6 +224,7 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
 
         btn_cleanFields.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_cleanFields.setText("Limpiar");
+        btn_cleanFields.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_cleanFields.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_cleanFieldsActionPerformed(evt);

@@ -717,6 +717,20 @@ public class Validacion implements Runnable {
         return this;
     }
 
+    public Validacion filtrarAutos() {
+        if (!isEmpty(data[0]) || !isEmpty(data[1]) || !isEmpty(data[2]) || !isEmpty(data[3])) {
+            createRequestJSON("FILTRARAUTOS", null);
+            Peticiones peticion = new Peticiones(requestJSON);
+            peticion.setObjectVO(objVo);
+            JSONObject response = peticion.getResult();
+            if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
+                autosVO = new ArrayList<>();
+                autosVO.add((AutoVO) ((Object[]) response.get("obj"))[0]);
+            }
+        }
+        return this;
+    }
+
     public static Connection requestSQLConnection() {
         return Peticiones.requestSQLConnection();
     }

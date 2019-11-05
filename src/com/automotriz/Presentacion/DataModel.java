@@ -11,6 +11,7 @@ public class DataModel {
     private static boolean firstBack = false;
     private static int indice = 0;
     private Object[][] components;
+    private JPanel[] paneles;
     private JButton back;
     private JButton next;
     private Object data;
@@ -36,6 +37,10 @@ public class DataModel {
         this.data = data;
         this.back = back;
         this.next = next;
+    }
+
+    public void setPaneles(JPanel[] paneles) {
+        this.paneles = paneles;
     }
 
     /**
@@ -67,6 +72,7 @@ public class DataModel {
                     JLabel lbl_fecha = (JLabel) components[row][1];
                     JLabel lbl_valoracion = (JLabel) components[row][2];
                     JTextArea txa_comentario = (JTextArea) components[row][3];
+                    paneles[row].setBackground(Color.decode(ReadProperties.props.getProperty("color.verde")));
 
                     ComentarioVO comentario = comentariosVO.get(indice++);
                     lbl_nombre.setText("Nombre: " + comentario.getNombre());
@@ -105,7 +111,8 @@ public class DataModel {
                     lbl_marca.setText("Marca: " + auto.getMarca());
                     lbl_modelo.setText("Modelo: " + auto.getModelo());
                     lbl_precio.setText("Precio: " + auto.getPrecio());
-                    lbl_imagenes.setText("Imagenes: " + (auto.getImagenes().split(";").length - 1));
+                    int images = auto.getImagenes().equals("") ? 0 : auto.getImagenes().split(";").length;
+                    lbl_imagenes.setText("Imagenes: " + images);
                 }
             }
 
@@ -198,6 +205,9 @@ public class DataModel {
             ((JLabel) components[i][1]).setText("Modelo:");
             ((JLabel) components[i][2]).setText("Precio: ");
             ((JLabel) components[i][3]).setText("Imagenes:");
+        }
+        for (JPanel panel : paneles) {
+            panel.setBackground(Color.decode(ReadProperties.props.getProperty("color.default")));
         }
     }
 

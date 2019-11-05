@@ -56,7 +56,8 @@ public class Peticiones {
         GETFEEDBACK("S008_GETFEEDBACK"),
         GETCATALOGO("S009_GETCATALOGO"),
         GETVENDEDOR("S009_GETVENDEDOR"),
-        GETVENDEDORNAME("S010_GETVENDEDORNAME");
+        GETVENDEDORNAME("S010_GETVENDEDORNAME"),
+        FILTRARAUTOS("S011_FILTRARAUTOS");
 
         private final String value;
 
@@ -168,6 +169,9 @@ public class Peticiones {
                     break;
                 case "GETVENDEDORNAME":
                     sqlData = GETVENDEDORNAME(operations, request);
+                    break;
+                case "FILTRARAUTOS":
+                    sqlData = FILTRARAUTOS(operations, request);
                     break;
             }
             //returns the query from operationsIdentifier
@@ -424,6 +428,48 @@ public class Peticiones {
         return sql;
     }
 
+    /**
+     * Creates a SQL query based on the filter form, this method only applies to
+     * Usuarios table
+     *
+     * @param request the JSON request sent from Usuarios frame
+     * @return returns the sql query filtered
+     */
+    private String creatingFilterAutos(JSONObject request) {
+        String sql = new String();
+        if (!request.get("1").equals("--Seleccionar--")) {
+            sql += "marca = '" + request.get("1") + "' ";
+        }
+
+        if (Double.parseDouble(request.get("2").toString()) > 0) {
+            //whether sql var is empty means there are no condtions yet
+            if (sql.equals("")) {
+                sql += "modelo = " + request.get("2") + " ";
+            } else {
+                sql += "AND modelo = " + request.get("2") + " ";
+            }
+        }
+
+        if (!request.get("3").equals("--Seleccionar--")) {
+            //whether sql var is empty means there are no condtions yet
+            if (sql.equals("")) {
+                sql += "color = '" + request.get("3") + "' ";
+            } else {
+                sql += "AND color = '" + request.get("3") + "' ";
+            }
+        }
+
+        if (!request.get("4").equals("--Seleccionar--")) {
+            if (sql.equals("")) {
+                sql += "cambio = '" + request.get("4") + "'";
+            } else {
+                sql += "AND cambio = '" + request.get("4") + "' ";
+            }
+        }
+        sql += "AND id_usuario != " + request.get("5");
+        return sql;
+    }
+
     private static String[] INSERTNEWAUTO(JSONObject datadic, JSONObject request) {
         DATADICS dic = DATADICS.INSERTNEWAUTO;
         JSONObject operationObject = (JSONObject) datadic.get(dic.getValue());
@@ -526,6 +572,20 @@ public class Peticiones {
             (String) operationObject.get("table"),
             (String) operationObject.get("where"),
             "'" + request.get("1").toString() + "'"
+        };
+    }
+
+    private static String[] FILTRARAUTOS(JSONObject datadic, JSONObject request) {
+        DATADICS dic = DATADICS.FILTRARAUTOS;
+        JSONObject operationObject = (JSONObject) datadic.get(dic.getValue());
+
+        String sqlFilter = new Peticiones().creatingFilterAutos(request);
+
+        return new String[]{
+            (String) operationObject.get("select"),
+            (String) operationObject.get("table"),
+            (String) operationObject.get("where"),
+            sqlFilter
         };
     }
 }

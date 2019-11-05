@@ -29,6 +29,14 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
                                 .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
                 )
         );
+
+        menu_feedback.setIcon(
+                new ImageIcon(
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.feedback")))
+                                .getImage()
+                                .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
+                )
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -41,7 +49,7 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         jMenuItem1 = new javax.swing.JMenuItem();
         jMenu1 = new javax.swing.JMenu();
         menu_vender = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
+        menu_feedback = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
@@ -88,15 +96,15 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         });
         jMenu1.add(menu_vender);
 
-        jMenuItem2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
-        jMenuItem2.setText("Ver Comentarios");
-        jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
+        menu_feedback.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        menu_feedback.setText("Ver Comentarios");
+        menu_feedback.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu_feedback.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jMenuItem2ActionPerformed(evt);
+                menu_feedbackActionPerformed(evt);
             }
         });
-        jMenu1.add(jMenuItem2);
+        jMenu1.add(menu_feedback);
 
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/catalogo.png"))); // NOI18N
@@ -137,10 +145,10 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
         global.getContainer().add(new Frame_Vender());
     }//GEN-LAST:event_menu_venderActionPerformed
 
-    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+    private void menu_feedbackActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_feedbackActionPerformed
         this.dispose();
         global.getContainer().add(new Frame_Comentarios());
-    }//GEN-LAST:event_jMenuItem2ActionPerformed
+    }//GEN-LAST:event_menu_feedbackActionPerformed
 
     private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
         this.dispose();
@@ -152,9 +160,9 @@ public class Frame_Graph extends javax.swing.JInternalFrame {
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu menuVerPerfil;
+    private javax.swing.JMenuItem menu_feedback;
     private javax.swing.JMenuItem menu_vender;
     private javax.swing.JPanel panelContent;
     // End of variables declaration//GEN-END:variables

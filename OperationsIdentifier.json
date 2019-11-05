@@ -137,5 +137,10 @@
         "table": "usuarios",
         "where": "WHERE correo =",
         "value1": "[UserInput]"
+    },
+    "S011_FILTRARAUTOS":{
+        "select": "SELECT * FROM",
+        "table": "autos",
+        "where": "WHERE"
     }
 }
