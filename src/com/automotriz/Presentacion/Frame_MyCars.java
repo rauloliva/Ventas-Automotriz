@@ -8,8 +8,9 @@ import java.awt.Font;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_MyCars extends javax.swing.JDialog {
+public class Frame_MyCars extends javax.swing.JDialog implements Constants<Frame_MyCars> {
 
     private DefaultTableModel model;
     private ArrayList<AutoVO> autosVO;
@@ -18,14 +19,15 @@ public class Frame_MyCars extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
         setLocationRelativeTo(null);
-        initFrame();
+        initFrame(this);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_MyCars c) {
         String name = ReadProperties.props.getProperty("name.MyCars");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         initTable();
         getCars();

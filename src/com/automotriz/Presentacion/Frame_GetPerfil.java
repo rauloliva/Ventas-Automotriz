@@ -5,23 +5,25 @@ import java.awt.Color;
 import java.awt.Image;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_GetPerfil extends javax.swing.JDialog {
-    
+public class Frame_GetPerfil extends javax.swing.JDialog implements Constants<Frame_GetPerfil> {
+
     public Frame_GetPerfil(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        this.initFrame();
+        initFrame(this);
         this.setLocationRelativeTo(null);
         //set the text from properties
         String value = ReadProperties.props.getProperty("getPerfil.title");
         lbl_title.setText(value);
     }
-    
-    private void initFrame() {
+
+    @Override
+    public void initFrame(Frame_GetPerfil c) {
         this.setName(ReadProperties.props.getProperty("name.GetPerfil"));
-        Logger.log("Starting " + this.getName() + " modal...");
-        
+        Logger.log("Starting " + c.getName() + " modal...");
+
         lbl_close.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
@@ -35,16 +37,16 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         label.setSize(panel_top.getWidth(), panel_top.getHeight());
         panel_top.add(label);
         panel_top.setBorder(new BevelBorder(BevelBorder.RAISED));
-        
+
         panel_center.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-        
+
         lbl_admin.setVisible(false);
         lbl_cliente.setVisible(false);
-        
-        this.setIconCliente();
-        this.setIconAdmin();
+
+        c.setIconCliente();
+        c.setIconAdmin();
     }
-    
+
     private void setIconCliente() {
         String value = ReadProperties.props.getProperty("icon.cliente");
         ImageIcon icon = new ImageIcon(getClass().getResource(value));
@@ -55,7 +57,7 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         icon = new ImageIcon(img);
         this.iconCliente.setIcon(icon);
     }
-    
+
     private void setIconAdmin() {
         String value = ReadProperties.props.getProperty("icon.admin");
         ImageIcon icon = new ImageIcon(getClass().getResource(value));
@@ -66,18 +68,7 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
         icon = new ImageIcon(img);
         this.iconAdminstrador.setIcon(icon);
     }
-    
-    private void closeProgram() {
-        int option = JOptionPane.showOptionDialog(this,
-                ReadProperties.props.getProperty("system.shutdown"),
-                ReadProperties.props.getProperty("system.shutdown.title"),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-        
-        if (option == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
-    }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -249,7 +240,7 @@ public class Frame_GetPerfil extends javax.swing.JDialog {
     }//GEN-LAST:event_iconAdminstradorMouseClicked
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        closeProgram();
+        Constants.metohds.closeProgram(this);
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed

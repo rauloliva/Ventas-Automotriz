@@ -3,22 +3,27 @@ package com.automotriz.Presentacion;
 import com.automotriz.logger.Logger;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_PreviewImage extends javax.swing.JDialog {
+public class Frame_PreviewImage extends javax.swing.JDialog implements Constants<Frame_PreviewImage> {
+
+    private String imagePath;
 
     public Frame_PreviewImage(java.awt.Frame parent, boolean modal, String imagePath) {
         super(parent, modal);
+        this.imagePath = imagePath;
         initComponents();
         setLocationRelativeTo(null);
-        initFrame(imagePath);
+        initFrame(this);
     }
 
-    private void initFrame(String imagePath) {
+    @Override
+    public void initFrame(Frame_PreviewImage c) {
         String name = ReadProperties.props.getProperty("name.PreviewImage");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
-        seePreview(imagePath);
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
+        seePreview(c.imagePath);
         setVisible(true);
     }
 

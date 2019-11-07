@@ -15,8 +15,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_AutoInfo extends javax.swing.JDialog {
+public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Frame_AutoInfo> {
 
     private AutoVO auto;
     private List<String> imgs;
@@ -26,15 +27,16 @@ public class Frame_AutoInfo extends javax.swing.JDialog {
         super(parent, modal);
         this.auto = auto;
         initComponents();
-        initFrame();
+        initFrame(this);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_AutoInfo c) {
         String name = ReadProperties.props.getProperty("name.infoAuto");
-        this.setName(name);
-        this.setTitle(name);
+        c.setName(name);
+        c.setTitle(name);
         lbl_title.setText(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        Logger.log("Starting " + c.getName() + " frame...");
         lbl_close.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))

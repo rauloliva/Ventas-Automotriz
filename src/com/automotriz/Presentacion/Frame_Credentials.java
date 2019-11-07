@@ -6,18 +6,20 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Credentials extends javax.swing.JDialog {
-    
+public class Frame_Credentials extends javax.swing.JDialog implements Constants<Frame_Credentials> {
+
     private boolean isAllowed = false;
-    
+
     public Frame_Credentials(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
-        initFrame();
+        initFrame(this);
     }
-    
-    private void initFrame() {
+
+    @Override
+    public void initFrame(Frame_Credentials c) {
         lbl_close.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
@@ -29,23 +31,12 @@ public class Frame_Credentials extends javax.swing.JDialog {
         setLocationRelativeTo(null);
         setVisible(true);
     }
-    
-    private void closeProgram() {
-        int option = JOptionPane.showOptionDialog(this,
-                ReadProperties.props.getProperty("system.shutdown"),
-                ReadProperties.props.getProperty("system.shutdown.title"),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-        
-        if (option == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
-    }
-    
+
     private void validateAdminRights() {
         Validacion validacion = new Validacion(null)
                 .validateAdminRights(txt_username.getText(), new Hashing(txt_password.getText()).encrypt());
         HashMap message = validacion.getMessage();
-        
+
         if (message != null) {
             JOptionPane.showMessageDialog(this,
                     message.get("message").toString(),
@@ -58,11 +49,11 @@ public class Frame_Credentials extends javax.swing.JDialog {
             this.dispose();
         }
     }
-    
+
     public boolean isAllowed() {
         return isAllowed;
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -227,7 +218,7 @@ public class Frame_Credentials extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        closeProgram();
+        Constants.metohds.closeProgram(this);
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed

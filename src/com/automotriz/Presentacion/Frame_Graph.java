@@ -5,20 +5,22 @@ import java.awt.Color;
 import java.awt.Image;
 import javax.swing.*;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Graph extends javax.swing.JInternalFrame {
+public class Frame_Graph extends javax.swing.JInternalFrame implements Constants<Frame_Graph> {
 
     public Frame_Graph() {
         initComponents();
         setVisible(true);
-        initGraph();
+        initFrame(this);
     }
 
-    private void initGraph() {
+    @Override
+    public void initFrame(Frame_Graph c) {
         String name = ReadProperties.props.getProperty("name.Graph");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         Graph graph = new Graph(panelContent);
         graph.setGraphBarra();

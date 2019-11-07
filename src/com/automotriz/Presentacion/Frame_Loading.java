@@ -4,8 +4,9 @@ import com.automotriz.logger.Logger;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Loading extends javax.swing.JFrame implements Runnable {
+public class Frame_Loading extends javax.swing.JFrame implements Runnable, Constants<Frame_Loading> {
     
     public static boolean stop = false;
     private Thread hilo;
@@ -13,8 +14,13 @@ public class Frame_Loading extends javax.swing.JFrame implements Runnable {
     public Frame_Loading() {
         initComponents();
         this.setLocationRelativeTo(null);
+        initFrame(this);
+    }
+    
+    @Override
+    public void initFrame(Frame_Loading c) {
         //start the thread 
-        hilo = new Thread(this);
+        hilo = new Thread(c);
         hilo.start();
         new Imagen(lbl_img);
     }

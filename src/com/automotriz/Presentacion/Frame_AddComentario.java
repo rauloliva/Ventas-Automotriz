@@ -4,24 +4,25 @@ import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.util.HashMap;
 import javax.swing.*;
-import com.automotriz.Constantes.Constants;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_AddComentario extends javax.swing.JInternalFrame {
+public class Frame_AddComentario extends javax.swing.JInternalFrame implements Constants<Frame_AddComentario> {
 
     private int valoracion = 0;
 
     public Frame_AddComentario() {
         initComponents();
         setVisible(true);
-        initFrame();
+        initFrame(this);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_AddComentario c) {
         String name = ReadProperties.props.getProperty("name.InicioCliente");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
 
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelStars.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));

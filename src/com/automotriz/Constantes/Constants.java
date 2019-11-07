@@ -3,13 +3,14 @@ package com.automotriz.Constantes;
 import com.automotriz.Presentacion.Frame_AddComentario;
 import com.automotriz.Presentacion.ReadProperties;
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 /**
  * Global variables
  *
  * @author oliva
  */
-public interface Constants {
+public interface Constants<Class> {
 
     //status of the DB Connection
     int CONEXION_SUCCESS = 0;
@@ -56,4 +57,10 @@ public interface Constants {
     String REPORT_DIR = ReadProperties.props.getProperty("reports.path");
     //number of fields in UsuarioVO
     int NUM_FIELDS = 6;
+
+    public void initFrame(Class c);
+    
+    public GlobalMethods metohds = new GlobalMethods();
 }
+
+

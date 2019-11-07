@@ -6,8 +6,9 @@ import java.awt.Frame;
 import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_SignIn extends javax.swing.JDialog {
+public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame_SignIn> {
 
     private Frame parent;
 
@@ -15,15 +16,16 @@ public class Frame_SignIn extends javax.swing.JDialog {
         super(parent, modal);
         this.parent = parent;
         initComponents();
-        initFrame();
+        initFrame(this);
     }
 
-    private void initFrame() {
-        this.setLocationRelativeTo(this);
+    @Override
+    public void initFrame(Frame_SignIn c) {
+        this.setLocationRelativeTo(c);
         String name = ReadProperties.props.getProperty("name.SignIn") + Frame_LogIn.perfil;
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
 
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelForm.setBorder(new BevelBorder(BevelBorder.RAISED));

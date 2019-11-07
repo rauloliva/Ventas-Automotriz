@@ -13,8 +13,9 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
+public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constants<Frame_LogIn> {
 
     public static String perfil = "";
     private Thread hilo;
@@ -25,7 +26,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         global = null;
         try {
             new Thread(this).start();
-            this.initFrame();
+            this.initFrame(this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -55,19 +56,20 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
         this.setTitle("Perfil: " + perfil);
     }
 
-    private void initFrame() throws Exception {
+    @Override
+    public void initFrame(Frame_LogIn c) {
         //getting the application properties
         ReadProperties.loadApplicationProps();
         //init logs
         Logger.start();
 
         String name = ReadProperties.props.getProperty("name.logIn");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
         //int SQL log
         LoggerQuery.start();
-        this.setLocationRelativeTo(this);
+        c.setLocationRelativeTo(c);
         registrarLabelsDesign();
 
         this.initGetPerfil();
@@ -116,17 +118,6 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
     private void gotToSignIn() {
         Frame_SignIn signIn = new Frame_SignIn(this, true);
         signIn.setVisible(true);
-    }
-
-    private void closeProgram() {
-        int option = JOptionPane.showOptionDialog(this,
-                ReadProperties.props.getProperty("system.shutdown"),
-                ReadProperties.props.getProperty("system.shutdown.title"),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-
-        if (option == JOptionPane.YES_OPTION) {
-            System.exit(0);
-        }
     }
 
     public void validacion() {
@@ -411,7 +402,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_lbl_registrar_aquiMouseClicked
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        closeProgram();
+        Constants.metohds.closeProgram(this);
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed

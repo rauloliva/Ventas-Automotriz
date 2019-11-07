@@ -8,13 +8,14 @@ import java.awt.Image;
 import java.util.HashMap;
 import javax.swing.*;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Perfil extends javax.swing.JInternalFrame {
+public class Frame_Perfil extends javax.swing.JInternalFrame implements Constants<Frame_Perfil> {
 
     public Frame_Perfil() {
         initComponents();
         setVisible(true);
-        initFrame();
+        initFrame(this);
     }
 
     private void editarCampos(boolean flag) {
@@ -26,12 +27,13 @@ public class Frame_Perfil extends javax.swing.JInternalFrame {
         btn_saveChanges.setEnabled(flag);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_Perfil c) {
         String name = ReadProperties.props.getProperty("name.Perfil");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
-        this.panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
+        c.panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         //disable all the fields
         editarCampos(false);
 

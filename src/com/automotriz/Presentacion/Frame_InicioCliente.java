@@ -6,18 +6,20 @@ import java.util.Properties;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_InicioCliente extends javax.swing.JInternalFrame {
+public class Frame_InicioCliente extends javax.swing.JInternalFrame implements Constants<Frame_InicioCliente> {
 
     private Wallpaper wallpaper;
 
     public Frame_InicioCliente() {
         initComponents();
-        initFrame();
+        initFrame(this);
         setVisible(true);
     }
 
-    public void initFrame() {
+    @Override
+    public void initFrame(Frame_InicioCliente c) {
         wallpaper = new Wallpaper(lbl_fondo);
         menu_vender.setIcon(
                 new ImageIcon(

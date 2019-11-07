@@ -2,7 +2,6 @@ package com.automotriz.Presentacion;
 
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.VO.AutoVO;
-import com.automotriz.VO.Session;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.io.File;
@@ -10,15 +9,14 @@ import java.sql.Connection;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
-import javax.swing.JDesktopPane;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.filechooser.FileFilter;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Vender extends javax.swing.JInternalFrame {
+public class Frame_Vender extends javax.swing.JInternalFrame implements Constants<Frame_Vender> {
 
     private DefaultListModel imagesName;
     /*As key will be the Name's image
@@ -32,7 +30,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
         this.imagesPath = new HashMap();
         this.imagesName = new DefaultListModel();
         setVisible(true);
-        initFrame();
+        initFrame(this);
     }
 
     public Frame_Vender(AutoVO autoVO) {
@@ -41,15 +39,16 @@ public class Frame_Vender extends javax.swing.JInternalFrame {
         this.imagesPath = new HashMap();
         this.imagesName = new DefaultListModel();
         setVisible(true);
-        initFrame();
+        initFrame(this);
         setAutoSelected();
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_Vender c) {
         String name = ReadProperties.props.getProperty("name.Vender");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
 
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.grey")));

@@ -10,18 +10,20 @@ import javax.swing.border.BevelBorder;
 import javax.swing.border.EtchedBorder;
 import static com.automotriz.Constantes.Global.global;
 import javax.swing.JPanel;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable {
+public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_Catalogo> {
 
     private List<AutoVO> autosVO;
 
     public Frame_Catalogo() {
         initComponents();
-        initFrame();
+        initFrame(this);
         this.setVisible(true);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_Catalogo c) {
         panelFiltros.setVisible(false);
         panelFiltros.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));

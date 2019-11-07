@@ -8,8 +8,9 @@ import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_EditUser extends javax.swing.JDialog {
+public class Frame_EditUser extends javax.swing.JDialog implements Constants<Frame_EditUser> {
 
     private UsuarioVO usuario;
 
@@ -19,15 +20,16 @@ public class Frame_EditUser extends javax.swing.JDialog {
         this.setLocationRelativeTo(null);
         this.setTitle("Editar Usuario");
         this.usuario = usuario;
-        initFrame();
+        initFrame(this);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_EditUser c) {
         String name = ReadProperties.props.getProperty("name.EditUser");
-        this.setName(name);
-        this.setTitle(name);
+        c.setName(name);
+        c.setTitle(name);
         lbl_title.setText(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        Logger.log("Starting " + c.getName() + " frame...");
         lbl_username.setText("Usuario: " + usuario.getUsuario().toUpperCase());
 
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));

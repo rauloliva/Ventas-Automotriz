@@ -13,8 +13,9 @@ import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Runnable {
+public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_EnviarCorreo> {
 
     private String destinatario;
     private Thread hiloProgress = new Thread();
@@ -25,11 +26,12 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     public Frame_EnviarCorreo(String dest) {
         initComponents();
         destinatario = dest;
-        initFrame();
+        initFrame(this);
         setVisible(true);
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_EnviarCorreo c) {
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         txt_mail_origen.setText(global.getSession().getMail());
         txt_mail_dest.setText(destinatario);

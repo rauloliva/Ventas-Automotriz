@@ -12,8 +12,9 @@ import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.VO.Session;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
+public class Frame_Inicio extends javax.swing.JFrame implements Runnable, Constants<Frame_Inicio> {
 
     private Thread hiloDate;
     private Session session;
@@ -21,7 +22,7 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
     public Frame_Inicio(Session session) {
         initComponents();
         this.session = session;
-        initFrame();
+        initFrame(this);
     }
 
     @Override
@@ -53,11 +54,12 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
                 + (second >= 0 && second <= 9 ? "0" + second : second) + " " + time;
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_Inicio c) {
         //initialize the global variables (parent, container, session)
         initGlobal();
         //Start the date thread
-        hiloDate = new Thread(this);
+        hiloDate = new Thread(c);
         hiloDate.start();
         lbl_close.setIcon(
                 new ImageIcon(
@@ -73,17 +75,17 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
         } else {
             name = ReadProperties.props.getProperty("name.Inicio");
         }
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
 
-        this.setLocationRelativeTo(null);
-        this.setVisible(true);
+        c.setLocationRelativeTo(null);
+        c.setVisible(true);
         //set the log off icon
-        lbl_logOff.setIcon(new ImageIcon(this.getClass().getResource(ReadProperties.props.getProperty("icon.logOff"))));
+        lbl_logOff.setIcon(new ImageIcon(c.getClass().getResource(ReadProperties.props.getProperty("icon.logOff"))));
 
         //set the home icon
-        ImageIcon home = new ImageIcon(this.getClass().getResource(ReadProperties.props.getProperty("icon.home")));
+        ImageIcon home = new ImageIcon(c.getClass().getResource(ReadProperties.props.getProperty("icon.home")));
         Image image = home.getImage();
         image = image.getScaledInstance(lbl_inicio.getWidth(), lbl_inicio.getHeight(), Image.SCALE_SMOOTH);
         home = new ImageIcon(image);
@@ -152,17 +154,6 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
             menusPanel.add(new Frame_Graph());
         } else {
             menusPanel.add(new Frame_InicioCliente());
-        }
-    }
-
-    private void closeProgram() {
-        int option = JOptionPane.showOptionDialog(this,
-                ReadProperties.props.getProperty("system.shutdown"),
-                ReadProperties.props.getProperty("system.shutdown.title"),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"SI", "NO"}, "NO");
-
-        if (option == JOptionPane.YES_OPTION) {
-            System.exit(0);
         }
     }
 
@@ -348,7 +339,7 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable {
     }//GEN-LAST:event_lbl_logOffMouseExited
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        closeProgram();
+        Constants.metohds.closeProgram(this);
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed

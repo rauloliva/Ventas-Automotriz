@@ -14,17 +14,17 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Usuarios extends javax.swing.JInternalFrame {
+public class Frame_Usuarios extends javax.swing.JInternalFrame implements Constants<Frame_Usuarios> {
 
     private DefaultTableModel model;
     private ArrayList<UsuarioVO> usuariosVO;
-    private int count = 0;
 
     public Frame_Usuarios() {
         initComponents();
         setVisible(true);
-        initFrame();
+        initFrame(this);
     }
 
     private void goToPerfil() {
@@ -32,11 +32,12 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame {
         global.getContainer().add(new Frame_Perfil());
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_Usuarios c) {
         String name = ReadProperties.props.getProperty("name.Usuarios");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         //load all the estatus available in the app
         loadEstatus();

@@ -5,13 +5,14 @@ import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.util.List;
 import javax.swing.ImageIcon;
+import com.automotriz.Constantes.Constants;
 
-public class Frame_Comentarios extends javax.swing.JInternalFrame implements Runnable {
+public class Frame_Comentarios extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_Comentarios> {
 
     public Frame_Comentarios() {
         initComponents();
         this.setVisible(true);
-        initFrame();
+        initFrame(this);
         this.setTitle("Comentarios");
         getFeedBack("");
         //
@@ -37,12 +38,13 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         }
     }
 
-    private void initFrame() {
+    @Override
+    public void initFrame(Frame_Comentarios c) {
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         String name = ReadProperties.props.getProperty("name.comentarios");
-        this.setName(name);
-        this.setTitle(name);
-        Logger.log("Starting " + this.getName() + " frame...");
+        c.setName(name);
+        c.setTitle(name);
+        Logger.log("Starting " + c.getName() + " frame...");
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelComentario1.setBackground(Color.decode(ReadProperties.props.getProperty("color.orangeWhite")));
         panelComentario2.setBackground(Color.decode(ReadProperties.props.getProperty("color.orangeWhite")));
