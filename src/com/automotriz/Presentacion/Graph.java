@@ -14,12 +14,9 @@ import org.jfree.data.xy.XYSeriesCollection;
 public class Graph {
 
     private JPanel parent;
-    private int width, height;
 
     public Graph(JPanel parent) {
         this.parent = parent;
-        this.width = parent.getWidth();
-        this.height = parent.getHeight();
     }
 
     public void setGraphBarra() {

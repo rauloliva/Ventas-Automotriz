@@ -62,6 +62,12 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
         ReadProperties.loadApplicationProps();
         //init logs
         Logger.start();
+        
+        //setting a logo for the system
+        this.setIconImage(new ImageIcon(
+                new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.logo.small"))).getImage()
+                        .getScaledInstance(45, 40, Image.SCALE_DEFAULT)).getImage()
+        );
 
         String name = ReadProperties.props.getProperty("name.logIn");
         c.setName(name);
