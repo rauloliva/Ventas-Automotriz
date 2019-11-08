@@ -15,7 +15,6 @@ import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.*;
 import com.automotriz.Datos.Mail;
-import com.automotriz.Constantes.Constants;
 import com.automotriz.VO.Session;
 
 public class Peticiones_test {

@@ -698,11 +698,13 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         );
 
         menu_options.setText("Opciones");
+        menu_options.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         menu_options.setFont(new java.awt.Font("Segoe UI", 0, 22)); // NOI18N
 
         jMenuItem2.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/reporte.png"))); // NOI18N
         jMenuItem2.setText("Generar Reporte");
+        jMenuItem2.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem2ActionPerformed(evt);
@@ -713,6 +715,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         jMenuItem3.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/download.png"))); // NOI18N
         jMenuItem3.setText("Exportar Template");
+        jMenuItem3.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem3ActionPerformed(evt);
@@ -723,6 +726,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         jMenuItem4.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         jMenuItem4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/com/automotriz/Presentacion/img/importar.png"))); // NOI18N
         jMenuItem4.setText("Importar Datos");
+        jMenuItem4.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jMenuItem4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jMenuItem4ActionPerformed(evt);

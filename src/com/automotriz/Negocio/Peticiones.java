@@ -57,7 +57,8 @@ public class Peticiones {
         GETCATALOGO("S009_GETCATALOGO"),
         GETVENDEDOR("S009_GETVENDEDOR"),
         GETVENDEDORNAME("S010_GETVENDEDORNAME"),
-        FILTRARAUTOS("S011_FILTRARAUTOS");
+        FILTRARAUTOS("S011_FILTRARAUTOS"),
+        LISTAUTOSBYID("S012_LISTAUTOSBYID");
 
         private final String value;
 
@@ -172,6 +173,9 @@ public class Peticiones {
                     break;
                 case "FILTRARAUTOS":
                     sqlData = FILTRARAUTOS(operations, request);
+                    break;
+                case "LISTAUTOSBYID":
+                    sqlData = LISTAUTOSBYID(operations, request);
                     break;
             }
             //returns the query from operationsIdentifier
@@ -577,6 +581,20 @@ public class Peticiones {
 
     private static String[] FILTRARAUTOS(JSONObject datadic, JSONObject request) {
         DATADICS dic = DATADICS.FILTRARAUTOS;
+        JSONObject operationObject = (JSONObject) datadic.get(dic.getValue());
+
+        String sqlFilter = new Peticiones().creatingFilterAutos(request);
+
+        return new String[]{
+            (String) operationObject.get("select"),
+            (String) operationObject.get("table"),
+            (String) operationObject.get("where"),
+            sqlFilter
+        };
+    }
+
+    private static String[] LISTAUTOSBYID(JSONObject datadic, JSONObject request) {
+        DATADICS dic = DATADICS.LISTAUTOSBYID;
         JSONObject operationObject = (JSONObject) datadic.get(dic.getValue());
 
         String sqlFilter = new Peticiones().creatingFilterAutos(request);

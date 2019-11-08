@@ -37,6 +37,14 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame implements C
                 )
         );
 
+        menu_autos.setIcon(
+                new ImageIcon(
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.autos")))
+                                .getImage()
+                                .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
+                )
+        );
+
         lbl_welcome.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.welcome")))
@@ -44,6 +52,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame implements C
                                 .getScaledInstance(540, 160, Image.SCALE_DEFAULT)
                 )
         );
+
     }
 
     @SuppressWarnings("unchecked")
@@ -61,6 +70,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame implements C
         menu_vender = new javax.swing.JMenuItem();
         jMenuItem1 = new javax.swing.JMenuItem();
         menu_feedback = new javax.swing.JMenuItem();
+        menu_autos = new javax.swing.JMenuItem();
 
         panelContent.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED, new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0), new java.awt.Color(0, 0, 0)));
         panelContent.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -124,6 +134,16 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame implements C
         });
         jMenu1.add(menu_feedback);
 
+        menu_autos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        menu_autos.setText("Mis Autos (Estatus)");
+        menu_autos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu_autos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_autosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_autos);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -166,6 +186,10 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame implements C
         global.getContainer().add(new Frame_AddComentario());
     }//GEN-LAST:event_menu_feedbackActionPerformed
 
+    private void menu_autosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_autosActionPerformed
+        new Frame_AutoStatus(null, true);
+    }//GEN-LAST:event_menu_autosActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
@@ -174,6 +198,7 @@ public class Frame_InicioCliente extends javax.swing.JInternalFrame implements C
     private javax.swing.JLabel lbl_fondo;
     private javax.swing.JLabel lbl_welcome;
     private javax.swing.JMenu menuVerPerfil;
+    private javax.swing.JMenuItem menu_autos;
     private javax.swing.JMenuItem menu_feedback;
     private javax.swing.JMenuItem menu_vender;
     private javax.swing.JMenuItem menu_verPerfil;
