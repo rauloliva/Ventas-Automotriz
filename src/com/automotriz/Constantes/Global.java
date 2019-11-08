@@ -1,6 +1,6 @@
 package com.automotriz.Constantes;
 
-import com.automotriz.VO.Session;
+import com.automotriz.VO.SessionVO;
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 
@@ -15,9 +15,9 @@ public class Global {
     public static Global global;
     private JFrame parent;
     private JDesktopPane container;
-    private Session session;
+    private SessionVO session;
 
-    public Global(JFrame parent, JDesktopPane container, Session session) {
+    public Global(JFrame parent, JDesktopPane container, SessionVO session) {
         if (global == null) {
             global = new Global();
             global.setParent(parent);
@@ -45,12 +45,11 @@ public class Global {
         this.container = container;
     }
 
-    public Session getSession() {
+    public SessionVO getSession() {
         return session;
     }
 
-    public void setSession(Session session) {
+    public void setSession(SessionVO session) {
         this.session = session;
     }
-
 }

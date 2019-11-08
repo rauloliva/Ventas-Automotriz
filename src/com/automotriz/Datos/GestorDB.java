@@ -2,7 +2,6 @@ package com.automotriz.Datos;
 
 import com.automotriz.VO.AutoVO;
 import com.automotriz.VO.ComentarioVO;
-import com.automotriz.VO.Session;
 import com.automotriz.VO.UsuarioVO;
 import java.sql.*;
 import com.automotriz.logger.Logger;
@@ -11,16 +10,22 @@ import org.json.simple.JSONObject;
 import com.automotriz.Constantes.Constants;
 
 public class GestorDB {
-
+    
     private String query;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private Connection cnn;
     private Object objVO;
-
+    
     public GestorDB() {
     }
 
+    /**
+     * Set the object where the data will be saved after retrieving from
+     * database
+     *
+     * @param objVO The Object VO
+     */
     public void setObjectVO(Object objVO) {
         this.objVO = objVO;
     }
@@ -45,7 +50,7 @@ public class GestorDB {
     public void putQuery(String query) {
         this.query = query;
     }
-
+    
     public static Connection sendSQLConnection() {
         Logger.log("Requesting the database connection");
         Connection con = null;
@@ -65,7 +70,7 @@ public class GestorDB {
      */
     public JSONObject sendQuery(JSONObject request) {
         Conexion conexion = new Conexion();
-
+        
         if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
             Logger.log("Connection Success");
             LoggerQuery.logQuery(this.query);
@@ -117,21 +122,11 @@ public class GestorDB {
             rs = ps.executeQuery();
             ResultSet rsTemp = rs;
             int rowsFetched = resultSetCount(rsTemp);
-
+            
             Object[] obj = new Object[rowsFetched];
             int i = 0;
             while (rs.next()) {
-                if (objVO instanceof Session) {
-                    obj[i] = new Session(
-                            rs.getInt("id"),
-                            rs.getString("usuario"),
-                            rs.getString("contrasena"),
-                            rs.getString("correo"),
-                            rs.getString("telefono"),
-                            rs.getString("perfil"),
-                            rs.getString("nombre")
-                    );
-                } else if (objVO instanceof UsuarioVO) {
+                if (objVO instanceof UsuarioVO) {
                     obj[i] = new UsuarioVO(
                             rs.getInt("id"),
                             rs.getString("usuario"),
@@ -140,7 +135,8 @@ public class GestorDB {
                             rs.getString("perfil"),
                             rs.getString("estatus"),
                             rs.getString("telefono"),
-                            rs.getString("nombre")
+                            rs.getString("nombre"),
+                            rs.getString("permisos")
                     );
                 } else if (objVO instanceof AutoVO) {
                     obj[i] = new AutoVO(
@@ -227,7 +223,7 @@ public class GestorDB {
             int res = ps.executeUpdate();
             request.put("response", (res > 0) ? Constants.QUERY_SUCCESS : Constants.QUERY_FAILURE);
             return request;
-
+            
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());

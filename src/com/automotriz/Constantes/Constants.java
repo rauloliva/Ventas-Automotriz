@@ -3,12 +3,12 @@ package com.automotriz.Constantes;
 import com.automotriz.Presentacion.Frame_AddComentario;
 import com.automotriz.Presentacion.ReadProperties;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 
 /**
  * Global variables
  *
  * @author oliva
+ * @param <Class>
  */
 public interface Constants<Class> {
 
@@ -37,6 +37,10 @@ public interface Constants<Class> {
 
     //The file that contains the SQL queries
     String JSON_FILE = ReadProperties.props.getProperty("operations.path");
+    
+    //Logs file path
+    String LOGS_DIR_NAME = ReadProperties.props.getProperty("logs.dir");
+    
     //
     int COMMENTS_PER_PAGE = 4;
 
