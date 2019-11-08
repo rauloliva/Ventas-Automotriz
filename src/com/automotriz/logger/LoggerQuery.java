@@ -1,14 +1,13 @@
 package com.automotriz.logger;
 
+import com.automotriz.Constantes.Constants;
 import com.automotriz.Presentacion.ReadProperties;
 import java.io.File;
 import java.io.FileWriter;
 
 public class LoggerQuery {
 
-    public static String sThis;
     private static String logFile;
-    private final static String dirName = "logs";
     private static boolean debugMode;
 
     /**
@@ -16,8 +15,8 @@ public class LoggerQuery {
      */
     public static void start() {
         debugMode = Boolean.parseBoolean(ReadProperties.props.getProperty("mode.query.debug"));
-        new File(dirName).mkdir();
-        logFile = dirName + "/" + "LogQuery.txt";
+        new File(Constants.LOGS_DIR_NAME).mkdir();
+        logFile = Constants.LOGS_DIR_NAME + "/" + "LogQuery.txt";
 
         File file = new File(logFile);
         if (file.exists()) {
@@ -26,9 +25,9 @@ public class LoggerQuery {
     }
 
     /**
-     * Writes a SQL query into this directory: 'logs/'
+     * Writes a SQL query into this directory: 'logs/' @dirName
      *
-     * @param context context to set
+     * @param query query to write
      */
     public static void logQuery(String query) {
         if (debugMode) {

@@ -11,10 +11,12 @@ import javax.swing.border.EtchedBorder;
 import static com.automotriz.Constantes.Global.global;
 import javax.swing.JPanel;
 import com.automotriz.Constantes.Constants;
+import javax.swing.JOptionPane;
 
 public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_Catalogo> {
 
     private List<AutoVO> autosVO;
+    private Object[][] components;
 
     public Frame_Catalogo() {
         initComponents();
@@ -27,13 +29,16 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         panelFiltros.setVisible(false);
         panelFiltros.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
+        saveComponents();
         getCatalogo("");
         setMarcas();
         setModeloValue();
         setColores();
         setCambios();
         enableFiltros(false);
-        //
+        /* start a thread to know when the frame closes 
+            so it can reset the index from DataModel class
+         */
         new Thread(this).start();
     }
 
@@ -53,6 +58,23 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }
     }
 
+    private void saveComponents() {
+        components = new Object[][]{
+            {lbl_marca1, lbl_modelo1, lbl_precio1, lbl_imagenes1},
+            {lbl_marca2, lbl_modelo2, lbl_precio2, lbl_imagenes2},
+            {lbl_marca3, lbl_modelo3, lbl_precio3, lbl_imagenes3},
+            {lbl_marca4, lbl_modelo4, lbl_precio4, lbl_imagenes4},
+            {lbl_marca5, lbl_modelo5, lbl_precio5, lbl_imagenes5},
+            {lbl_marca6, lbl_modelo6, lbl_precio6, lbl_imagenes6},
+            {lbl_marca7, lbl_modelo7, lbl_precio7, lbl_imagenes7},
+            {lbl_marca8, lbl_modelo8, lbl_precio8, lbl_imagenes8},
+            {lbl_marca9, lbl_modelo9, lbl_precio9, lbl_imagenes9},
+            {lbl_marca10, lbl_modelo10, lbl_precio10, lbl_imagenes10},
+            {lbl_marca11, lbl_modelo11, lbl_precio11, lbl_imagenes11},
+            {lbl_marca12, lbl_modelo12, lbl_precio12, lbl_imagenes12}
+        };
+    }
+
     private void getCatalogo(String flag) {
         Validacion validacion = new Validacion(new Object[]{
             global.getSession().getId()
@@ -63,20 +85,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
     private void setCatalogo(String flag) {
         if (autosVO != null) {
-            DataModel model = new DataModel(new Object[][]{
-                {lbl_marca1, lbl_modelo1, lbl_precio1, lbl_imagenes1},
-                {lbl_marca2, lbl_modelo2, lbl_precio2, lbl_imagenes2},
-                {lbl_marca3, lbl_modelo3, lbl_precio3, lbl_imagenes3},
-                {lbl_marca4, lbl_modelo4, lbl_precio4, lbl_imagenes4},
-                {lbl_marca5, lbl_modelo5, lbl_precio5, lbl_imagenes5},
-                {lbl_marca6, lbl_modelo6, lbl_precio6, lbl_imagenes6},
-                {lbl_marca7, lbl_modelo7, lbl_precio7, lbl_imagenes7},
-                {lbl_marca8, lbl_modelo8, lbl_precio8, lbl_imagenes8},
-                {lbl_marca9, lbl_modelo9, lbl_precio9, lbl_imagenes9},
-                {lbl_marca10, lbl_modelo10, lbl_precio10, lbl_imagenes10},
-                {lbl_marca11, lbl_modelo11, lbl_precio11, lbl_imagenes11},
-                {lbl_marca12, lbl_modelo12, lbl_precio12, lbl_imagenes12}
-            }, autosVO, btn_atras, btn_siguiente);
+            DataModel model = new DataModel(components, autosVO, btn_atras, btn_siguiente);
 
             model.setPaneles(new JPanel[]{
                 panelAuto1,
@@ -119,7 +128,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         int year = c.get(Calendar.YEAR);
         spn_modelo.setValue(year);
         //set a range to the modelo
-        SpinnerNumberModel model1 = new SpinnerNumberModel(year, 1950, year, 1.0);
+        SpinnerNumberModel model1 = new SpinnerNumberModel(year, 0, year, 1.0);
         spn_modelo.setModel(model1);
     }
 
@@ -229,6 +238,13 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }, new AutoVO()).filtrarAutos();
 
         autosVO = validacion.getAutos();
+        if (autosVO == null) {
+            resetCatalogo();
+            JOptionPane.showMessageDialog(this,
+                    ReadProperties.props.getProperty("catalogo.empty"),
+                    ReadProperties.props.getProperty("catalogo.empty.title"),
+                    JOptionPane.INFORMATION_MESSAGE);
+        }
         setCatalogo("");
     }
 
@@ -431,11 +447,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                     .addComponent(chb_filtar)
                     .addComponent(btn_listarTodo)
                     .addComponent(btn_cleanFields))
-                .addContainerGap(17, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         btn_atras.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_atras.setText("Atras");
+        btn_atras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_atras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_atrasActionPerformed(evt);
@@ -444,6 +461,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
 
         btn_siguiente.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_siguiente.setText("Siguiente");
+        btn_siguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_siguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_siguienteActionPerformed(evt);
@@ -1164,7 +1182,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(panelFiltros, javax.swing.GroupLayout.PREFERRED_SIZE, 1138, Short.MAX_VALUE))
+                        .addComponent(panelFiltros, javax.swing.GroupLayout.DEFAULT_SIZE, 1140, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(387, 387, 387)
                         .addComponent(btn_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)

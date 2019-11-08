@@ -470,7 +470,13 @@ public class Peticiones {
                 sql += "AND cambio = '" + request.get("4") + "' ";
             }
         }
-        sql += "AND id_usuario != " + request.get("5");
+
+        if (!sql.equals("")) {
+            sql += "AND id_usuario != " + request.get("5");
+        } else {
+            sql += "id_usuario != " + request.get("5");
+        }
+
         return sql;
     }
 

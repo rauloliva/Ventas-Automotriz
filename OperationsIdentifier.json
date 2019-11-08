@@ -43,7 +43,8 @@
         "field1": "usuario=",
         "value1": "[UserInput]",
         "field2": "AND contrasena=",
-        "value2": "[UserInput]"
+        "value2": "[UserInput]",
+        "permisos": "AND permisos='ACCESO_TOTAL'"
     },
     "S003_UPDATEUSER": {
         "update": "UPDATE",

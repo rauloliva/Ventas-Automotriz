@@ -17,7 +17,7 @@ import com.automotriz.Constantes.Constants;
 
 public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_EnviarCorreo> {
 
-    private String destinatario;
+    private final String destinatario;
     private Thread hiloProgress = new Thread();
     private File fileAttached = null;
     private Thread hiloSend;
@@ -138,9 +138,9 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
     private void sendMail() {
         lbl_send.setBorder(new BevelBorder(BevelBorder.LOWERED));
         Validacion validacion = new Validacion(new Object[]{
-            /*txt_mail_dest.getText()*/"ralf.raul28@gmail.com",
-            txt_asunto.getText(),
-            txa_mensaje.getText(),
+            txt_mail_dest.getText(),
+            txt_asunto.getText().trim(),
+            txa_mensaje.getText().trim(),
             fileAttached
         }).sendMailToVendedor();
 

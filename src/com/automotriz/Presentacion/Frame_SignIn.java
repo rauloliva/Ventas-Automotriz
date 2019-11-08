@@ -76,12 +76,6 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
                         ReadProperties.props.getProperty("signin.msg.goToLogIn.title"),
                         JOptionPane.INFORMATION_MESSAGE);
             }
-        } else {
-            /*FIXME: dont remember why is this for*/
-            JOptionPane.showMessageDialog(this,
-                    "Porfavor inicia session",
-                    "Inicio de session",
-                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -152,6 +146,7 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
 
         btn_login.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         btn_login.setText("jButton1");
+        btn_login.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_login.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_loginActionPerformed(evt);
@@ -212,6 +207,7 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
 
         btn_crear.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         btn_crear.setText("jButton1");
+        btn_crear.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_crear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_crearActionPerformed(evt);
@@ -347,7 +343,9 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
     }//GEN-LAST:event_btn_crearActionPerformed
 
     private void txt_usernameFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_txt_usernameFocusLost
-        validateUserName();
+        if (!txt_username.getText().equals("")) {
+            validateUserName();
+        }
     }//GEN-LAST:event_txt_usernameFocusLost
 
     private void txt_usernameKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txt_usernameKeyTyped

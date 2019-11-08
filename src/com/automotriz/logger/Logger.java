@@ -3,12 +3,12 @@ package com.automotriz.logger;
 import com.automotriz.Presentacion.ReadProperties;
 import java.io.*;
 import java.util.*;
+import com.automotriz.Constantes.Constants;
 
 public class Logger {
 
     public static String sThis;
     private static String logFile;
-    private final static String dirName = "logs";
     private static boolean debugMode;
 
     /**
@@ -16,8 +16,8 @@ public class Logger {
      */
     public static void start() {
         debugMode = Boolean.parseBoolean(ReadProperties.props.getProperty("mode.debug"));
-        new File(dirName).mkdir();
-        logFile = dirName + "/" + getDateFileName() + "Log.txt";
+        new File(Constants.LOGS_DIR_NAME).mkdir();
+        logFile = Constants.LOGS_DIR_NAME + "/" + getDateFileName() + "Log.txt";
         System.out.println("Debug Mode " + (debugMode ? "Activated" : "Disabled"));
     }
 

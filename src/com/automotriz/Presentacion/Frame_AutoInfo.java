@@ -19,7 +19,7 @@ import com.automotriz.Constantes.Constants;
 
 public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Frame_AutoInfo> {
 
-    private AutoVO auto;
+    private final AutoVO auto;
     private List<String> imgs;
     private int count_imgs = 0;
 
@@ -37,13 +37,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
         c.setTitle(name);
         lbl_title.setText(name);
         Logger.log("Starting " + c.getName() + " frame...");
-        lbl_close.setIcon(
-                new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
-                                .getImage()
-                                .getScaledInstance(lbl_close.getWidth(), lbl_close.getHeight(), Image.SCALE_DEFAULT)
-                )
-        );
+        Constants.metohds.setCloseIcon(lbl_close, this);
         //set the selected auto information int the form
         setAutoInfo();
         getDatosVendedor();
@@ -103,7 +97,6 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
 
     private void setIcon(String imagePath, JLabel lbl) {
         lbl.setIcon(null);
-        System.out.println("\n");
         Image image = new ImageIcon(getClass().getResource(imagePath)).getImage();
         image = image.getScaledInstance(57, 47, Image.SCALE_DEFAULT);
         lbl.setIcon(new ImageIcon(image));
@@ -174,10 +167,6 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
             this.dispose();
             global.getContainer().add(new Frame_EnviarCorreo(lbl_correo_vendedor.getText().replace("Correo:", "").trim()));
         }
-    }
-
-    private void closeWindow() {
-        this.dispose();
     }
 
     @SuppressWarnings("unchecked")
@@ -515,7 +504,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
     }//GEN-LAST:event_lbl_correo_vendedorMouseReleased
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        closeWindow();
+        this.dispose();
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed

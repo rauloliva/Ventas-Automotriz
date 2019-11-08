@@ -11,15 +11,15 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
-import com.automotriz.VO.Session;
+import com.automotriz.VO.SessionVO;
 import com.automotriz.Constantes.Constants;
 
 public class Frame_Inicio extends javax.swing.JFrame implements Runnable, Constants<Frame_Inicio> {
 
     private Thread hiloDate;
-    private Session session;
+    private SessionVO session;
 
-    public Frame_Inicio(Session session) {
+    public Frame_Inicio(SessionVO session) {
         initComponents();
         this.session = session;
         initFrame(this);
@@ -56,6 +56,11 @@ public class Frame_Inicio extends javax.swing.JFrame implements Runnable, Consta
 
     @Override
     public void initFrame(Frame_Inicio c) {
+        //setting a logo for the system
+        this.setIconImage(new ImageIcon(
+                new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.logo.small"))).getImage()
+                        .getScaledInstance(45, 40, Image.SCALE_DEFAULT)).getImage()
+        );
         //initialize the global variables (parent, container, session)
         initGlobal();
         //Start the date thread

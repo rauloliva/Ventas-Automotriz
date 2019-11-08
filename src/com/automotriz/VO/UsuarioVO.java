@@ -15,9 +15,9 @@ public class UsuarioVO implements Serializable {
     private String estatus;
     private String telefono;
     private String nombre;
-    
+    private String permisos;
 
-    public UsuarioVO(int id, String usuario, String contraseña, String correo, String perfil, String estatus, String telefono, String nombre) {
+    public UsuarioVO(int id, String usuario, String contraseña, String correo, String perfil, String estatus, String telefono, String nombre, String permisos) {
         this.id = id;
         this.usuario = usuario;
         this.contraseña = contraseña;
@@ -26,6 +26,7 @@ public class UsuarioVO implements Serializable {
         this.estatus = estatus;
         this.telefono = telefono;
         this.nombre = nombre;
+        this.permisos = permisos;
     }
 
     public UsuarioVO() {
@@ -95,9 +96,30 @@ public class UsuarioVO implements Serializable {
         this.nombre = nombre;
     }
 
+    public String getPermisos() {
+        return permisos;
+    }
+
+    public void setPermisos(String permisos) {
+        this.permisos = permisos;
+    }
+
     @Override
     public String toString() {
-        return "UsuarioVO{" + "id=" + id + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", correo=" + correo + ", perfil=" + perfil + ", estatus=" + estatus + ", telefono=" + telefono + '}';
+        return "UsuarioVO{" + "id=" + id + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", correo=" + correo + ", perfil=" + perfil + ", estatus=" + estatus + ", telefono=" + telefono + ", nombre=" + nombre + ", permisos=" + permisos + '}';
+    }
+
+    public SessionVO copyToSession() {
+        //creating a new session
+        SessionVO session = new SessionVO();
+        session.setId(this.id);
+        session.setNombre(this.nombre);
+        session.setUsername(this.usuario);
+        session.setPassword(this.contraseña);
+        session.setMail(this.correo);
+        session.setTelefono(this.telefono);
+        session.setPerfil(this.perfil);
+        return session;
     }
 
     /**

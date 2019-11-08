@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.*;
 import com.automotriz.Datos.Mail;
-import com.automotriz.VO.Session;
+import com.automotriz.VO.SessionVO;
 
 public class Peticiones_test {
 
@@ -640,7 +640,7 @@ public class Peticiones_test {
                 new Object[]{"admin", "123", "ACTIVO"});
 
         Peticiones_test peticion = new Peticiones_test(requestJSON);
-        peticion.setObjectVO(new Session());
+        peticion.setObjectVO(new SessionVO());
         JSONObject response = peticion.getResult();
     }
 }

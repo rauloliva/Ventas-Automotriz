@@ -24,13 +24,7 @@ public class Frame_GetPerfil extends javax.swing.JDialog implements Constants<Fr
         this.setName(ReadProperties.props.getProperty("name.GetPerfil"));
         Logger.log("Starting " + c.getName() + " modal...");
 
-        lbl_close.setIcon(
-                new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
-                                .getImage()
-                                .getScaledInstance(lbl_close.getWidth(), lbl_close.getHeight(), Image.SCALE_DEFAULT)
-                )
-        );
+        Constants.metohds.setCloseIcon(lbl_close, this);
         //Setting an image for the panel above
         JLabel label = new JLabel(new ImageIcon(getClass()
                 .getResource(ReadProperties.props.getProperty("icon.wallpaper"))));

@@ -12,11 +12,12 @@ import com.automotriz.Constantes.Constants;
 public class Report {
 
     private String reportName;
-    private Connection cnn;
+    private final Connection cnn;
 
     /**
      * @param reportName Specify the report name that is in the 'Reports'
      * directory & related to the SQL table
+     * @param cnn The database connection
      */
     public Report(String reportName, Connection cnn) {
         this.reportName = reportName;
@@ -29,12 +30,12 @@ public class Report {
      */
     public void generateReport() {
         try {
-            Logger.log("Creating the " + reportName + " report...");
+            Logger.log("Loading the '" + reportName + "' report...");
             String reportPath = Constants.REPORT_DIR + reportName + ".jrxml";
             JasperReport jr = JasperCompileManager.compileReport(reportPath);
             JasperPrint jp = JasperFillManager.fillReport(jr, null, this.cnn);
-            JasperViewer.viewReport(jp,false);
-            Logger.log("Success on creating the " + reportName + " report");
+            JasperViewer.viewReport(jp, false);
+            Logger.log("Success, showing the '" + reportName + "' report");
         } catch (Exception ex) {
             Logger.error(ex.getMessage());
             Logger.error(ex.getStackTrace());

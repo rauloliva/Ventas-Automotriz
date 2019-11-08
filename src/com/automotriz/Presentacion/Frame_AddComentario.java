@@ -119,6 +119,7 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame implements C
 
         chb_anonimo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         chb_anonimo.setText("Quiero que sea Anonimo");
+        chb_anonimo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         chb_anonimo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 chb_anonimoActionPerformed(evt);
@@ -191,6 +192,7 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame implements C
 
         jButton1.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         jButton1.setText("Limpiar Valoracion");
+        jButton1.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -199,6 +201,7 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame implements C
 
         btn_submit.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_submit.setText("Submit");
+        btn_submit.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_submit.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_submitActionPerformed(evt);

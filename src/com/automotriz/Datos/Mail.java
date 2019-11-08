@@ -18,32 +18,34 @@ import com.automotriz.Constantes.Constants;
 
 public class Mail implements Runnable {
 
-    private String[] destinatarios;
+    private String destinatario;
     private String asunto;
     private String mensaje;
     private String fileName;
     private DataHandler dataHandler;
 
     /**
+     * Initializes the object Mail with data provided by user
      *
-     * @param destinatarios
-     * @param asunto
-     * @param mensaje
+     * @param destinatario where the email will be sent to
+     * @param asunto The reason why the email is sending to destinatario
+     * @param mensaje The message
      */
-    public Mail(String destinatarios, String asunto, String mensaje) {
-        this.destinatarios = destinatarios.split(",");
+    public Mail(String destinatario, String asunto, String mensaje) {
+        this.destinatario = destinatario;
         this.asunto = asunto;
         this.mensaje = mensaje;
     }
 
     /**
+     * Prepares the files that will be sent along side with the email
      *
-     * @param fileName
-     * @param filePath
+     * @param fileName The name of the file
+     * @param filePath The full file's path
      */
     public void attachFiles(String fileName, String filePath) {
         this.fileName = fileName;
-        dataHandler = new DataHandler(new FileDataSource(filePath));
+        this.dataHandler = new DataHandler(new FileDataSource(filePath));
     }
 
     /**
@@ -63,31 +65,28 @@ public class Mail implements Runnable {
         session.setDebug(false);
         BodyPart texto = new MimeBodyPart();
         try {
-            for (String address : destinatarios) {
-                texto.setText(mensaje);
-                MimeMultipart multiParte = new MimeMultipart();
-                //if dataHandler is ready to attach a file
-                if (dataHandler != null) {
-                    BodyPart adjunto = new MimeBodyPart();
-                    adjunto.setDataHandler(dataHandler);
-                    adjunto.setFileName(fileName);
-                    multiParte.addBodyPart(adjunto);
-                }
-
-                multiParte.addBodyPart(texto);
-
-                MimeMessage message = new MimeMessage(session);
-                message.setFrom(new InternetAddress(Constants.CORREO_PRINCIPAL));
-                message.addRecipient(Message.RecipientType.TO, new InternetAddress(address));
-                message.setSubject(asunto);
-                message.setContent(multiParte);
-                Transport t = session.getTransport("smtp");
-                t.connect(Constants.CORREO_PRINCIPAL, Constants.PWD_PRINCIPAL);
-                t.sendMessage(message, message.getAllRecipients());
-                t.close();
-                Logger.log("Mail to " + address + " has been sent");
-                success(address);
+            texto.setText(mensaje);
+            MimeMultipart multiParte = new MimeMultipart();
+            //if dataHandler is ready to attach a file
+            if (dataHandler != null) {
+                BodyPart adjunto = new MimeBodyPart();
+                adjunto.setDataHandler(dataHandler);
+                adjunto.setFileName(fileName);
+                multiParte.addBodyPart(adjunto);
             }
+
+            multiParte.addBodyPart(texto);
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(Constants.CORREO_PRINCIPAL));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(destinatario));
+            message.setSubject(asunto);
+            message.setContent(multiParte);
+            Transport t = session.getTransport("smtp");
+            t.connect(Constants.CORREO_PRINCIPAL, Constants.PWD_PRINCIPAL);
+            t.sendMessage(message, message.getAllRecipients());
+            t.close();
+            Logger.log("Mail to " + destinatario + " has been sent");
+            success();
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
@@ -96,6 +95,7 @@ public class Mail implements Runnable {
     }
 
     private Properties getSMTPProps() {
+        Logger.log("Reading SMTP Properties");
         Properties props = new Properties();
         props.put("mail.smtp.auth", ReadProperties.props.getProperty("mail.smtp.auth"));
         props.put("mail.smtp.starttls.enable", ReadProperties.props.getProperty("mail.smtp.starttls.enable"));
@@ -107,17 +107,17 @@ public class Mail implements Runnable {
 
     /**
      * Show a message of success with the email that were sent
-     *
-     * @param emailDest
      */
-    private void success(String emailDest) {
+    private void success() {
+        Logger.log("The email was sent to '" + destinatario + "' successfuly");
         JOptionPane.showMessageDialog(null,
-                ReadProperties.props.getProperty("mail.msg.success").replace("*", emailDest),
+                ReadProperties.props.getProperty("mail.msg.success").replace("*", destinatario),
                 ReadProperties.props.getProperty("mail.msg.success.title"),
                 JOptionPane.INFORMATION_MESSAGE);
     }
 
     private void failure() {
+        Logger.log("The email was not sent to '" + destinatario + "', Check your internet connection");
         JOptionPane.showMessageDialog(null,
                 ReadProperties.props.getProperty("mail.msg.failure"),
                 ReadProperties.props.getProperty("mail.msg.failure.title"),

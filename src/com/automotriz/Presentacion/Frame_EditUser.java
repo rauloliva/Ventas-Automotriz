@@ -17,14 +17,14 @@ public class Frame_EditUser extends javax.swing.JDialog implements Constants<Fra
     public Frame_EditUser(java.awt.Frame parent, boolean modal, UsuarioVO usuario) {
         super(parent, modal);
         initComponents();
-        this.setLocationRelativeTo(null);
-        this.setTitle("Editar Usuario");
         this.usuario = usuario;
         initFrame(this);
     }
 
     @Override
     public void initFrame(Frame_EditUser c) {
+        this.setLocationRelativeTo(null);
+        this.setTitle("Editar Usuario");
         String name = ReadProperties.props.getProperty("name.EditUser");
         c.setName(name);
         c.setTitle(name);
@@ -133,6 +133,7 @@ public class Frame_EditUser extends javax.swing.JDialog implements Constants<Fra
 
         btn_save.setFont(new java.awt.Font("Dialog", 0, 16)); // NOI18N
         btn_save.setText("jButton1");
+        btn_save.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_save.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_saveActionPerformed(evt);
@@ -145,6 +146,7 @@ public class Frame_EditUser extends javax.swing.JDialog implements Constants<Fra
 
         btn_generarCodigo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_generarCodigo.setText("Generar Codigo");
+        btn_generarCodigo.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_generarCodigo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_generarCodigoActionPerformed(evt);

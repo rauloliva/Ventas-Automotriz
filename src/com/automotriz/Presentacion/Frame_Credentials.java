@@ -1,9 +1,7 @@
 package com.automotriz.Presentacion;
 
 import java.awt.Color;
-import java.awt.Image;
 import java.util.HashMap;
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import com.automotriz.Constantes.Constants;
@@ -20,13 +18,7 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
 
     @Override
     public void initFrame(Frame_Credentials c) {
-        lbl_close.setIcon(
-                new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
-                                .getImage()
-                                .getScaledInstance(lbl_close.getWidth(), lbl_close.getHeight(), Image.SCALE_DEFAULT)
-                )
-        );
+        Constants.metohds.setCloseIcon(lbl_close, this);
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         setLocationRelativeTo(null);
         setVisible(true);
@@ -34,7 +26,9 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
 
     private void validateAdminRights() {
         Validacion validacion = new Validacion(null)
-                .validateAdminRights(txt_username.getText(), new Hashing(txt_password.getText()).encrypt());
+                .validateAdminRights(txt_username.getText(),
+                        new Hashing(txt_password.getText()).encrypt());
+
         HashMap message = validacion.getMessage();
 
         if (message != null) {
@@ -218,7 +212,7 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
     }// </editor-fold>//GEN-END:initComponents
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        Constants.metohds.closeProgram(this);
+        this.dispose();
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed
