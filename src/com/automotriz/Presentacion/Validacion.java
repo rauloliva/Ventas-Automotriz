@@ -6,7 +6,7 @@ import com.automotriz.Negocio.Peticiones;
 import com.automotriz.VO.AutoVO;
 import com.automotriz.logger.Logger;
 import org.json.simple.JSONObject;
-import com.automotriz.VO.Session;
+import com.automotriz.VO.SessionVO;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.VO.ComentarioVO;
 import java.sql.Connection;
@@ -23,7 +23,8 @@ public class Validacion implements Runnable {
     private HashMap messageProps;
     private Object[] data;
     private JSONObject requestJSON;
-    private Session session;
+    private SessionVO session;
+    private UsuarioVO usuario;
     private Object objVo;
     private DefaultTableModel model;
     private ArrayList<UsuarioVO> usuariosVO;
@@ -184,10 +185,11 @@ public class Validacion implements Runnable {
                     }
                 }
             } else {
-
                 //validate if the profile is the correct one
                 Logger.log("validating profile");
-                if (!((Session) ((Object[]) response.get("obj"))[0]).getPerfil().equals(Frame_LogIn.perfil)) {
+                //getting the only object UsuarioVO
+                this.usuario = (UsuarioVO) ((Object[]) response.get("obj"))[0];
+                if (!this.usuario.getPerfil().equals(Frame_LogIn.perfil)) {
                     writeMessages(new Object[]{
                         "login.msg.error.profile",
                         "login.msg.error.profile.title",
@@ -197,10 +199,10 @@ public class Validacion implements Runnable {
                     messageProps = null;
                     /*
                         if the login is successful
-                        Create a new Session
+                        Create a new SessionVO
                      */
                     Logger.log("Creating the user's session");
-                    this.session = (Session) ((Object[]) response.get("obj"))[0];
+                    this.session = this.usuario.copyToSession();
                 }
             }
 
@@ -244,7 +246,6 @@ public class Validacion implements Runnable {
 
     public Validacion validateForm(String form, String datadic) {
         boolean allow = false;
-
         Logger.log("validating " + form + " form ");
         if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || isEmpty(data[3]) || isEmpty(data[4]) || isEmpty(data[5])) {
             writeMessages(new Object[]{
@@ -717,6 +718,7 @@ public class Validacion implements Runnable {
     }
 
     public Validacion filtrarAutos() {
+        autosVO = null;
         if (!isEmpty(data[0]) || !isEmpty(data[1]) || !isEmpty(data[2]) || !isEmpty(data[3])) {
             createRequestJSON("FILTRARAUTOS", null);
             Peticiones peticion = new Peticiones(requestJSON);
@@ -724,7 +726,10 @@ public class Validacion implements Runnable {
             JSONObject response = peticion.getResult();
             if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
                 autosVO = new ArrayList<>();
-                autosVO.add((AutoVO) ((Object[]) response.get("obj"))[0]);
+                for (Object obj : (Object[]) response.get("obj")) {
+                    AutoVO auto = (AutoVO) obj;
+                    autosVO.add(auto);
+                }
             }
         }
         return this;
@@ -758,7 +763,7 @@ public class Validacion implements Runnable {
         return this.messageProps;
     }
 
-    public Session getSession() {
+    public SessionVO getSession() {
         return this.session;
     }
 

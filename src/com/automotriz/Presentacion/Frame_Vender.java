@@ -500,6 +500,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
 
         btn_selectImage.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_selectImage.setText("Imagen");
+        btn_selectImage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_selectImage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_selectImageActionPerformed(evt);
@@ -516,6 +517,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
 
         btn_eliminarImage.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_eliminarImage.setText("Eliminar");
+        btn_eliminarImage.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_eliminarImage.setEnabled(false);
         btn_eliminarImage.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -525,6 +527,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
 
         btn_publicarAuto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_publicarAuto.setText("Publicar Auto");
+        btn_publicarAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_publicarAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_publicarAutoActionPerformed(evt);
@@ -533,6 +536,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
 
         btn_preview.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_preview.setText("Preview");
+        btn_preview.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_preview.setEnabled(false);
         btn_preview.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -542,6 +546,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
 
         btn_modificarAuto.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         btn_modificarAuto.setText("Modificar Auto");
+        btn_modificarAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_modificarAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_modificarAutoActionPerformed(evt);

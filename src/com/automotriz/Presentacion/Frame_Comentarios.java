@@ -15,7 +15,9 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         initFrame(this);
         this.setTitle("Comentarios");
         getFeedBack("");
-        //
+        /* start a thread to know when the frame closes 
+            so it can reset the index from DataModel class
+         */
         new Thread(this).start();
     }
 
@@ -171,6 +173,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
 
         btn_atras.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_atras.setText("Atras");
+        btn_atras.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_atras.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_atrasActionPerformed(evt);
@@ -179,6 +182,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
 
         btn_siguiente.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btn_siguiente.setText("Siguiente");
+        btn_siguiente.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_siguiente.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btn_siguienteActionPerformed(evt);

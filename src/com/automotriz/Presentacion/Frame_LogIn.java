@@ -1,6 +1,5 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.Session;
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
@@ -9,11 +8,11 @@ import javax.swing.JOptionPane;
 import java.util.HashMap;
 import com.automotriz.logger.Logger;
 import com.automotriz.logger.LoggerQuery;
-import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
+import com.automotriz.VO.UsuarioVO;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constants<Frame_LogIn> {
 
@@ -62,12 +61,8 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
         ReadProperties.loadApplicationProps();
         //init logs
         Logger.start();
-        
-        //setting a logo for the system
-        this.setIconImage(new ImageIcon(
-                new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.logo.small"))).getImage()
-                        .getScaledInstance(45, 40, Image.SCALE_DEFAULT)).getImage()
-        );
+
+        Constants.metohds.setLogoSystem(this);
 
         String name = ReadProperties.props.getProperty("name.logIn");
         c.setName(name);
@@ -98,13 +93,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
 
         value = ReadProperties.props.getProperty("login.boton.cerrar");
         btn_atras.setText(value);
-        lbl_close.setIcon(
-                new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
-                                .getImage()
-                                .getScaledInstance(lbl_close.getWidth(), lbl_close.getHeight(), Image.SCALE_DEFAULT)
-                )
-        );
+        Constants.metohds.setCloseIcon(lbl_close, this);
     }
 
     //setting the design some labels
@@ -131,7 +120,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
             txt_username.getText().trim(),
             new Hashing(txt_password.getText().trim()).encrypt(),
             perfil
-        }, new Session()).validarLogIn();
+        }, new UsuarioVO()).validarLogIn();
 
         HashMap propMensaje = validacion.getMessage();
 

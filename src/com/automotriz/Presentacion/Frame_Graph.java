@@ -39,6 +39,14 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
                                 .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
                 )
         );
+        
+        menu_autos.setIcon(
+                new ImageIcon(
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.autos")))
+                                .getImage()
+                                .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
+                )
+        );
     }
 
     @SuppressWarnings("unchecked")
@@ -53,6 +61,7 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
         menu_vender = new javax.swing.JMenuItem();
         menu_feedback = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
+        menu_autos = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
@@ -119,6 +128,16 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
         });
         jMenu1.add(jMenuItem3);
 
+        menu_autos.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        menu_autos.setText("Mis Autos (Estatus)");
+        menu_autos.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu_autos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_autosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(menu_autos);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -157,6 +176,10 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
         global.getContainer().add(new Frame_Catalogo());
     }//GEN-LAST:event_jMenuItem3ActionPerformed
 
+    private void menu_autosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_autosActionPerformed
+        new Frame_AutoStatus(null, true);
+    }//GEN-LAST:event_menu_autosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu jMenu1;
@@ -164,6 +187,7 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
     private javax.swing.JMenuItem jMenuItem1;
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu menuVerPerfil;
+    private javax.swing.JMenuItem menu_autos;
     private javax.swing.JMenuItem menu_feedback;
     private javax.swing.JMenuItem menu_vender;
     private javax.swing.JPanel panelContent;

@@ -38,6 +38,14 @@ public class DataModel {
         this.back = back;
         this.next = next;
     }
+    
+    public DataModel(){
+    }
+
+    public void ResetComponents(Object[][] components) {
+        this.components = components;
+        clearAutosFields();
+    }
 
     public void setPaneles(JPanel[] paneles) {
         this.paneles = paneles;
@@ -72,7 +80,9 @@ public class DataModel {
                     JLabel lbl_fecha = (JLabel) components[row][1];
                     JLabel lbl_valoracion = (JLabel) components[row][2];
                     JTextArea txa_comentario = (JTextArea) components[row][3];
-                    paneles[row].setBackground(Color.decode(ReadProperties.props.getProperty("color.verde")));
+                    if (paneles != null) {
+                        paneles[row].setBackground(Color.decode(ReadProperties.props.getProperty("color.verde")));
+                    }
 
                     ComentarioVO comentario = comentariosVO.get(indice++);
                     lbl_nombre.setText("Nombre: " + comentario.getNombre());

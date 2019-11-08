@@ -2,33 +2,93 @@ package com.automotriz.Presentacion;
 
 import com.automotriz.Constantes.Constants;
 import static com.automotriz.Constantes.Global.global;
+import com.automotriz.VO.AutoVO;
 import java.awt.Color;
-import java.awt.Image;
-import javax.swing.ImageIcon;
+import java.awt.Font;
+import java.util.ArrayList;
+import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
+import javax.swing.table.DefaultTableModel;
 
 public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<Frame_AutoStatus> {
-    
+
+    private DefaultTableModel model;
+    private ArrayList<AutoVO> autosVO;
+
     public Frame_AutoStatus(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
         initFrame(this);
     }
-    
+
     @Override
     public void initFrame(Frame_AutoStatus c) {
         setLocationRelativeTo(null);
-        lbl_close.setIcon(
-                new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.close")))
-                                .getImage()
-                                .getScaledInstance(lbl_close.getWidth(), lbl_close.getHeight(), Image.SCALE_DEFAULT)
-                )
-        );
+        Constants.metohds.setCloseIcon(lbl_close, this);
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-        setVisible(true);
+        initTable();
+        setAutoEstatus();
+        boolean existCars = getCars();
+        setVisible(existCars);
     }
     
+    private void setAutoEstatus(){
+        cmb_estatus.addItem("--Seleccionar--");
+        String estatus[] = ReadProperties.props.getProperty("auto.status").split(";");
+        for (String e : estatus) {
+            cmb_estatus.addItem(e);
+        }
+    }
+
+    private void initTable() {
+        tbl_cars.setRowHeight(35);
+        tbl_cars.getTableHeader().setFont(new Font("Segoe UI", Font.PLAIN, 18));
+    }
+
+    private boolean getCars() {
+        setTable();
+        model = (DefaultTableModel) tbl_cars.getModel();
+        Validacion validacion = new Validacion(new Object[]{global.getSession().getId()}, new AutoVO());
+
+        validacion.setTableModel(model);
+        validacion.listUserAutos();
+        model = validacion.getTableModel();
+        if (model.getRowCount() == 0) {
+            JOptionPane.showMessageDialog(
+                    this,
+                    ReadProperties.props.getProperty("vender.msg.adv.noCars"),
+                    ReadProperties.props.getProperty("vender.msg.adv.noCars.title"),
+                    JOptionPane.INFORMATION_MESSAGE);
+            return false;
+        } else {
+            tbl_cars.setModel(validacion.getTableModel());
+            scrollTable.setVisible(true);
+            pack();
+            //getting all the autosVo
+            autosVO = validacion.getAutos();
+            setVisible(true);
+            return true;
+        }
+    }
+
+    private void setTable() {
+        DefaultTableModel m = new DefaultTableModel(new Object[]{
+            "ID",
+            "Marca",
+            "Modelo",
+            "Precio",
+            "Color",
+            "Estatus"
+        }, 0);
+        tbl_cars.setModel(m);
+        model = (DefaultTableModel) tbl_cars.getModel();
+    }
+
+    private AutoVO getSelectedCar() {
+        AutoVO auto = autosVO.get(tbl_cars.getSelectedRow());
+        return auto;
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -37,6 +97,11 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         lbl_close = new javax.swing.JLabel();
         lbl_title_frame = new javax.swing.JLabel();
         panelContent = new javax.swing.JPanel();
+        scrollTable = new javax.swing.JScrollPane();
+        tbl_cars = new javax.swing.JTable();
+        jPanel2 = new javax.swing.JPanel();
+        cmb_estatus = new javax.swing.JComboBox<>();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -69,7 +134,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_title_frame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 401, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 403, Short.MAX_VALUE)
                 .addComponent(lbl_close, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
         );
@@ -78,19 +143,75 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             .addComponent(lbl_close, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_title_frame, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addComponent(lbl_title_frame, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                 .addContainerGap())
+        );
+
+        scrollTable.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+
+        tbl_cars.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        tbl_cars.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+
+            },
+            new String [] {
+
+            }
+        ));
+        tbl_cars.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        tbl_cars.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tbl_carsMouseClicked(evt);
+            }
+        });
+        scrollTable.setViewportView(tbl_cars);
+
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
+
+        cmb_estatus.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jLabel1.setText("Estatus");
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(19, 19, 19)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
+                .addContainerGap(55, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 0, Short.MAX_VALUE)
+            .addGroup(panelContentLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(scrollTable, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 534, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContentLayout.createSequentialGroup()
+                .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
+                .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -112,7 +233,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
     }// </editor-fold>//GEN-END:initComponents
 
     private void lbl_closeMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMouseClicked
-        Constants.metohds.closeProgram(this);
+        this.dispose();
     }//GEN-LAST:event_lbl_closeMouseClicked
 
     private void lbl_closeMousePressed(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_closeMousePressed
@@ -123,52 +244,20 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         lbl_close.setBorder(null);
     }//GEN-LAST:event_lbl_closeMouseReleased
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(Frame_AutoStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(Frame_AutoStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(Frame_AutoStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(Frame_AutoStatus.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the dialog */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                Frame_AutoStatus dialog = new Frame_AutoStatus(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
-            }
-        });
-    }
+    private void tbl_carsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_carsMouseClicked
+        String estatus = getSelectedCar().getEstatus();
+        cmb_estatus.setSelectedItem(estatus);
+    }//GEN-LAST:event_tbl_carsMouseClicked
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> cmb_estatus;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JLabel lbl_close;
     private javax.swing.JLabel lbl_title_frame;
     private javax.swing.JPanel panelContent;
+    private javax.swing.JScrollPane scrollTable;
+    private javax.swing.JTable tbl_cars;
     // End of variables declaration//GEN-END:variables
 }
