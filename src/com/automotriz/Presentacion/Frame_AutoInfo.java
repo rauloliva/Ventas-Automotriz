@@ -16,18 +16,35 @@ import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
+import java.io.File;
+import java.util.HashMap;
 
-public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Frame_AutoInfo> {
+public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Constants<Frame_AutoInfo> {
 
     private final AutoVO auto;
     private List<String> imgs;
     private int count_imgs = 0;
+    private Thread hiloSend;
 
     public Frame_AutoInfo(java.awt.Frame parent, boolean modal, AutoVO auto) {
         super(parent, modal);
         this.auto = auto;
         initComponents();
         initFrame(this);
+    }
+
+    @Override
+    public void run() {
+        //this part pf the thread is for sending the email
+        try {
+            if (hiloSend != null) {
+                hiloSend.sleep(500);
+                sendNotification();
+            }
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }
 
     @Override
@@ -114,7 +131,6 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
         Image img = image.getImage();
         img = img.getScaledInstance(299, 242, Image.SCALE_DEFAULT);
         lbl_imagenes.setIcon(new ImageIcon(img));
-
     }
 
     private boolean hasNext() {
@@ -169,6 +185,30 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
         }
     }
 
+    private void sendNotification() {
+        lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        Validacion validacion = new Validacion(new Object[]{
+            lbl_correo_vendedor.getText().replace("Correo:", "").trim(),
+            ReadProperties.props.getProperty("mail.default.asunto"),
+            ReadProperties.props.getProperty("mail.default.body")
+            /*Replacing with the session's information*/
+            .replace("[Nombre]", global.getSession().getNombre())
+            .replace("[Correo]", global.getSession().getMail())
+            .replace("[Telefono]", global.getSession().getTelefono()),
+            /*Sending an image of the desire vehicle*/
+            new File(auto.getImagenes().split(";")[0])
+        }).sendMailToVendedor();
+
+        HashMap props = validacion.getMessage();
+        if (props != null) {
+            JOptionPane.showMessageDialog(this,
+                    props.get("message").toString(),
+                    props.get("title").toString(),
+                    Integer.parseInt(props.get("type").toString()));
+        }
+        lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.RAISED));
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -193,6 +233,9 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
         lbl_tel_icon = new javax.swing.JLabel();
         lbl_email_icon = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
+        panelFavorito = new javax.swing.JPanel();
+        lbl_set_favorite = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         lbl_close = new javax.swing.JLabel();
         lbl_title = new javax.swing.JLabel();
@@ -223,7 +266,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
 
         txa_descripcion.setEditable(false);
         txa_descripcion.setColumns(20);
-        txa_descripcion.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        txa_descripcion.setFont(new java.awt.Font("Segoe UI", 0, 17)); // NOI18N
         txa_descripcion.setRows(5);
         jScrollPane1.setViewportView(txa_descripcion);
 
@@ -284,7 +327,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
 
         lbl_email_icon.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel2.setText("Seleccione el correo para enviar un mensaje");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -331,39 +374,81 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
                 .addContainerGap(21, Short.MAX_VALUE))
         );
 
+        panelFavorito.setBackground(new java.awt.Color(255, 51, 0));
+        panelFavorito.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
+        lbl_set_favorite.setBackground(new java.awt.Color(255, 51, 51));
+        lbl_set_favorite.setFont(new java.awt.Font("Tahoma", 1, 22)); // NOI18N
+        lbl_set_favorite.setForeground(new java.awt.Color(255, 255, 255));
+        lbl_set_favorite.setText("  Lo Quiero!");
+        lbl_set_favorite.setToolTipText("Agregar a Lista de Deseos");
+        lbl_set_favorite.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        lbl_set_favorite.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        lbl_set_favorite.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                lbl_set_favoriteMouseClicked(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                lbl_set_favoriteMouseExited(evt);
+            }
+        });
+
+        javax.swing.GroupLayout panelFavoritoLayout = new javax.swing.GroupLayout(panelFavorito);
+        panelFavorito.setLayout(panelFavoritoLayout);
+        panelFavoritoLayout.setHorizontalGroup(
+            panelFavoritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(panelFavoritoLayout.createSequentialGroup()
+                .addComponent(lbl_set_favorite, javax.swing.GroupLayout.PREFERRED_SIZE, 144, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+        );
+        panelFavoritoLayout.setVerticalGroup(
+            panelFavoritoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(lbl_set_favorite, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 19)); // NOI18N
+        jLabel3.setText("Hazle saber al vendedor tu interes en su vehiculo");
+
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
         panelContentLayout.setHorizontalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContentLayout.createSequentialGroup()
+            .addGroup(panelContentLayout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(panelContentLayout.createSequentialGroup()
-                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(panelContentLayout.createSequentialGroup()
                                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(lbl_marca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(lbl_modelo, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 375, Short.MAX_VALUE))
-                                .addGap(39, 39, 39))
-                            .addGroup(panelContentLayout.createSequentialGroup()
-                                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(lbl_precio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lbl_km, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
-                                    .addComponent(lbl_cambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(lbl_color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbl_imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(panelContentLayout.createSequentialGroup()
-                                .addComponent(lbl_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(72, 72, 72)
-                                .addComponent(lbl_n_images, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(60, 60, 60)
-                                .addComponent(lbl_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addGap(22, 22, 22))
+                                    .addGroup(panelContentLayout.createSequentialGroup()
+                                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                .addComponent(lbl_marca, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(lbl_modelo, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE))
+                                            .addComponent(jScrollPane1))
+                                        .addGap(39, 39, 39))
+                                    .addGroup(panelContentLayout.createSequentialGroup()
+                                        .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(lbl_precio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lbl_km, javax.swing.GroupLayout.DEFAULT_SIZE, 246, Short.MAX_VALUE)
+                                            .addComponent(lbl_cambio, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(lbl_color, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lbl_imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 299, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(panelContentLayout.createSequentialGroup()
+                                        .addComponent(lbl_atras, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(72, 72, 72)
+                                        .addComponent(lbl_n_images, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(60, 60, 60)
+                                        .addComponent(lbl_siguiente, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addGap(22, 22, 22))
+                    .addGroup(panelContentLayout.createSequentialGroup()
+                        .addComponent(panelFavorito, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jLabel3)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -391,7 +476,15 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
                             .addComponent(lbl_n_images, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(lbl_imagenes, javax.swing.GroupLayout.PREFERRED_SIZE, 242, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 41, Short.MAX_VALUE)
+                .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(panelContentLayout.createSequentialGroup()
+                        .addGap(18, 18, 18)
+                        .addComponent(panelFavorito, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(18, 18, 18))
+                    .addGroup(panelContentLayout.createSequentialGroup()
+                        .addGap(32, 32, 32)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)))
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -515,9 +608,21 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
         lbl_close.setBorder(null);
     }//GEN-LAST:event_lbl_closeMouseReleased
 
+    private void lbl_set_favoriteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_set_favoriteMouseClicked
+        lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.LOWERED));
+        Frame_Loading.main(null);
+        hiloSend = new Thread(this);
+        hiloSend.start();
+    }//GEN-LAST:event_lbl_set_favoriteMouseClicked
+
+    private void lbl_set_favoriteMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_set_favoriteMouseExited
+        lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.RAISED));
+    }//GEN-LAST:event_lbl_set_favoriteMouseExited
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
@@ -533,11 +638,13 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Constants<Fra
     private javax.swing.JLabel lbl_modelo;
     private javax.swing.JLabel lbl_n_images;
     private javax.swing.JLabel lbl_precio;
+    private javax.swing.JLabel lbl_set_favorite;
     private javax.swing.JLabel lbl_siguiente;
     private javax.swing.JLabel lbl_tel_icon;
     private javax.swing.JLabel lbl_tel_vendedor;
     private javax.swing.JLabel lbl_title;
     private javax.swing.JPanel panelContent;
+    private javax.swing.JPanel panelFavorito;
     private javax.swing.JTextArea txa_descripcion;
     // End of variables declaration//GEN-END:variables
 }

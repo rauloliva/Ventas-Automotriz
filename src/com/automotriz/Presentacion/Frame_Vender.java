@@ -17,14 +17,14 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 import com.automotriz.Constantes.Constants;
 
 public class Frame_Vender extends javax.swing.JInternalFrame implements Constants<Frame_Vender> {
-
+    
     private DefaultListModel imagesName;
     /*As key will be the Name's image
       and the value will be the abosotute path's image
      */
     private HashMap imagesPath;
     private AutoVO autoVO;
-
+    
     public Frame_Vender() {
         initComponents();
         this.imagesPath = new HashMap();
@@ -32,7 +32,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         setVisible(true);
         initFrame(this);
     }
-
+    
     public Frame_Vender(AutoVO autoVO) {
         initComponents();
         this.autoVO = autoVO;
@@ -42,14 +42,14 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         initFrame(this);
         setAutoSelected();
     }
-
+    
     @Override
     public void initFrame(Frame_Vender c) {
         String name = ReadProperties.props.getProperty("name.Vender");
         c.setName(name);
         c.setTitle(name);
         Logger.log("Starting " + c.getName() + " frame...");
-
+        
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.grey")));
         txt_dueño.setText(global.getSession().getUsername().toUpperCase());
@@ -58,7 +58,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         setCambios();
         setColores();
     }
-
+    
     private void setModeloValue() {
         Calendar c = new GregorianCalendar();
         int year = c.get(Calendar.YEAR);
@@ -67,17 +67,17 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         //set a range to the modelo
         SpinnerNumberModel model1 = new SpinnerNumberModel(year, 1950, year, 1.0);
         spn_modelo.setModel(model1);
-
+        
         SpinnerNumberModel model2 = new SpinnerNumberModel();
         model2.setMinimum(0);
         spn_km.setModel(model2);
-
+        
         SpinnerNumberModel model3 = new SpinnerNumberModel();
         model3.setMinimum(1);
         model3.setValue(1);
         spn_precio.setModel(model3);
     }
-
+    
     private void setMarcas() {
         cmb_marca.addItem("--Seleccionar--");
         String marcas[] = ReadProperties.props.getProperty("vender.marcas").split(";");
@@ -85,7 +85,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             cmb_marca.addItem(marca);
         }
     }
-
+    
     private void setCambios() {
         cmb_cambio.addItem("--Seleccionar--");
         String cambios[] = ReadProperties.props.getProperty("vender.cambios").split(";");
@@ -93,7 +93,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             cmb_cambio.addItem(cambio);
         }
     }
-
+    
     private void setColores() {
         cmb_color.addItem("--Seleccionar--");
         String colores[] = ReadProperties.props.getProperty("vender.colores").split(";");
@@ -125,7 +125,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         //change the purpose of the button 'Publicar Auto'
         btn_publicarAuto.setText("Guardar Cambios");
     }
-
+    
     private boolean validateMarca() {
         boolean isInCombo = false;
         for (String marca : ReadProperties.props.getProperty("vender.marcas").split(";")) {
@@ -135,7 +135,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         }
         return isInCombo;
     }
-
+    
     private void setImages() {
         if (!autoVO.getImagenes().equals("")) {
             imagesPath = new HashMap();
@@ -167,20 +167,20 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
                     JOptionPane.WARNING_MESSAGE);
         }
     }
-
+    
     private void addSelectedImage(String imageName, String path) {
         this.imagesPath.put(imageName, path);
         imagesName.addElement(imageName);
         this.lst_images.setModel(imagesName);
     }
-
+    
     private void removeSelectedImage() {
         imagesPath.remove(lst_images.getSelectedValue());
         ((DefaultListModel) lst_images.getModel()).remove(lst_images.getSelectedIndex());
         btn_eliminarImage.setEnabled(false);
         btn_preview.setEnabled(false);
     }
-
+    
     private void publicarAuto() {
         Validacion validacion = new Validacion(new Object[]{
             Double.parseDouble(spn_modelo.getValue().toString()),
@@ -194,7 +194,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             imagesPath,
             global.getSession().getId()
         }).saveAutomobile(false);
-
+        
         HashMap message = validacion.getMessage();
         if (message != null) {
             JOptionPane.showMessageDialog(this,
@@ -207,7 +207,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             }
         }
     }
-
+    
     private void clearForm() {
         spn_modelo.setValue(0);
         spn_km.setValue(0);
@@ -223,18 +223,18 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         imagesPath = new HashMap();
         imagesName = new DefaultListModel();
         lst_images.setModel(imagesName);
-
+        btn_publicarAuto.setText("Publicar Auto");
     }
-
+    
     private void modificarAuto() {
         new Frame_MyCars(global.getParent(), true);
     }
-
+    
     private void seePreview() {
         String imagePath = imagesPath.get(lst_images.getSelectedValue()).toString();
         new Frame_PreviewImage(global.getParent(), true, imagePath);
     }
-
+    
     private void saveChanges() {
         Validacion validacion = new Validacion(new Object[]{
             Double.parseDouble(spn_modelo.getValue().toString()),
@@ -248,7 +248,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             imagesPath,
             autoVO.getId()
         }).saveAutomobile(true);
-
+        
         HashMap message = validacion.getMessage();
         if (message != null) {
             JOptionPane.showMessageDialog(this,
@@ -261,19 +261,19 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             }
         }
     }
-
+    
     private void generateReport() {
         Connection cnn = Validacion.requestSQLConnection();
         if (cnn != null) {
             new Report("Autos", cnn).generateReport();
         } else {
             JOptionPane.showMessageDialog(this,
-                    "Ha ocurrido un error al cargar el reporte\nSe ha abortado la operacion",
-                    "Error al cargar",
+                    ReadProperties.props.getProperty("usuario.msg.error.reporte"),
+                    ReadProperties.props.getProperty("usuario.msg.error.reporte.title"),
                     JOptionPane.ERROR_MESSAGE);
         }
     }
-
+    
     private void exportCSVTemplate() {
         JFileChooser chooser = new JFileChooser();
         chooser.setSelectedFile(new File(
@@ -290,7 +290,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             }
         }
     }
-
+    
     private void importCSVTemplate() {
         JFileChooser chooser = new JFileChooser();
         FileFilter filter = new FileNameExtensionFilter("Excel CSV file", "csv");
@@ -322,7 +322,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
                         cmb_marca.setSelectedItem("--Seleccionar--");
                     }
                 }
-
+                
                 if (indexExists(data, 3)) {
                     String cambio = ("" + data[3].charAt(0)).toUpperCase() + data[3].substring(1);
                     cmb_cambio.setSelectedItem(cambio);
@@ -330,19 +330,19 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
 
                 //spn_precio.setValue(isNumber(data[4]) ? Integer.parseInt(data[4]) : 0);
                 spn_precio.setValue(isNumber(indexExists(data, 4) ? data[4] : "") ? Integer.parseInt(data[4]) : 0);
-
+                
                 if (indexExists(data, 5)) {
                     String color = ("" + data[5].charAt(0)).toUpperCase() + data[5].substring(1);
                     cmb_color.setSelectedItem(color);
                 }
-
+                
                 if (indexExists(data, 6)) {
                     txa_descripcion.setText(data[6]);
                 }
             }
         }
     }
-
+    
     private boolean isNumber(String str) {
         try {
             Integer.parseInt(str);
@@ -368,7 +368,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             return false;
         }
     }
-
+    
     private boolean isInCombo(String marcaCSV) {
         String[] marcas = ReadProperties.props.getProperty("vender.marcas").split(";");
         for (String marca : marcas) {
@@ -378,7 +378,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         }
         return false;
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

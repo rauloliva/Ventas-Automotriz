@@ -211,7 +211,7 @@ public class Validacion implements Runnable {
             writeMessages(new Object[]{
                 "login.msg.error.conndb",
                 "login.msg.error.conndb.title",
-                JOptionPane.WARNING_MESSAGE
+                JOptionPane.ERROR_MESSAGE
             });
         }
         return this;
