@@ -735,6 +735,22 @@ public class Validacion implements Runnable {
         return this;
     }
 
+    public Validacion deleteAuto() {
+        if (!isEmpty(data[0])) {
+            createRequestJSON("DELETEAUTO", null);
+            Peticiones peticion = new Peticiones(requestJSON);
+            JSONObject response = peticion.getResult();
+            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
+                writeMessages(new Object[]{
+                    "msg.auto.deleted.success.title",
+                    "msg.auto.deleted.success.title",
+                    JOptionPane.INFORMATION_MESSAGE
+                });
+            }
+        }
+        return this;
+    }
+
     public static Connection requestSQLConnection() {
         return Peticiones.requestSQLConnection();
     }

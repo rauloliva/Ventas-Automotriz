@@ -37,10 +37,8 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
     public void run() {
         //this part pf the thread is for sending the email
         try {
-            if (hiloSend != null) {
-                hiloSend.sleep(500);
-                sendNotification();
-            }
+            hiloSend.sleep(5);
+            sendNotification();
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
@@ -610,7 +608,6 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
 
     private void lbl_set_favoriteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lbl_set_favoriteMouseClicked
         lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.LOWERED));
-        Frame_Loading.main(null);
         hiloSend = new Thread(this);
         hiloSend.start();
     }//GEN-LAST:event_lbl_set_favoriteMouseClicked

@@ -22,6 +22,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
     public Frame_LogIn() {
         initComponents();
         //reset the value from global variables
+        perfil = "";
         global = null;
         try {
             new Thread(this).start();
