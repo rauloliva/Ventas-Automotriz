@@ -139,13 +139,17 @@
         "where": "WHERE correo =",
         "value1": "[UserInput]"
     },
-    "S011_FILTRARAUTOS":{
+    "S011_FILTRARAUTOS": {
         "select": "SELECT * FROM",
         "table": "autos",
         "where": "WHERE"
     },
-    "S012_LISTAUTOSBYID":{
+    "S012_LISTAUTOSBYID": {
         "select": "SELECT * FROM autos WHERE",
         "where": "id_usuario = [id]"
+    },
+    "S013_DELETEAUTO": {
+        "update": "UPDATE autos SET estatus='DELETED' WHERE",
+        "id_auto": "id=[id]"
     }
 }
