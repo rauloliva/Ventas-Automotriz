@@ -58,7 +58,8 @@ public class Peticiones {
         GETVENDEDOR("S009_GETVENDEDOR"),
         GETVENDEDORNAME("S010_GETVENDEDORNAME"),
         FILTRARAUTOS("S011_FILTRARAUTOS"),
-        LISTAUTOSBYID("S012_LISTAUTOSBYID");
+        LISTAUTOSBYID("S012_LISTAUTOSBYID"),
+        DELETEAUTO("S013_DELETEAUTO");
 
         private final String value;
 
@@ -176,6 +177,9 @@ public class Peticiones {
                     break;
                 case "LISTAUTOSBYID":
                     sqlData = LISTAUTOSBYID(operations, request);
+                    break;
+                case "DELETEAUTO":
+                    sqlData = DELETEAUTO(operations, request);
                     break;
             }
             //returns the query from operationsIdentifier
@@ -610,6 +614,16 @@ public class Peticiones {
             (String) operationObject.get("table"),
             (String) operationObject.get("where"),
             sqlFilter
+        };
+    }
+
+    private static String[] DELETEAUTO(JSONObject datadic, JSONObject request) {
+        DATADICS dic = DATADICS.DELETEAUTO;
+        JSONObject operationObject = (JSONObject) datadic.get(dic.getValue());
+
+        return new String[]{
+            (String) operationObject.get("update"),
+            ((String) operationObject.get("id_auto")).replace("[id]", request.get("1").toString())
         };
     }
 }
