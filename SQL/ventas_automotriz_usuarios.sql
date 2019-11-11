@@ -31,6 +31,7 @@ CREATE TABLE `usuarios` (
   `estatus` varchar(10) NOT NULL,
   `telefono` varchar(11) NOT NULL,
   `nombre` varchar(100) NOT NULL,
+  `permisos` varchar(20) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -41,7 +42,7 @@ CREATE TABLE `usuarios` (
 
 LOCK TABLES `usuarios` WRITE;
 /*!40000 ALTER TABLE `usuarios` DISABLE KEYS */;
-INSERT INTO `usuarios` VALUES (1,'admin','Xuq6t7Fr/Dg=','jose@gmail.com','Administrador','ACTIVO','3316448120','jose angel torres'),(2,'admin2','Xuq6t7Fr/Dg=','manuel@gmail.com','Administrador','ACTIVO','45451545','manuel avila'),(3,'cliente1','Xuq6t7Fr/Dg=','ricardo@gmail.com','Cliente','ACTIVO','4578999999','ricardo');
+INSERT INTO `usuarios` VALUES (3,'admin','Xuq6t7Fr/Dg=','admin@gmail.com','Administrador','ACTIVO','3319804795','Ramon Gonzalez','ACCESO_TOTAL');
 /*!40000 ALTER TABLE `usuarios` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -54,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-29 12:57:56
+-- Dump completed on 2019-11-11 13:09:42

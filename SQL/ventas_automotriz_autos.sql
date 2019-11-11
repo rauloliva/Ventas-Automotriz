@@ -37,7 +37,7 @@ CREATE TABLE `autos` (
   PRIMARY KEY (`id`),
   KEY `autos_ibfk_1` (`id_usuario`),
   CONSTRAINT `autos_ibfk_1` FOREIGN KEY (`id_usuario`) REFERENCES `usuarios` (`id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -46,7 +46,6 @@ CREATE TABLE `autos` (
 
 LOCK TABLES `autos` WRITE;
 /*!40000 ALTER TABLE `autos` DISABLE KEYS */;
-INSERT INTO `autos` VALUES (1,2019,'Catalogo/1-Capture.PNG;',480,'esta chido','Audi','Automatico',154000.00,'Naranja','ENVENTA',1);
 /*!40000 ALTER TABLE `autos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -59,4 +58,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2019-10-29 12:57:56
+-- Dump completed on 2019-11-11 13:09:42
