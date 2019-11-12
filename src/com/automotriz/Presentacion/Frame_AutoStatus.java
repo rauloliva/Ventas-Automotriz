@@ -25,15 +25,15 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
     @Override
     public void initFrame(Frame_AutoStatus c) {
         setLocationRelativeTo(null);
-        Constants.metohds.setCloseIcon(lbl_close, this);
+        Constants.metohds.setCloseIcon(lbl_close, c);
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         initTable();
         setAutoEstatus();
         boolean existCars = getCars();
-        setVisible(existCars);
+        c.setVisible(existCars);
     }
-    
-    private void setAutoEstatus(){
+
+    private void setAutoEstatus() {
         cmb_estatus.addItem("--Seleccionar--");
         String estatus[] = ReadProperties.props.getProperty("auto.status").split(";");
         for (String e : estatus) {
@@ -63,11 +63,9 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             return false;
         } else {
             tbl_cars.setModel(validacion.getTableModel());
-            scrollTable.setVisible(true);
             pack();
             //getting all the autosVo
             autosVO = validacion.getAutos();
-            setVisible(true);
             return true;
         }
     }
@@ -145,7 +143,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             .addComponent(lbl_close, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_title_frame, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
+                .addComponent(lbl_title_frame, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -191,8 +189,8 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
                 .addContainerGap()
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(39, 39, 39)
+                .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(37, 37, 37)
                 .addComponent(jButton1)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
@@ -231,7 +229,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 719, Short.MAX_VALUE)
             .addComponent(panelContent, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -270,15 +268,16 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
 
         if (option == JOptionPane.YES_OPTION) {
             Validacion validacion = new Validacion(new Object[]{
+                "DELETED",
                 getSelectedCar().getId()
             }).deleteAuto();
-            
+
             HashMap props = validacion.getMessage();
-            if(props != null){
+            if (props != null) {
                 JOptionPane.showMessageDialog(this,
-                    props.get("message").toString(),
-                    props.get("title").toString(),
-                    Integer.parseInt(props.get("type").toString()));
+                        props.get("message").toString(),
+                        props.get("title").toString(),
+                        Integer.parseInt(props.get("type").toString()));
             }
         }
     }//GEN-LAST:event_jButton1ActionPerformed

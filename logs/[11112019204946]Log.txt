@@ -1,0 +1,63 @@
+[11/11/2019  20:49:46] - INFO - Starting Iniciar Session frame...
+[11/11/2019  20:49:46] - INFO - Starting Seleccionar Perfil modal...
+[11/11/2019  20:49:48] - INFO - Saving type of account: Cliente
+[11/11/2019  20:49:53] - INFO - Encrypting String...
+[11/11/2019  20:49:53] - INFO - validating log in form
+[11/11/2019  20:49:53] - INFO - Creating new Request
+[11/11/2019  20:49:53] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:49:53] - INFO - Reading datadic VALIDATEUSER
+[11/11/2019  20:49:53] - INFO - Forming query got from datadic
+[11/11/2019  20:49:53] - INFO - Getting JSON result
+[11/11/2019  20:49:53] - INFO - Sending query to GestorDB
+[11/11/2019  20:49:53] - INFO - Connecting to Database
+[11/11/2019  20:49:53] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:49:53] - INFO - Connection Success
+[11/11/2019  20:49:53] - INFO - Applying SELECT query
+[11/11/2019  20:49:54] - INFO - Closing Connection
+[11/11/2019  20:49:54] - INFO - validating profile
+[11/11/2019  20:49:54] - INFO - Creating the user's session
+[11/11/2019  20:49:54] - INFO - Starting Incio Cliente frame...
+[11/11/2019  20:49:57] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:49:57] - INFO - Reading datadic GETCATALOGO
+[11/11/2019  20:49:57] - INFO - Forming query got from datadic
+[11/11/2019  20:49:57] - INFO - Getting JSON result
+[11/11/2019  20:49:57] - INFO - Sending query to GestorDB
+[11/11/2019  20:49:57] - INFO - Connecting to Database
+[11/11/2019  20:49:57] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:49:57] - INFO - Connection Success
+[11/11/2019  20:49:57] - INFO - Applying SELECT query
+[11/11/2019  20:49:57] - INFO - Closing Connection
+[11/11/2019  20:49:57] - INFO - Starting Informacion del Vehiculo frame...
+[11/11/2019  20:49:57] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:49:57] - INFO - Reading datadic GETVENDEDOR
+[11/11/2019  20:49:57] - INFO - Forming query got from datadic
+[11/11/2019  20:49:57] - INFO - Getting JSON result
+[11/11/2019  20:49:57] - INFO - Sending query to GestorDB
+[11/11/2019  20:49:57] - INFO - Connecting to Database
+[11/11/2019  20:49:57] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:49:57] - INFO - Connection Success
+[11/11/2019  20:49:57] - INFO - Applying SELECT query
+[11/11/2019  20:49:57] - INFO - Closing Connection
+[11/11/2019  20:49:59] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:49:59] - INFO - Reading SMTP Properties
+[11/11/2019  20:49:59] - INFO - Reading datadic UPDATEAUTOESTATUS
+[11/11/2019  20:49:59] - INFO - Forming query got from datadic
+[11/11/2019  20:49:59] - INFO - Getting JSON result
+[11/11/2019  20:49:59] - INFO - Sending query to GestorDB
+[11/11/2019  20:49:59] - INFO - Connecting to Database
+[11/11/2019  20:49:59] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:49:59] - INFO - Connection Success
+[11/11/2019  20:49:59] - INFO - Applying UPDATE query
+[11/11/2019  20:49:59] - INFO - Closing Connection
+[11/11/2019  20:50:1] - INFO - Mail to admin@gmail.com has been sent
+[11/11/2019  20:50:1] - INFO - The email was sent to 'admin@gmail.com' successfuly
+[11/11/2019  20:50:26] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:50:26] - INFO - Reading datadic GETCATALOGO
+[11/11/2019  20:50:26] - INFO - Forming query got from datadic
+[11/11/2019  20:50:26] - INFO - Getting JSON result
+[11/11/2019  20:50:26] - INFO - Sending query to GestorDB
+[11/11/2019  20:50:26] - INFO - Connecting to Database
+[11/11/2019  20:50:26] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:50:26] - INFO - Connection Success
+[11/11/2019  20:50:26] - INFO - Applying SELECT query
+[11/11/2019  20:50:26] - INFO - Closing Connection

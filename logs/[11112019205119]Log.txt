@@ -1,0 +1,29 @@
+[11/11/2019  20:51:19] - INFO - Starting Iniciar Session frame...
+[11/11/2019  20:51:19] - INFO - Starting Seleccionar Perfil modal...
+[11/11/2019  20:51:20] - INFO - Saving type of account: Cliente
+[11/11/2019  20:51:25] - INFO - Encrypting String...
+[11/11/2019  20:51:25] - INFO - validating log in form
+[11/11/2019  20:51:25] - INFO - Creating new Request
+[11/11/2019  20:51:25] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:51:25] - INFO - Reading datadic VALIDATEUSER
+[11/11/2019  20:51:25] - INFO - Forming query got from datadic
+[11/11/2019  20:51:25] - INFO - Getting JSON result
+[11/11/2019  20:51:25] - INFO - Sending query to GestorDB
+[11/11/2019  20:51:25] - INFO - Connecting to Database
+[11/11/2019  20:51:25] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:51:25] - INFO - Connection Success
+[11/11/2019  20:51:25] - INFO - Applying SELECT query
+[11/11/2019  20:51:25] - INFO - Closing Connection
+[11/11/2019  20:51:25] - INFO - validating profile
+[11/11/2019  20:51:25] - INFO - Creating the user's session
+[11/11/2019  20:51:25] - INFO - Starting Incio Cliente frame...
+[11/11/2019  20:51:30] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:51:30] - INFO - Reading datadic GETCARS
+[11/11/2019  20:51:30] - INFO - Forming query got from datadic
+[11/11/2019  20:51:30] - INFO - Getting JSON result
+[11/11/2019  20:51:30] - INFO - Sending query to GestorDB
+[11/11/2019  20:51:30] - INFO - Connecting to Database
+[11/11/2019  20:51:30] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:51:30] - INFO - Connection Success
+[11/11/2019  20:51:30] - INFO - Applying SELECT query
+[11/11/2019  20:51:30] - INFO - Closing Connection

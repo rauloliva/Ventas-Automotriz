@@ -1,3 +1,0 @@
- - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'admin' AND contrasena= 'Xuq6t7Fr/Dg='
- - QUERY - SELECT * FROM autos WHERE id_usuario= 1
- - QUERY - UPDATE autos SET estatus='DELETED' WHERE id=1

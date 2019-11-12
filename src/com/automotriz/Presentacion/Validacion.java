@@ -707,6 +707,17 @@ public class Validacion implements Runnable {
                     data[1].toString(),
                     data[2].toString(),
                     data[3]);
+            /*update the vehicle's status, this vehicle will not be available in catalogo*/
+            data = new Object[]{
+                "PROCCESS_PURCHASE",
+                data[4]
+            };
+            createRequestJSON("UPDATEAUTOESTATUS", null);
+            Peticiones peticion = new Peticiones(requestJSON);
+            JSONObject response = peticion.getResult();
+            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
+                return this;
+            }
         } else {
             writeMessages(new Object[]{
                 "mail.empty.fields",
@@ -736,8 +747,8 @@ public class Validacion implements Runnable {
     }
 
     public Validacion deleteAuto() {
-        if (!isEmpty(data[0])) {
-            createRequestJSON("DELETEAUTO", null);
+        if (!isEmpty(data[0]) || !isEmpty(data[1])) {
+            createRequestJSON("UPDATEAUTOESTATUS", null);
             Peticiones peticion = new Peticiones(requestJSON);
             JSONObject response = peticion.getResult();
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {

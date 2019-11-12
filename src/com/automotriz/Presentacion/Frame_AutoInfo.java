@@ -194,7 +194,8 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
             .replace("[Correo]", global.getSession().getMail())
             .replace("[Telefono]", global.getSession().getTelefono()),
             /*Sending an image of the desire vehicle*/
-            new File(auto.getImagenes().split(";")[0])
+            new File(auto.getImagenes().split(";")[0]),
+            auto.getId()
         }).sendMailToVendedor();
 
         HashMap props = validacion.getMessage();

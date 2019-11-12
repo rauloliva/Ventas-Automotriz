@@ -1,0 +1,87 @@
+[11/11/2019  20:46:49] - INFO - Starting Iniciar Session frame...
+[11/11/2019  20:46:49] - INFO - Starting Seleccionar Perfil modal...
+[11/11/2019  20:46:54] - INFO - Saving type of account: Cliente
+[11/11/2019  20:47:30] - INFO - Encrypting String...
+[11/11/2019  20:47:30] - INFO - validating log in form
+[11/11/2019  20:47:30] - INFO - Creating new Request
+[11/11/2019  20:47:30] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:47:30] - INFO - Reading datadic VALIDATEUSER
+[11/11/2019  20:47:30] - INFO - Forming query got from datadic
+[11/11/2019  20:47:30] - INFO - Getting JSON result
+[11/11/2019  20:47:31] - INFO - Sending query to GestorDB
+[11/11/2019  20:47:31] - INFO - Connecting to Database
+[11/11/2019  20:47:31] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:47:32] - INFO - Connection Success
+[11/11/2019  20:47:32] - INFO - Applying SELECT query
+[11/11/2019  20:47:32] - INFO - Closing Connection
+[11/11/2019  20:47:32] - INFO - Attempt 1 to get access
+[11/11/2019  20:47:48] - INFO - Encrypting String...
+[11/11/2019  20:47:49] - INFO - validating log in form
+[11/11/2019  20:47:49] - INFO - Creating new Request
+[11/11/2019  20:47:49] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:47:49] - INFO - Reading datadic VALIDATEUSER
+[11/11/2019  20:47:49] - INFO - Forming query got from datadic
+[11/11/2019  20:47:49] - INFO - Getting JSON result
+[11/11/2019  20:47:49] - INFO - Sending query to GestorDB
+[11/11/2019  20:47:49] - INFO - Connecting to Database
+[11/11/2019  20:47:49] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:47:49] - INFO - Connection Success
+[11/11/2019  20:47:49] - INFO - Applying SELECT query
+[11/11/2019  20:47:49] - INFO - Closing Connection
+[11/11/2019  20:47:49] - INFO - validating profile
+[11/11/2019  20:47:49] - INFO - Creating the user's session
+[11/11/2019  20:47:49] - INFO - Starting Incio Cliente frame...
+[11/11/2019  20:47:53] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:47:53] - INFO - Reading datadic GETCATALOGO
+[11/11/2019  20:47:53] - INFO - Forming query got from datadic
+[11/11/2019  20:47:53] - INFO - Getting JSON result
+[11/11/2019  20:47:53] - INFO - Sending query to GestorDB
+[11/11/2019  20:47:53] - INFO - Connecting to Database
+[11/11/2019  20:47:53] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:47:53] - INFO - Connection Success
+[11/11/2019  20:47:53] - INFO - Applying SELECT query
+[11/11/2019  20:47:53] - INFO - Closing Connection
+[11/11/2019  20:47:57] - INFO - Starting Informacion del Vehiculo frame...
+[11/11/2019  20:47:57] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:47:57] - INFO - Reading datadic GETVENDEDOR
+[11/11/2019  20:47:57] - INFO - Forming query got from datadic
+[11/11/2019  20:47:57] - INFO - Getting JSON result
+[11/11/2019  20:47:57] - INFO - Sending query to GestorDB
+[11/11/2019  20:47:57] - INFO - Connecting to Database
+[11/11/2019  20:47:57] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:47:57] - INFO - Connection Success
+[11/11/2019  20:47:57] - INFO - Applying SELECT query
+[11/11/2019  20:47:57] - INFO - Closing Connection
+[11/11/2019  20:48:0] - INFO - Reading OperationsIdentifier file
+[11/11/2019  20:48:0] - INFO - Reading SMTP Properties
+[11/11/2019  20:48:0] - INFO - Reading datadic UPDATEAUTOESTATUS
+[11/11/2019  20:48:0] - INFO - Forming query got from datadic
+[11/11/2019  20:48:0] - INFO - Getting JSON result
+[11/11/2019  20:48:0] - INFO - Sending query to GestorDB
+[11/11/2019  20:48:0] - INFO - Connecting to Database
+[11/11/2019  20:48:0] - INFO - Reading DB's credentials for version 8
+[11/11/2019  20:48:0] - INFO - Connection Success
+[11/11/2019  20:48:0] - INFO - Applying UPDATE query
+[11/11/2019  20:48:0] - ERROR - Data truncation: Data too long for column 'estatus' at row 1
+		com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:104)
+com.mysql.cj.jdbc.ClientPreparedStatement.executeInternal(ClientPreparedStatement.java:953)
+com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1092)
+com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdateInternal(ClientPreparedStatement.java:1040)
+com.mysql.cj.jdbc.ClientPreparedStatement.executeLargeUpdate(ClientPreparedStatement.java:1340)
+com.mysql.cj.jdbc.ClientPreparedStatement.executeUpdate(ClientPreparedStatement.java:1025)
+com.automotriz.Datos.GestorDB.UPDATE(GestorDB.java:223)
+com.automotriz.Datos.GestorDB.sendQuery(GestorDB.java:83)
+com.automotriz.Negocio.Peticiones.sendToGestor(Peticiones.java:226)
+com.automotriz.Negocio.Peticiones.getResult(Peticiones.java:106)
+com.automotriz.Presentacion.Validacion.sendMailToVendedor(Validacion.java:717)
+com.automotriz.Presentacion.Frame_AutoInfo.sendNotification(Frame_AutoInfo.java:199)
+com.automotriz.Presentacion.Frame_AutoInfo.run(Frame_AutoInfo.java:41)
+java.lang.Thread.run(Thread.java:748)
+[11/11/2019  20:48:0] - INFO - Closing Connection
+[11/11/2019  20:48:0] - ERROR - null
+		com.automotriz.Presentacion.Validacion.sendMailToVendedor(Validacion.java:718)
+com.automotriz.Presentacion.Frame_AutoInfo.sendNotification(Frame_AutoInfo.java:199)
+com.automotriz.Presentacion.Frame_AutoInfo.run(Frame_AutoInfo.java:41)
+java.lang.Thread.run(Thread.java:748)
+[11/11/2019  20:48:3] - INFO - Mail to admin@gmail.com has been sent
+[11/11/2019  20:48:3] - INFO - The email was sent to 'admin@gmail.com' successfuly

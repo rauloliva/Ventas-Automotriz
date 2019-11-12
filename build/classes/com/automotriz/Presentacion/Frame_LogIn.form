@@ -86,7 +86,7 @@
                       <Component id="lbl_msg_registar" alignment="3" min="-2" max="-2" attributes="0"/>
                       <Component id="lbl_registrar_aqui" alignment="3" min="-2" max="-2" attributes="0"/>
                   </Group>
-                  <EmptySpace pref="59" max="32767" attributes="0"/>
+                  <EmptySpace pref="41" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>
@@ -157,8 +157,8 @@
                       </Group>
                       <EmptySpace pref="69" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="btn_entrar" alignment="3" min="-2" max="-2" attributes="0"/>
-                          <Component id="btn_atras" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="btn_entrar" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
+                          <Component id="btn_atras" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace min="-2" pref="33" max="-2" attributes="0"/>
                   </Group>

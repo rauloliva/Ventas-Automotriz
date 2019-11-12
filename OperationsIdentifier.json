@@ -148,8 +148,8 @@
         "select": "SELECT * FROM autos WHERE",
         "where": "id_usuario = [id]"
     },
-    "S013_DELETEAUTO": {
-        "update": "UPDATE autos SET estatus='DELETED' WHERE",
+    "S013_UPDATEAUTOESTATUS": {
+        "update": "UPDATE autos SET estatus='[Estatus]' WHERE",
         "id_auto": "id=[id]"
     }
 }
