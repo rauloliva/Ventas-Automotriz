@@ -65,6 +65,10 @@ public interface Constants<Class> {
     public void initFrame(Class c);
     
     public GlobalMethods metohds = new GlobalMethods();
+    
+    //Vehicle's Status
+    public String PROCCESS_PURCHASE = "PROCCESS_PURCHASE";
+    public String DELETED = "DELETED";
 }
 
 

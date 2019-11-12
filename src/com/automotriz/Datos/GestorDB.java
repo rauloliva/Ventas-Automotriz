@@ -10,13 +10,13 @@ import org.json.simple.JSONObject;
 import com.automotriz.Constantes.Constants;
 
 public class GestorDB {
-    
+
     private String query;
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private Connection cnn;
     private Object objVO;
-    
+
     public GestorDB() {
     }
 
@@ -50,7 +50,7 @@ public class GestorDB {
     public void putQuery(String query) {
         this.query = query;
     }
-    
+
     public static Connection sendSQLConnection() {
         Logger.log("Requesting the database connection");
         Connection con = null;
@@ -70,7 +70,7 @@ public class GestorDB {
      */
     public JSONObject sendQuery(JSONObject request) {
         Conexion conexion = new Conexion();
-        
+
         if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
             Logger.log("Connection Success");
             LoggerQuery.logQuery(this.query);
@@ -122,7 +122,7 @@ public class GestorDB {
             rs = ps.executeQuery();
             ResultSet rsTemp = rs;
             int rowsFetched = resultSetCount(rsTemp);
-            
+
             Object[] obj = new Object[rowsFetched];
             int i = 0;
             while (rs.next()) {
@@ -223,11 +223,12 @@ public class GestorDB {
             int res = ps.executeUpdate();
             request.put("response", (res > 0) ? Constants.QUERY_SUCCESS : Constants.QUERY_FAILURE);
             return request;
-            
+
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
-            return new JSONObject();
+            request.put("response", Constants.QUERY_FAILURE);
+            return request;
         } finally {
             try {
                 closeConnection();

@@ -4,6 +4,7 @@ import com.automotriz.Presentacion.ReadProperties;
 import java.awt.Component;
 import java.awt.Image;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -55,6 +56,24 @@ public class GlobalMethods {
                 new ImageIcon(frame.getClass().getResource(ReadProperties.props.getProperty("icon.close")))
                         .getImage()
                         .getScaledInstance(lbl.getWidth(), lbl.getHeight(), Image.SCALE_DEFAULT))
+        );
+    }
+
+    /**
+     * sets an icon to a JButton
+     *
+     * @param btn the JButton Object
+     * @param iconKey the key where the Icon's location is
+     * @param width the icon's width
+     * @param height the icon's height
+     */
+    public void setIconToButton(Object frame, JButton btn, String iconKey, int width, int height) {
+        btn.setIcon(
+                new ImageIcon(
+                        new ImageIcon(frame.getClass().getResource(ReadProperties.props.getProperty(iconKey)))
+                                .getImage()
+                                .getScaledInstance(width, height, Image.SCALE_DEFAULT)
+                )
         );
     }
 }
