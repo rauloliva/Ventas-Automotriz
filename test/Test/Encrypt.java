@@ -7,7 +7,8 @@ public class Encrypt {
 
     public static void main(String[] args) {
         ReadProperties.loadApplicationProps();
-        Hashing h = new Hashing("123");
+        String pwd = "123";
+        Hashing h = new Hashing(pwd);
         System.out.println(h.encrypt());
     }
 }
