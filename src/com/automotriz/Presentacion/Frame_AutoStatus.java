@@ -88,6 +88,59 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         return auto;
     }
 
+    private void eliminarAuto() {
+        int option = JOptionPane.showOptionDialog(this,
+                ReadProperties.props.getProperty("msg.delete.auto"),
+                ReadProperties.props.getProperty("msg.delete.auto.title"),
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Continuar", "NO"}, "NO");
+
+        if (option == JOptionPane.YES_OPTION) {
+            //change the vehicle's status
+            Validacion validacion = new Validacion(new Object[]{
+                Constants.DELETED,
+                getSelectedCar().getId()
+            }).deleteAuto();
+
+            HashMap props = validacion.getMessage();
+            if (props != null) {
+                JOptionPane.showMessageDialog(this,
+                        props.get("message").toString(),
+                        props.get("title").toString(),
+                        Integer.parseInt(props.get("type").toString()));
+                resetFields();
+            }
+        }
+    }
+
+    private void updateStatus() {
+        //change the vehicle's status
+        Validacion validacion = new Validacion(new Object[]{
+            cmb_estatus.getSelectedItem().toString(),
+            getSelectedCar().getId()
+        }).updateStatusAuto();
+
+        HashMap props = validacion.getMessage();
+        if (props != null) {
+            JOptionPane.showMessageDialog(this,
+                    props.get("message").toString(),
+                    props.get("title").toString(),
+                    Integer.parseInt(props.get("type").toString()));
+            resetFields();
+        }
+    }
+
+    private void resetFields() {
+        tbl_cars.clearSelection();
+        cmb_estatus.setSelectedItem("--Seleccionar--");
+        cmb_estatus.setEnabled(false);
+        btn_cambiarEstatus.setEnabled(false);
+        btn_eliminarAuto.setEnabled(false);
+        boolean existCars = getCars();
+        if (!existCars) {
+            this.dispose();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -101,7 +154,8 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         jPanel2 = new javax.swing.JPanel();
         cmb_estatus = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btn_eliminarAuto = new javax.swing.JButton();
+        btn_cambiarEstatus = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
@@ -134,7 +188,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_title_frame)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 403, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 407, Short.MAX_VALUE)
                 .addComponent(lbl_close, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(49, 49, 49))
         );
@@ -143,7 +197,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             .addComponent(lbl_close, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(lbl_title_frame, javax.swing.GroupLayout.DEFAULT_SIZE, 29, Short.MAX_VALUE)
+                .addComponent(lbl_title_frame, javax.swing.GroupLayout.DEFAULT_SIZE, 33, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -169,15 +223,28 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.LOWERED));
 
         cmb_estatus.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        cmb_estatus.setEnabled(false);
 
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel1.setText("Estatus");
 
-        jButton1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
-        jButton1.setText("Eliminar Auto");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        btn_eliminarAuto.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_eliminarAuto.setText("Eliminar Auto");
+        btn_eliminarAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_eliminarAuto.setEnabled(false);
+        btn_eliminarAuto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                btn_eliminarAutoActionPerformed(evt);
+            }
+        });
+
+        btn_cambiarEstatus.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_cambiarEstatus.setText("Guardar Estatus");
+        btn_cambiarEstatus.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        btn_cambiarEstatus.setEnabled(false);
+        btn_cambiarEstatus.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btn_cambiarEstatusActionPerformed(evt);
             }
         });
 
@@ -190,9 +257,11 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37)
-                .addComponent(jButton1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(40, 40, 40)
+                .addComponent(btn_cambiarEstatus)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btn_eliminarAuto)
+                .addGap(43, 43, 43))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -201,8 +270,9 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1)
-                    .addComponent(jButton1))
-                .addContainerGap(55, Short.MAX_VALUE))
+                    .addComponent(btn_eliminarAuto)
+                    .addComponent(btn_cambiarEstatus))
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
@@ -212,17 +282,17 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             .addGroup(panelContentLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(scrollTable, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(scrollTable, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 699, Short.MAX_VALUE))
                 .addContainerGap())
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContentLayout.createSequentialGroup()
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(scrollTable, javax.swing.GroupLayout.PREFERRED_SIZE, 363, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -257,34 +327,28 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
 
     private void tbl_carsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tbl_carsMouseClicked
         String estatus = getSelectedCar().getEstatus();
-        cmb_estatus.setSelectedItem(estatus);
-    }//GEN-LAST:event_tbl_carsMouseClicked
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int option = JOptionPane.showOptionDialog(this,
-                ReadProperties.props.getProperty("msg.delete.auto"),
-                ReadProperties.props.getProperty("msg.delete.auto.title"),
-                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"Continuar", "NO"}, "NO");
-
-        if (option == JOptionPane.YES_OPTION) {
-            Validacion validacion = new Validacion(new Object[]{
-                "DELETED",
-                getSelectedCar().getId()
-            }).deleteAuto();
-
-            HashMap props = validacion.getMessage();
-            if (props != null) {
-                JOptionPane.showMessageDialog(this,
-                        props.get("message").toString(),
-                        props.get("title").toString(),
-                        Integer.parseInt(props.get("type").toString()));
+        if (estatus != null) {
+            if (!estatus.equals("")) {
+                btn_cambiarEstatus.setEnabled(true);
+                btn_eliminarAuto.setEnabled(true);
+                cmb_estatus.setSelectedItem(estatus);
+                cmb_estatus.setEnabled(true);
             }
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_tbl_carsMouseClicked
+
+    private void btn_eliminarAutoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_eliminarAutoActionPerformed
+        eliminarAuto();
+    }//GEN-LAST:event_btn_eliminarAutoActionPerformed
+
+    private void btn_cambiarEstatusActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cambiarEstatusActionPerformed
+        updateStatus();
+    }//GEN-LAST:event_btn_cambiarEstatusActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btn_cambiarEstatus;
+    private javax.swing.JButton btn_eliminarAuto;
     private javax.swing.JComboBox<String> cmb_estatus;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

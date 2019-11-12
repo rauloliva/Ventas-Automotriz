@@ -16,10 +16,10 @@ import com.automotriz.VO.UsuarioVO;
 import java.awt.Image;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constants<Frame_LogIn> {
-    
+
     public static String perfil = "";
     private Thread hilo;
-    
+
     public Frame_LogIn() {
         initComponents();
         //reset the value from global variables
@@ -49,23 +49,23 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
         }
-        
+
         while (perfil.equals("")) {
             this.setTitle("Perfil: " + perfil);
             lbl_title_frame.setText("Inicio de session: " + perfil);
         }
         this.setTitle("Perfil: " + perfil);
     }
-    
+
     @Override
     public void initFrame(Frame_LogIn c) {
         //getting the application properties
         ReadProperties.loadApplicationProps();
         //init logs
         Logger.start();
-        
+
         Constants.metohds.setLogoSystem(this);
-        
+
         String name = ReadProperties.props.getProperty("name.logIn");
         c.setName(name);
         c.setTitle(name);
@@ -74,9 +74,9 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
         LoggerQuery.start();
         c.setLocationRelativeTo(c);
         registrarLabelsDesign();
-        
+
         this.initGetPerfil();
-        
+
         panelForm.setBackground(Color.decode(ReadProperties.props.getProperty("color.grey")));
 
         //Setting an image for the panel above
@@ -84,28 +84,25 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
                 .getResource(ReadProperties.props.getProperty("icon.wallpaper"))));
         label.setSize(panelTitle.getWidth(), panelTitle.getHeight());
         panelTitle.add(label);
-        
+
         panelForm.setBorder(new BevelBorder(BevelBorder.RAISED));
-        
+
         String value = ReadProperties.props.getProperty("login.title");
         lbl_title.setText(value);
-        
+
         value = ReadProperties.props.getProperty("login.boton.login");
         btn_entrar.setText(value);
-        
+
         value = ReadProperties.props.getProperty("login.boton.cerrar");
         btn_atras.setText(value);
+
         Constants.metohds.setCloseIcon(lbl_close, this);
 
         //set Log in icon
-        
-        btn_entrar.setIcon(
-                new ImageIcon(
-                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.login")))
-                                .getImage()
-                                .getScaledInstance(35, 35, Image.SCALE_DEFAULT)
-                )
-        );
+        Constants.metohds.setIconToButton(this, btn_entrar, "icon.login", 35, 35);
+
+        //set 'Go back' icon
+        Constants.metohds.setIconToButton(this, btn_atras, "icon.atras", 35, 35);
     }
 
     //setting the design some labels
@@ -115,27 +112,27 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
         lbl_registrar_aqui.setForeground(Color.blue.darker());
         lbl_registrar_aqui.setCursor(new Cursor(Cursor.HAND_CURSOR));
     }
-    
+
     private void initGetPerfil() {
         Frame_GetPerfil h = new Frame_GetPerfil(this, true);
         h.setLocationRelativeTo(this);
         h.setVisible(true);
     }
-    
+
     private void gotToSignIn() {
         Frame_SignIn signIn = new Frame_SignIn(this, true);
         signIn.setVisible(true);
     }
-    
+
     public void validacion() {
         Validacion validacion = new Validacion(new Object[]{
             txt_username.getText().trim(),
             new Hashing(txt_password.getText().trim()).encrypt(),
             perfil
         }, new UsuarioVO()).validarLogIn();
-        
+
         HashMap propMensaje = validacion.getMessage();
-        
+
         if (propMensaje != null) { //if an error message is ready to show up
             JOptionPane.showMessageDialog(this,
                     propMensaje.get("message").toString(),
@@ -147,7 +144,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
             new Frame_Inicio(validacion.getSession());
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

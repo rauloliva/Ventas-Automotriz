@@ -707,17 +707,15 @@ public class Validacion implements Runnable {
                     data[1].toString(),
                     data[2].toString(),
                     data[3]);
-            /*update the vehicle's status, this vehicle will not be available in catalogo*/
+            /*update the vehicle's status, this vehicle will not be available in
+            catalogo*/
             data = new Object[]{
-                "PROCCESS_PURCHASE",
+                Constants.PROCCESS_PURCHASE,
                 data[4]
             };
             createRequestJSON("UPDATEAUTOESTATUS", null);
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
-            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
-                return this;
-            }
+            peticion.getResult();
         } else {
             writeMessages(new Object[]{
                 "mail.empty.fields",
@@ -753,9 +751,31 @@ public class Validacion implements Runnable {
             JSONObject response = peticion.getResult();
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
-                    "msg.auto.deleted.success.title",
+                    "msg.auto.deleted.success",
                     "msg.auto.deleted.success.title",
                     JOptionPane.INFORMATION_MESSAGE
+                });
+            }
+        }
+        return this;
+    }
+
+    public Validacion updateStatusAuto() {
+        if (!isEmpty(data[0]) || !isEmpty(data[1])) {
+            createRequestJSON("UPDATEAUTOESTATUS", null);
+            Peticiones peticion = new Peticiones(requestJSON);
+            JSONObject response = peticion.getResult();
+            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
+                writeMessages(new Object[]{
+                    "msg.update.status",
+                    "msg.update.status.title",
+                    JOptionPane.INFORMATION_MESSAGE
+                });
+            }else{
+                writeMessages(new Object[]{
+                    "msg.update.status.failed",
+                    "msg.update.status.failed.title",
+                    JOptionPane.ERROR_MESSAGE
                 });
             }
         }
