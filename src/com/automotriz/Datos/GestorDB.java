@@ -154,9 +154,11 @@ public class GestorDB {
                     );
                 } else if (objVO instanceof ComentarioVO) {
                     obj[i] = new ComentarioVO(
+                            rs.getInt("id"),
                             rs.getString("nombre"),
                             rs.getString("comentario"),
                             rs.getInt("valoracion"),
+                            rs.getInt("id_usuario"),
                             rs.getString("fecha")
                     );
                 }

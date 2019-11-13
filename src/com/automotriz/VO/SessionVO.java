@@ -83,6 +83,12 @@ public class SessionVO implements Serializable {
 
     @Override
     public String toString() {
-        return "Session{" + "id=" + id + ", username=" + username + ", password=" + password + ", mail=" + mail + ", telefono=" + telefono + ", perfil=" + perfil + '}';
+        return "Id: " + id + ","
+                + "Username: " + username + ","
+                + "Password: " + password + ","
+                + "Mail: " + mail + ","
+                + "Telefono: " + telefono + ","
+                + "Perfil: " + perfil + ","
+                + "Nombre: " + nombre + ",";
     }
 }

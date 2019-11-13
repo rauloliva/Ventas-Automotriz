@@ -124,6 +124,21 @@ public class AutoVO implements Serializable {
         this.id_usuario = id_usuario;
     }
 
+    @Override
+    public String toString() {
+        return "Id: " + id + ","
+                + "Modelo: " + modelo + ","
+                + "Imagenes: " + imagenes + ","
+                + "Kilometros: " + kilometros + ","
+                + "Descripcion: " + descripcion + ","
+                + "Marca: " + marca + ","
+                + "Cambio: " + cambio + ","
+                + "Precio: " + precio + ","
+                + "Color: " + ","
+                + "Estatus: " + estatus + ","
+                + "Id_usuario: " + id_usuario;
+    }
+
     /**
      * Generate a list of String Arrays from a list of Autos
      *

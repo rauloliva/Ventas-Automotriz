@@ -106,10 +106,18 @@ public class UsuarioVO implements Serializable {
 
     @Override
     public String toString() {
-        return "UsuarioVO{" + "id=" + id + ", usuario=" + usuario + ", contrase\u00f1a=" + contraseña + ", correo=" + correo + ", perfil=" + perfil + ", estatus=" + estatus + ", telefono=" + telefono + ", nombre=" + nombre + ", permisos=" + permisos + '}';
+        return "Id: " + id + ","
+                + "Username: " + usuario + ","
+                + "Password: " + contraseña + ","
+                + "Mail: " + correo + ","
+                + "Perfil: " + perfil + ","
+                + "Estatus: " + estatus + ","
+                + "Telefono: " + telefono + ","
+                + "Nombre: " + nombre + ","
+                + "Permisos: " + permisos;
     }
 
-    public SessionVO copyToSession() {
+    public SessionVO createSession() {
         //creating a new session
         SessionVO session = new SessionVO();
         session.setId(this.id);
