@@ -224,7 +224,7 @@ public class Peticiones_test {
         gestor.putQuery(query);
         gestor.setObjectVO(objVO);
         //executing the query
-        JSONObject response = gestor.sendQuery(request);
+        JSONObject response = gestor.executeQuery(request);
         return response;
     }
 

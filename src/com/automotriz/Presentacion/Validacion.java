@@ -133,7 +133,7 @@ public class Validacion implements Runnable {
         Logger.log("Creating new Request");
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
 
         if (!response.isEmpty()) {
 
@@ -159,7 +159,7 @@ public class Validacion implements Runnable {
                     createRequestJSON("BLOCKUSER", null);
                     //block the user
                     peticion = new Peticiones(requestJSON);
-                    JSONObject result = peticion.getResult();
+                    JSONObject result = peticion.execute();
 
                     if (!result.isEmpty()) {
                         if (((int) result.get("response")) == Constants.QUERY_SUCCESS) {
@@ -225,7 +225,7 @@ public class Validacion implements Runnable {
 
             Logger.log("Creating new Request");
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
             if (!response.isEmpty()) {
                 if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
                     Logger.log("Username already exists");
@@ -272,7 +272,7 @@ public class Validacion implements Runnable {
             createRequestJSON(datadic, null);
 
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
             if (!response.isEmpty()) {
                 if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                     writeMessages(new Object[]{
@@ -311,7 +311,7 @@ public class Validacion implements Runnable {
                 new Object[]{username, password});
         Logger.log("Creating new Request");
         Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
             writeMessages(new Object[]{
                 "signin.msg.error.permissionDenied",
@@ -328,7 +328,7 @@ public class Validacion implements Runnable {
         createRequestJSON("REMOVEUSER", null);
 
         Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (!response.isEmpty()) {
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
@@ -356,7 +356,7 @@ public class Validacion implements Runnable {
         Logger.log("Creating new Request");
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             Logger.log("Creating rows for the table");
             usuariosVO = new ArrayList<>();
@@ -418,7 +418,7 @@ public class Validacion implements Runnable {
                     createRequestJSON("REMOVEUSER", null);
                     peticion = new Peticiones(requestJSON);
                     peticion.setObjectVO(objVo);
-                    response = peticion.getResult();
+                    response = peticion.execute();
 
                     writeMessages(new Object[]{
                         "editUser.msg.userdisabled",
@@ -430,7 +430,7 @@ public class Validacion implements Runnable {
                     createRequestJSON("ACTIVARUSER", null);
                     peticion = new Peticiones(requestJSON);
                     peticion.setObjectVO(objVo);
-                    response = peticion.getResult();
+                    response = peticion.execute();
 
                     //send the notification to the user
                     String bodyMessage = ReadProperties.props.getProperty("email.msg.userActived")
@@ -512,7 +512,7 @@ public class Validacion implements Runnable {
         if (isAnUpdate) {
             createRequestJSON("UPDATEAUTO", null);
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
 
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
@@ -530,7 +530,7 @@ public class Validacion implements Runnable {
         } else {
             createRequestJSON("INSERTNEWAUTO", null);
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
 
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
@@ -554,7 +554,7 @@ public class Validacion implements Runnable {
         createRequestJSON("GETCARS", null);
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
 
         if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
 
@@ -628,7 +628,7 @@ public class Validacion implements Runnable {
 
         createRequestJSON("SUBMITCOMENTARIO", null);
         Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
             writeMessages(new Object[]{
                 "clientView.msg.submit.successfully",
@@ -643,7 +643,7 @@ public class Validacion implements Runnable {
         createRequestJSON("GETFEEDBACK", null);
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             Object[] obj = (Object[]) response.get("obj");
             comentariosVO = new ArrayList<>();
@@ -663,7 +663,7 @@ public class Validacion implements Runnable {
         createRequestJSON("GETCATALOGO", null);
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             Object[] obj = (Object[]) response.get("obj");
             autosVO = new ArrayList<>();
@@ -678,7 +678,7 @@ public class Validacion implements Runnable {
         createRequestJSON("GETVENDEDOR", null);
         Peticiones peticion = new Peticiones(requestJSON);
         peticion.setObjectVO(objVo);
-        JSONObject response = peticion.getResult();
+        JSONObject response = peticion.execute();
         if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
             usuariosVO = new ArrayList<>();
             usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
@@ -691,7 +691,7 @@ public class Validacion implements Runnable {
             createRequestJSON("GETVENDEDORNAME", null);
             Peticiones peticion = new Peticiones(requestJSON);
             peticion.setObjectVO(objVo);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
             if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
                 usuariosVO = new ArrayList<>();
                 usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
@@ -715,7 +715,7 @@ public class Validacion implements Runnable {
             };
             createRequestJSON("UPDATEAUTOESTATUS", null);
             Peticiones peticion = new Peticiones(requestJSON);
-            peticion.getResult();
+            peticion.execute();
         } else {
             writeMessages(new Object[]{
                 "mail.empty.fields",
@@ -732,7 +732,7 @@ public class Validacion implements Runnable {
             createRequestJSON("FILTRARAUTOS", null);
             Peticiones peticion = new Peticiones(requestJSON);
             peticion.setObjectVO(objVo);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
             if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
                 autosVO = new ArrayList<>();
                 for (Object obj : (Object[]) response.get("obj")) {
@@ -748,7 +748,7 @@ public class Validacion implements Runnable {
         if (!isEmpty(data[0]) || !isEmpty(data[1])) {
             createRequestJSON("UPDATEAUTOESTATUS", null);
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
                     "msg.auto.deleted.success",
@@ -764,7 +764,7 @@ public class Validacion implements Runnable {
         if (!isEmpty(data[0]) || !isEmpty(data[1])) {
             createRequestJSON("UPDATEAUTOESTATUS", null);
             Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.getResult();
+            JSONObject response = peticion.execute();
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
                     "msg.update.status",

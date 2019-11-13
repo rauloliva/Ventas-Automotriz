@@ -68,7 +68,7 @@ public class GestorDB {
      * @param request The JSON object that acts as a request to the server
      * @return A JSON object that acts as a response to the client
      */
-    public JSONObject sendQuery(JSONObject request) {
+    public JSONObject executeQuery(JSONObject request) {
         Conexion conexion = new Conexion();
 
         if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
