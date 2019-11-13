@@ -13,7 +13,6 @@ import javax.swing.JLabel;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
 import com.automotriz.VO.UsuarioVO;
-import java.awt.Image;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constants<Frame_LogIn> {
 

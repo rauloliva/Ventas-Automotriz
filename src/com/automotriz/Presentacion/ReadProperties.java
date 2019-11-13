@@ -29,6 +29,8 @@ public class ReadProperties {
      * file
      */
     public static void loadApplicationProps() {
-        new ReadProperties();
+        if (props == null) {
+            new ReadProperties();
+        }
     }
 }

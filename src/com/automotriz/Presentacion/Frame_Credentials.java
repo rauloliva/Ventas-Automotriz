@@ -19,6 +19,7 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
     @Override
     public void initFrame(Frame_Credentials c) {
         Constants.metohds.setCloseIcon(lbl_close, this);
+        Constants.metohds.setIconToButton(this, btn_submitRights, "icon.allow", 35, 35);
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         setLocationRelativeTo(null);
         setVisible(true);
@@ -123,7 +124,7 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
         txt_password.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         txt_password.setHorizontalAlignment(javax.swing.JTextField.CENTER);
 
-        btn_submitRights.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        btn_submitRights.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         btn_submitRights.setText("Dar Permisos");
         btn_submitRights.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_submitRights.addActionListener(new java.awt.event.ActionListener() {
@@ -143,13 +144,13 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
                     .addComponent(jLabel2))
                 .addGap(31, 31, 31)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(txt_username)
+                    .addComponent(txt_username, javax.swing.GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
                     .addComponent(txt_password))
                 .addGap(40, 40, 40))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(156, 156, 156)
                 .addComponent(btn_submitRights)
-                .addGap(163, 163, 163))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -162,9 +163,9 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(txt_password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 36, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btn_submitRights)
-                .addGap(28, 28, 28))
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
@@ -178,10 +179,10 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
         );
         panelContentLayout.setVerticalGroup(
             panelContentLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelContentLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(panelContentLayout.createSequentialGroup()
+                .addGap(19, 19, 19)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N

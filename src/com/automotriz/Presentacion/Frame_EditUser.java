@@ -12,7 +12,7 @@ import com.automotriz.Constantes.Constants;
 
 public class Frame_EditUser extends javax.swing.JDialog implements Constants<Frame_EditUser> {
 
-    private UsuarioVO usuario;
+    private final UsuarioVO usuario;
 
     public Frame_EditUser(java.awt.Frame parent, boolean modal, UsuarioVO usuario) {
         super(parent, modal);

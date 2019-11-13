@@ -13,7 +13,7 @@ import org.jfree.data.xy.XYSeriesCollection;
 
 public class Graph {
 
-    private JPanel parent;
+    private final JPanel parent;
 
     public Graph(JPanel parent) {
         this.parent = parent;

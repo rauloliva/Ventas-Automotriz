@@ -11,7 +11,7 @@ import com.automotriz.Constantes.Constants;
 
 public class Report {
 
-    private String reportName;
+    private final String reportName;
     private final Connection cnn;
 
     /**

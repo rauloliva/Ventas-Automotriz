@@ -10,7 +10,7 @@ import com.automotriz.Constantes.Constants;
 
 public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame_SignIn> {
 
-    private Frame parent;
+    private final Frame parent;
 
     public Frame_SignIn(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -138,6 +138,8 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setUndecorated(true);
         setResizable(false);
+
+        panelTitle.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
 
         lbl_title.setFont(new java.awt.Font("Dialog", 1, 22)); // NOI18N
         lbl_title.setText("Crear nuevo Usuario");

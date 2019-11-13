@@ -29,6 +29,8 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
         initTable();
         setAutoEstatus();
+        Constants.metohds.setIconToButton(this, btn_cambiarEstatus, "icon.guardar", 35, 35);
+        Constants.metohds.setIconToButton(this, btn_eliminarAuto, "icon.delete", 35, 35);
         boolean existCars = getCars();
         c.setVisible(existCars);
     }
@@ -228,7 +230,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         jLabel1.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         jLabel1.setText("Estatus");
 
-        btn_eliminarAuto.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_eliminarAuto.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         btn_eliminarAuto.setText("Eliminar Auto");
         btn_eliminarAuto.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_eliminarAuto.setEnabled(false);
@@ -238,7 +240,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             }
         });
 
-        btn_cambiarEstatus.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        btn_cambiarEstatus.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         btn_cambiarEstatus.setText("Guardar Estatus");
         btn_cambiarEstatus.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         btn_cambiarEstatus.setEnabled(false);
@@ -257,11 +259,11 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(cmb_estatus, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(29, 29, 29)
                 .addComponent(btn_cambiarEstatus)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(33, 33, 33)
                 .addComponent(btn_eliminarAuto)
-                .addGap(43, 43, 43))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)

@@ -8,7 +8,7 @@ import javax.swing.border.BevelBorder;
 
 public class Frame_PreviewImage extends javax.swing.JDialog implements Constants<Frame_PreviewImage> {
 
-    private String imagePath;
+    private final String imagePath;
 
     public Frame_PreviewImage(java.awt.Frame parent, boolean modal, String imagePath) {
         super(parent, modal);

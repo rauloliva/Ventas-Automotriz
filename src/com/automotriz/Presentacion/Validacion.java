@@ -18,7 +18,7 @@ import com.automotriz.Constantes.Constants;
 
 public class Validacion implements Runnable {
 
-    public static final int ATTEMPTS_ALLOWED = 3;
+    public static final int ATTEMPTS_ALLOWED = 5;
     public static int loginTries = 0;
     private HashMap messageProps;
     private Object[] data;
@@ -202,7 +202,7 @@ public class Validacion implements Runnable {
                         Create a new SessionVO
                      */
                     Logger.log("Creating the user's session");
-                    this.session = this.usuario.copyToSession();
+                    this.session = this.usuario.createSession();
                 }
             }
 
