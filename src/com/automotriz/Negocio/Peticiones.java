@@ -186,6 +186,8 @@ public class Peticiones {
                 case "UPDATEAUTOESTATUS":
                     sqlData = UPDATEAUTOESTATUS(operations, request);
                     break;
+                default:
+                    sqlData = "show tables".split(" ");
             }
             //returns the query from operationsIdentifier
             return formQuery(sqlData);
