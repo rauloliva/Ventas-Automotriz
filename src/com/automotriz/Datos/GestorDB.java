@@ -8,6 +8,9 @@ import com.automotriz.logger.Logger;
 import com.automotriz.logger.LoggerQuery;
 import org.json.simple.JSONObject;
 import com.automotriz.Constantes.Constants;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 public class GestorDB {
 
@@ -82,7 +85,7 @@ public class GestorDB {
                 case Constants.UPDATE:
                     return UPDATE(conexion, request);
                 default:
-                    return new JSONObject();
+                    return DBTables(conexion);
             }
         }
         Logger.error("Connection Failure");
@@ -242,6 +245,97 @@ public class GestorDB {
     }
 
     /**
+     *
+     * @param conexion
+     * @return
+     */
+    private JSONObject DBTables(Conexion conexion) {
+        cnn = conexion.getConnection();
+        try {
+            Logger.log("Quering DataBase TablesS");
+            rs = cnn.getMetaData().getTables("ventas_automotriz", null, "%", new String[]{"TABLE"});
+            List<String> tables = new ArrayList();
+            while (rs.next()) {
+                tables.add(rs.getString("TABLE_NAME"));
+            }
+            HashMap data = getDataByTable(tables, cnn);
+            return createResponseJSON(new Object[]{data});
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+            return new JSONObject();
+        } finally {
+            try {
+                closeConnection();
+            } catch (Exception e) {
+                Logger.error(e.toString());
+                Logger.error(e.getStackTrace());
+            }
+        }
+    }
+
+    /**
+     *
+     * @param tables
+     * @param cnn
+     * @return
+     * @throws Exception
+     */
+    private HashMap getDataByTable(List<String> tables, Connection cnn) throws Exception {
+        HashMap allData = new HashMap();
+        for (String table : tables) {
+            ps = cnn.prepareStatement("select * from " + table);
+            rs = ps.executeQuery();
+            ResultSet rsTemp = rs;
+            int rowsFetched = resultSetCount(rsTemp);
+
+            Object[] obj = new Object[rowsFetched];
+            int i = 0;
+            while (rs.next()) {
+                if (table.equals("usuarios")) {
+                    obj[i] = new UsuarioVO(
+                            rs.getInt("id"),
+                            rs.getString("usuario"),
+                            rs.getString("contrasena"),
+                            rs.getString("correo"),
+                            rs.getString("perfil"),
+                            rs.getString("estatus"),
+                            rs.getString("telefono"),
+                            rs.getString("nombre"),
+                            rs.getString("permisos")
+                    );
+                } else if (table.equals("autos")) {
+                    obj[i] = new AutoVO(
+                            rs.getInt("id"),
+                            rs.getInt("modelo"),
+                            rs.getString("imagenes"),
+                            rs.getInt("kilometros"),
+                            rs.getString("descripcion"),
+                            rs.getString("marca"),
+                            rs.getString("cambio"),
+                            rs.getDouble("precio"),
+                            rs.getString("color"),
+                            rs.getString("estatus"),
+                            rs.getInt("id_usuario")
+                    );
+                } else if (table.equals("comentarios")) {
+                    obj[i] = new ComentarioVO(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("comentario"),
+                            rs.getInt("valoracion"),
+                            rs.getInt("id_usuario"),
+                            rs.getString("fecha")
+                    );
+                }
+                i++;
+            }
+            allData.put(table, obj);
+        }
+        return allData;
+    }
+
+    /**
      * Close the database connection, as well close the preparedStatement object
      * and the ResultSet object
      *
@@ -251,7 +345,9 @@ public class GestorDB {
     private void closeConnection() throws Exception {
         Logger.log("Closing Connection");
         cnn.close();
-        ps.close();
+        if (ps != null) {
+            ps.close();
+        }
         if (rs != null) {
             rs.close();
         }

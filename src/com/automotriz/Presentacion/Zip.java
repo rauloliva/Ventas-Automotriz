@@ -17,25 +17,31 @@ public class Zip {
     private ZipInputStream in;
 
     public void newZip() throws Exception {
-        chooseZipPath();
-        out = new ZipOutputStream(new FileOutputStream(zipPath));
-        in = new ZipInputStream(new FileInputStream(zipPath));
+        String zipFullPath = chooseZipPath();
+        out = new ZipOutputStream(new FileOutputStream(zipFullPath));
+        in = new ZipInputStream(new FileInputStream(zipFullPath));
     }
 
-    private void chooseZipPath() {
+    private String chooseZipPath() {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (chooser.showDialog(chooser, "Elegir Ruta") == JFileChooser.APPROVE_OPTION) {
-            zipPath = chooser.getSelectedFile().getPath() + "\\" + Constants.ZIP_NAME;
+            zipPath = chooser.getSelectedFile().getPath();
+            return zipPath + "\\" + Constants.ZIP_NAME;
         }
+        return chooser.getCurrentDirectory().getAbsolutePath();
     }
 
     public void newFile(String fileName, Object content) throws Exception {
-        ZipEntry e = new ZipEntry(fileName);
+        if (out == null) {
+            String defaultPath = new JFileChooser().getCurrentDirectory().getAbsolutePath() + "\\" + Constants.ZIP_NAME;;
+            out = new ZipOutputStream(new FileOutputStream(defaultPath));
+            in = new ZipInputStream(new FileInputStream(defaultPath));
+        }
+        ZipEntry e = new ZipEntry(fileName + "." + Constants.BACKUP_FILES_EXTENSION);
         out.putNextEntry(e);
         ObjectOutputStream o = new ObjectOutputStream(out);
         o.writeObject(content);
-        o.close();
     }
 
     public void createZip() throws Exception {
@@ -43,7 +49,7 @@ public class Zip {
     }
 
     public List<Object> readZipContent() throws Exception {
-        ZipEntry e = null;
+        ZipEntry e;
         List<Object> objs = new ArrayList<>();
         while ((e = in.getNextEntry()) != null) {
             ObjectInputStream i = new ObjectInputStream(in);
@@ -52,22 +58,28 @@ public class Zip {
         return objs;
     }
 
+    public String getZipPath() {
+        return zipPath;
+    }
+
     public static void main(String[] args) {
         try {
             ReadProperties.loadApplicationProps();
             Zip zip = new Zip();
             zip.newZip();
-            zip.newFile("Usuarios." + Constants.BACKUP_FILES_EXTENSION, new UsuarioVO(0, "a", "e", "d", "v", "b", "f", "vc", "554"));
-            //zip.newFile("Comentarios.mex", "Aqui van los comentarios");
+            zip.newFile("Usuarios." + Constants.BACKUP_FILES_EXTENSION, new Object[]{new UsuarioVO(0, "a", "e", "d", "v", "b", "f", "vc", "554")});
+            zip.newFile("Comentarios.mex", "Aqui van los comentarios");
             zip.createZip();
 
             //read the zip file
             List<Object> objs = zip.readZipContent();
-            for (Object obj : objs) {
+            UsuarioVO u = (UsuarioVO) ((Object[]) objs.get(0))[0];
+            System.out.println(u);
+            /*for (Object obj : objs) {
                 if (obj instanceof UsuarioVO) {
                     System.out.println(((UsuarioVO) obj).toString());
                 }
-            }
+            }*/
         } catch (Exception e) {
             e.printStackTrace();
         }
