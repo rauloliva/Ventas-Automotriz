@@ -244,6 +244,14 @@ public class Validacion implements Runnable {
         return this;
     }
 
+    public boolean askAdminRights() {
+        Frame_Credentials credentials = new Frame_Credentials(null, true);
+        hiloVaidacion = new Thread(this);
+        /*stop this thread until the admin give their adminRights*/
+        hiloVaidacion.stop();
+        return credentials.isAllowed();
+    }
+
     public Validacion validateForm(String form, String datadic) {
         boolean allow = false;
         Logger.log("validating " + form + " form ");
@@ -256,11 +264,7 @@ public class Validacion implements Runnable {
             return this;
         }
         if (data[3].toString().equals("Administrador") && datadic.equals("CREATENEWUSER")) {
-            Frame_Credentials credentials = new Frame_Credentials(null, true);
-            hiloVaidacion = new Thread(this);
-            /*stop this thread until the admin give their adminRights*/
-            hiloVaidacion.stop();
-            allow = credentials.isAllowed();
+            allow = askAdminRights();
         } else {
             allow = true;
         }
@@ -771,7 +775,7 @@ public class Validacion implements Runnable {
                     "msg.update.status.title",
                     JOptionPane.INFORMATION_MESSAGE
                 });
-            }else{
+            } else {
                 writeMessages(new Object[]{
                     "msg.update.status.failed",
                     "msg.update.status.failed.title",
@@ -780,6 +784,16 @@ public class Validacion implements Runnable {
             }
         }
         return this;
+    }
+
+    public HashMap requestDatabaseTables() {
+        createRequestJSON("", null);
+        Peticiones peticion = new Peticiones(requestJSON);
+        JSONObject response = peticion.execute();
+        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
+            return (HashMap) ((Object[]) response.get("obj"))[0];
+        }
+        return new HashMap();
     }
 
     public static Connection requestSQLConnection() {

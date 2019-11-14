@@ -162,6 +162,11 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
         menu_backup.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
         menu_backup.setText("Respaldar Datos");
         menu_backup.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu_backup.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menu_backupActionPerformed(evt);
+            }
+        });
         menu_opciones_avanzadas.add(menu_backup);
 
         jMenu1.add(menu_opciones_avanzadas);
@@ -207,6 +212,10 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
     private void menu_autosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_autosActionPerformed
         new Frame_AutoStatus(null, true);
     }//GEN-LAST:event_menu_autosActionPerformed
+
+    private void menu_backupActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menu_backupActionPerformed
+        new Frame_Backup(null, true);
+    }//GEN-LAST:event_menu_backupActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
