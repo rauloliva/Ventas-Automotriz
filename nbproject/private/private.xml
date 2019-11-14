@@ -6,7 +6,6 @@
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Comentarios.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_PreviewImage.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/test/Test/testScroll.java</file>
-            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/OperationsIdentifier.json</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Graph.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_InicioCliente.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/test/Test/Encrypt.java</file>
@@ -14,6 +13,7 @@
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/application.properties</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_MyCars.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Datos/GestorDB.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/logs/%5B13112019175352%5DLog.txt</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_AutoInfo.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Datos/Mail.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Hashing.java</file>
@@ -21,15 +21,18 @@
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Negocio/Peticiones.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_GetPerfil.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/test/Test/Peticiones_test.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Zip.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Constantes/Global.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Constantes/GlobalMethods.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_EditUser.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_SignIn.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Credentials.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Loading.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Backup.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Perfil.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/ReadProperties.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_AutoStatus.java</file>
+            <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/logs/%5B13112019210625%5DLog.txt</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Vender.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_AddComentario.java</file>
             <file>file:/C:/Users/oliva/Documents/NetBeansProjects/Ventas_Automotriz/src/com/automotriz/Presentacion/Frame_Catalogo.java</file>
