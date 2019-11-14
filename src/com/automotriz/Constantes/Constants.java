@@ -37,10 +37,10 @@ public interface Constants<Class> {
 
     //The file that contains the SQL queries
     String JSON_FILE = ReadProperties.props.getProperty("operations.path");
-    
+
     //Logs file path
     String LOGS_DIR_NAME = ReadProperties.props.getProperty("logs.dir");
-    
+
     //
     int COMMENTS_PER_PAGE = 4;
 
@@ -63,12 +63,14 @@ public interface Constants<Class> {
     int NUM_FIELDS = 6;
 
     public void initFrame(Class c);
-    
+
     public GlobalMethods metohds = new GlobalMethods();
-    
+
     //Vehicle's Status
     public String PROCCESS_PURCHASE = "PROCCESS_PURCHASE";
     public String DELETED = "DELETED";
+
+    //zip file
+    public String ZIP_NAME = ReadProperties.props.getProperty("zip.name");
+    public String BACKUP_FILES_EXTENSION = ReadProperties.props.getProperty("file.extension");
 }
-
-

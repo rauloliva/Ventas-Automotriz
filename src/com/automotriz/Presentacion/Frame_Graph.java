@@ -39,10 +39,26 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
                                 .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
                 )
         );
-        
+
         menu_autos.setIcon(
                 new ImageIcon(
                         new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.autos")))
+                                .getImage()
+                                .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
+                )
+        );
+
+        menu_opciones_avanzadas.setIcon(
+                new ImageIcon(
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.settings")))
+                                .getImage()
+                                .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
+                )
+        );
+
+        menu_backup.setIcon(
+                new ImageIcon(
+                        new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.backup")))
                                 .getImage()
                                 .getScaledInstance(32, 32, Image.SCALE_DEFAULT)
                 )
@@ -62,6 +78,8 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
         menu_feedback = new javax.swing.JMenuItem();
         jMenuItem3 = new javax.swing.JMenuItem();
         menu_autos = new javax.swing.JMenuItem();
+        menu_opciones_avanzadas = new javax.swing.JMenu();
+        menu_backup = new javax.swing.JMenuItem();
 
         javax.swing.GroupLayout panelContentLayout = new javax.swing.GroupLayout(panelContent);
         panelContent.setLayout(panelContentLayout);
@@ -138,6 +156,16 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
         });
         jMenu1.add(menu_autos);
 
+        menu_opciones_avanzadas.setText("Opciones Avanzadas");
+        menu_opciones_avanzadas.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+
+        menu_backup.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        menu_backup.setText("Respaldar Datos");
+        menu_backup.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        menu_opciones_avanzadas.add(menu_backup);
+
+        jMenu1.add(menu_opciones_avanzadas);
+
         jMenuBar1.add(jMenu1);
 
         setJMenuBar(jMenuBar1);
@@ -188,7 +216,9 @@ public class Frame_Graph extends javax.swing.JInternalFrame implements Constants
     private javax.swing.JMenuItem jMenuItem3;
     private javax.swing.JMenu menuVerPerfil;
     private javax.swing.JMenuItem menu_autos;
+    private javax.swing.JMenuItem menu_backup;
     private javax.swing.JMenuItem menu_feedback;
+    private javax.swing.JMenu menu_opciones_avanzadas;
     private javax.swing.JMenuItem menu_vender;
     private javax.swing.JPanel panelContent;
     // End of variables declaration//GEN-END:variables

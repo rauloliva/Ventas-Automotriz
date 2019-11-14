@@ -1,0 +1,19 @@
+[13/11/2019  21:11:47] - INFO - Starting Iniciar Session frame...
+[13/11/2019  21:11:47] - INFO - Starting Seleccionar Perfil modal...
+[13/11/2019  21:11:49] - INFO - Saving type of account: Administrador
+[13/11/2019  21:11:56] - INFO - Encrypting String...
+[13/11/2019  21:11:56] - INFO - validating log in form
+[13/11/2019  21:11:56] - INFO - Creating new Request
+[13/11/2019  21:11:56] - INFO - Reading OperationsIdentifier file
+[13/11/2019  21:11:56] - INFO - Reading datadic VALIDATEUSER
+[13/11/2019  21:11:56] - INFO - Forming query got from datadic
+[13/11/2019  21:11:56] - INFO - Sending query to GestorDB
+[13/11/2019  21:11:56] - INFO - Connecting to Database
+[13/11/2019  21:11:56] - INFO - Reading DB's credentials for version 8
+[13/11/2019  21:11:56] - INFO - Connection Success
+[13/11/2019  21:11:56] - INFO - Applying SELECT query
+[13/11/2019  21:11:56] - INFO - Closing Connection
+[13/11/2019  21:11:56] - INFO - validating profile
+[13/11/2019  21:11:56] - INFO - Creating the user's session
+[13/11/2019  21:11:56] - INFO - Starting Inicio Administrador frame...
+[13/11/2019  21:11:56] - INFO - Starting Ventas de la semana frame...

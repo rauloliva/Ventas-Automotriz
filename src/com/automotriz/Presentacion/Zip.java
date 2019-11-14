@@ -8,10 +8,10 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 import javax.swing.JFileChooser;
+import com.automotriz.Constantes.Constants;
 
 public class Zip {
 
-    private static final String ZIP_NAME = "BackUp-Venta_Automotriz.zip";
     private String zipPath;
     private ZipOutputStream out;
     private ZipInputStream in;
@@ -26,7 +26,7 @@ public class Zip {
         JFileChooser chooser = new JFileChooser();
         chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         if (chooser.showDialog(chooser, "Elegir Ruta") == JFileChooser.APPROVE_OPTION) {
-            zipPath = chooser.getSelectedFile().getPath() + "\\" + ZIP_NAME;
+            zipPath = chooser.getSelectedFile().getPath() + "\\" + Constants.ZIP_NAME;
         }
     }
 
@@ -57,15 +57,15 @@ public class Zip {
             ReadProperties.loadApplicationProps();
             Zip zip = new Zip();
             zip.newZip();
-            zip.newFile("Usuarios.mex", new UsuarioVO(0, "a", "e", "d", "v", "b", "f", "vc", "554"));
+            zip.newFile("Usuarios." + Constants.BACKUP_FILES_EXTENSION, new UsuarioVO(0, "a", "e", "d", "v", "b", "f", "vc", "554"));
             //zip.newFile("Comentarios.mex", "Aqui van los comentarios");
             zip.createZip();
 
             //read the zip file
             List<Object> objs = zip.readZipContent();
-            for(Object obj : objs){
-                if(obj instanceof UsuarioVO){
-                    System.out.println(((UsuarioVO) obj ).toString());
+            for (Object obj : objs) {
+                if (obj instanceof UsuarioVO) {
+                    System.out.println(((UsuarioVO) obj).toString());
                 }
             }
         } catch (Exception e) {
