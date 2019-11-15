@@ -123,7 +123,7 @@ public class Frame_Backup extends javax.swing.JDialog implements Constants<Frame
             }
         });
 
-        lbl_title.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
+        lbl_title.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
         lbl_title.setForeground(new java.awt.Color(255, 255, 255));
         lbl_title.setText("jLabel3");
 
@@ -140,7 +140,7 @@ public class Frame_Backup extends javax.swing.JDialog implements Constants<Frame
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lbl_close, javax.swing.GroupLayout.DEFAULT_SIZE, 47, Short.MAX_VALUE)
+            .addComponent(lbl_close, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lbl_title)
@@ -171,7 +171,6 @@ public class Frame_Backup extends javax.swing.JDialog implements Constants<Frame
         lbl_path.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         lbl_path.setText("jLabel4");
 
-        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel4.setText("Esta sera la ruta donde se guardara el archivo zip, puede seleccionar otra ruta");
 
         tbl_tables.setFont(new java.awt.Font("Tahoma", 0, 15)); // NOI18N
@@ -193,7 +192,6 @@ public class Frame_Backup extends javax.swing.JDialog implements Constants<Frame
         });
         jScrollPane1.setViewportView(tbl_tables);
 
-        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLabel5.setText("Marca la casilla 'Check' para aplicar el respaldo a la tabla");
 
         btn_resaldar.setFont(new java.awt.Font("Tahoma", 0, 17)); // NOI18N
