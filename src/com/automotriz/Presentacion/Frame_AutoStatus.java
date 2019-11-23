@@ -331,10 +331,15 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         String estatus = getSelectedCar().getEstatus();
         if (estatus != null) {
             if (!estatus.equals("")) {
+                if (estatus.equals("VENDIDO")) {
+                    //if its already sold, the status cannot changed
+                    cmb_estatus.setEnabled(false);
+                } else {
+                    cmb_estatus.setEnabled(true);
+                }
                 btn_cambiarEstatus.setEnabled(true);
                 btn_eliminarAuto.setEnabled(true);
                 cmb_estatus.setSelectedItem(estatus);
-                cmb_estatus.setEnabled(true);
             }
         }
     }//GEN-LAST:event_tbl_carsMouseClicked

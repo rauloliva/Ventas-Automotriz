@@ -38,8 +38,8 @@ public class DataModel {
         this.back = back;
         this.next = next;
     }
-    
-    public DataModel(){
+
+    public DataModel() {
     }
 
     public void ResetComponents(Object[][] components) {
@@ -210,7 +210,7 @@ public class DataModel {
     }
 
     private void clearAutosFields() {
-        for (int i = 0; i < 4; i++) {
+        for (int i = 0; i < components.length; i++) {
             ((JLabel) components[i][0]).setText("Marca: ");
             ((JLabel) components[i][1]).setText("Modelo:");
             ((JLabel) components[i][2]).setText("Precio: ");

@@ -1,6 +1,2 @@
  - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'admin' AND contrasena= 'Xuq6t7Fr/Dg='
- - QUERY - show tables
- - QUERY - SELECT * FROM usuarios WHERE estatus='Activo' AND perfil='Administrador' AND usuario= 'admin' AND contrasena= 'Xuq6t7Fr/Dg='
  - QUERY - SELECT * FROM autos WHERE id_usuario= 16
- - QUERY - show tables
- - QUERY - show tables

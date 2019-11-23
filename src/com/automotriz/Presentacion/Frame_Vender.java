@@ -217,6 +217,7 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
         txt_otraMarca.setEnabled(false);
         chb_otraMarca.setSelected(false);
         cmb_marca.setSelectedItem("--Seleccionar--");
+        cmb_marca.setEnabled(true);
         cmb_color.setSelectedItem("--Seleccionar--");
         spn_precio.setValue(1);
         txa_descripcion.setText(null);
