@@ -16,6 +16,7 @@ public class UsuarioVO implements Serializable {
     private String telefono;
     private String nombre;
     private String permisos;
+    private int intentos;
 
     public UsuarioVO(int id, String usuario, String contraseña, String correo, String perfil, String estatus, String telefono, String nombre, String permisos) {
         this.id = id;
@@ -102,6 +103,14 @@ public class UsuarioVO implements Serializable {
 
     public void setPermisos(String permisos) {
         this.permisos = permisos;
+    }
+
+    public int getIntentos() {
+        return this.intentos;
+    }
+
+    public void setIntentos(int intentos) {
+        this.intentos = intentos;
     }
 
     @Override

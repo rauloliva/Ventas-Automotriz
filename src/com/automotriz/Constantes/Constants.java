@@ -73,4 +73,29 @@ public interface Constants<Class> {
     //zip file
     public String ZIP_NAME = ReadProperties.props.getProperty("zip.name");
     public String BACKUP_FILES_EXTENSION = ReadProperties.props.getProperty("file.extension");
+
+    // DATABASE ACTIONS
+    public String VALIDATEUSER = "VALIDATEUSER";
+    public String USERNAMEEXISTS = "USERNAMEEXISTS";
+    public String UPDATEINTENTOS = "UPDATEINTENTOS";
+    public String BLOCKUSER = "BLOCKUSER";
+    public String VALIDATEUSERNAME = "VALIDATEUSERNAME";
+    public String CREATENEWUSER = "CREATENEWUSER";
+    public String VALIDATEADMIN = "VALIDATEADMIN";
+    public String UPDATEUSER = "UPDATEUSER";
+    public String REMOVEUSER = "REMOVEUSER";
+    public String FILTRARUSUARIOS = "FILTRARUSUARIOS";
+    public String FILTRARTODOSUSUARIOS = "FILTRARTODOSUSUARIOS";
+    public String ACTIVARUSER = "ACTIVARUSER";
+    public String INSERTNEWAUTO = "INSERTNEWAUTO";
+    public String GETCARS = "GETCARS";
+    public String UPDATEAUTO = "UPDATEAUTO";
+    public String SUBMITCOMENTARIO = "SUBMITCOMENTARIO";
+    public String GETFEEDBACK = "GETFEEDBACK";
+    public String GETCATALOGO = "GETCATALOGO";
+    public String GETVENDEDOR = "GETVENDEDOR";
+    public String GETVENDEDORNAME = "GETVENDEDORNAME";
+    public String FILTRARAUTOS = "FILTRARAUTOS";
+    public String LISTAUTOSBYID = "LISTAUTOSBYID";
+    public String UPDATEAUTOESTATUS = "UPDATEAUTOESTATUS";
 }
