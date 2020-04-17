@@ -1,2 +1,6 @@
  - QUERY - SELECT * FROM usuarios WHERE estatus='ACTIVO' AND usuario= 'admin' AND contrasena= 'Xuq6t7Fr/Dg='
- - QUERY - SELECT * FROM autos WHERE id_usuario= 16
+ - QUERY - SELECT * FROM usuarios
+ - QUERY - SELECT * FROM usuarios
+ - QUERY - SELECT * FROM usuarios
+ - QUERY - SELECT * FROM comentarios
+ - QUERY - SELECT * FROM autos WHERE id_usuario != 16 AND estatus = 'ENVENTA'
