@@ -8,6 +8,7 @@ import com.automotriz.logger.Logger;
 import com.automotriz.logger.LoggerQuery;
 import org.json.simple.JSONObject;
 import com.automotriz.Constantes.Constants;
+import com.automotriz.Negocio.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,6 +43,65 @@ public class GestorDB {
      */
     public GestorDB(String query) {
         this.query = query;
+    }
+    
+    public Response executeQuery() {
+        Conexion conexion = new Conexion();
+
+        if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
+            cnn = conexion.getConnection();
+            Logger.log("Connection Success");
+            LoggerQuery.logQuery(this.query);
+            switch (this.query.charAt(0)) {
+                case Constants.SELECT:
+                    return SELECT();
+                case Constants.INSERT:
+                    return INSERT(conexion, request);
+                case Constants.UPDATE:
+                    return UPDATE();
+//                default:
+//                    return DBTables(conexion);
+            }
+        }
+        Logger.error("Connection Failure");
+        return null;
+    }
+    
+    private Response SELECT() {
+        Response response = new Response();
+        try {
+            Logger.log("Applying SELECT query");
+            ps = cnn.prepareStatement(query);
+            rs = ps.executeQuery();
+            ResultSet rsTemp = rs;
+            int rowsFetched = resultSetCount(rsTemp);
+            
+            response.setResultSet(rs);
+            response.setRowsFetched(rowsFetched);
+            response.setStatus( rowsFetched > 0 ? Response.STATUS_SUCCESS : Response.STATUS_RESULTSET_EMPTY);
+            return response;
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+            response.setStatus(Response.STATUS_FAILURE);
+            return response;
+        }
+    }
+    
+    private Response UPDATE() {
+        Response response = new Response();
+        try {
+            Logger.log("Applying UPDATE query");
+            ps = cnn.prepareStatement(query);
+            int res = ps.executeUpdate();
+            response.setStatus((res > 0) ? Response.STATUS_UPDATED : Response.STATUS_DID_NOT_UPDATE);
+            return response;
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+            response.setStatus(Response.STATUS_FAILURE);
+            return response;
+        }
     }
 
     /**
@@ -349,7 +409,7 @@ public class GestorDB {
             ps.close();
         }
         if (rs != null) {
-            rs.close();
+            //rs.close();
         }
     }
 
