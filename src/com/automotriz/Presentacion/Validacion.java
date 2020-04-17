@@ -15,6 +15,9 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.table.DefaultTableModel;
 import com.automotriz.Constantes.Constants;
+import com.automotriz.Negocio.Handler;
+import com.automotriz.Negocio.Response;
+import java.sql.ResultSet;
 
 public class Validacion implements Runnable {
 
@@ -111,8 +114,23 @@ public class Validacion implements Runnable {
         }
         requestJSON.put("response", columns);
     }
+    
+    /**
+     * Initialize the class Handler in order to
+     * prepare a new database operation
+     * 
+     * @param operation The operation's name to execute
+     * @param objVO The data needed to execute the operation
+     * @return A new instance of Response class
+     */
+    private Response initializeHandler(String operation, Object objVO){
+        Handler handler = new Handler(operation, objVO);
+        Response response = handler.createNewOperation();
+        return response;
+    } 
 
-    public Validacion validarLogIn() {
+    
+    public boolean validarLogIn() throws Exception {
         messageProps = new HashMap();
         Logger.log("validating log in form");
         if (isEmpty(data[0]) || isEmpty(data[1])) {
@@ -121,100 +139,108 @@ public class Validacion implements Runnable {
                 "login.msg.error.empty.title",
                 JOptionPane.ERROR_MESSAGE
             });
-            return this;
+            return false;
         }
-        /*
-         send a new request to DB
-         in exchange we get a session
-         */
-        createRequestJSON("VALIDATEUSER",
-                new String[]{"id", "usuario", "contrasena", "correo", "perfil", "estatus", "telefono"});
-
+        
         Logger.log("Creating new Request");
-        Peticiones peticion = new Peticiones(requestJSON);
-        peticion.setObjectVO(objVo);
-        JSONObject response = peticion.execute();
+        usuario = new UsuarioVO();
+        usuario.setUsuario(data[0].toString());
+        usuario.setContraseña(data[1].toString());
 
-        if (!response.isEmpty()) {
+        Response response = initializeHandler(Constants.VALIDATEUSER, usuario);
 
-            if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
+            //validate if the profile is the correct one
+            Logger.log("validating profile");
+            ResultSet rs = response.getResultSet();
+            if (rs.next()) {
+                this.usuario.setId(rs.getInt("id"));
+                this.usuario.setNombre(rs.getString("nombre"));
+                this.usuario.setUsuario(rs.getString("usuario"));
+                this.usuario.setContraseña(rs.getString("contrasena"));
+                this.usuario.setCorreo(rs.getString("correo"));
+                this.usuario.setTelefono(rs.getString("telefono"));
+                this.usuario.setPerfil(rs.getString("perfil"));
+                this.usuario.setEstatus(rs.getString("estatus"));
+            }
+            if(this.usuario.getEstatus().equals("BLOCKED")){
                 writeMessages(new Object[]{
-                    "login.msg.error.auth",
-                    "login.msg.error.auth.title",
+                    "login.msg.bloquear",
+                    "login.msg.bloquear.title",
                     JOptionPane.ERROR_MESSAGE
                 });
-
-                //counting the number of tries attempting to log in
-                loginTries++;
-                Logger.log("Attempt " + loginTries + " to get access");
-                if (loginTries == ATTEMPTS_ALLOWED) {
-                    Logger.log("Blocking user");
+                return false;
+            }
+            if (!this.usuario.getPerfil().equals(Frame_LogIn.perfil)) {
+                writeMessages(new Object[]{
+                    "login.msg.error.profile",
+                    "login.msg.error.profile.title",
+                    JOptionPane.WARNING_MESSAGE
+                });
+                return false;
+            } else {
+                //If the login is successful a new SessionVO is created
+                Logger.log("Creating the user's session");
+                this.session = this.usuario.createSession();
+                return true;
+            }
+        } 
+        /* Incorrect Credentials */ 
+        else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
+            // Verify if the username exists in order to register the attempts
+            usuario = new UsuarioVO();
+            usuario.setUsuario(data[0].toString());
+            response = initializeHandler(Constants.USERNAMEEXISTS, usuario);
+            if(response.getStatus() == Response.STATUS_SUCCESS){
+                //Update the number of attempts 
+                ResultSet rs = response.getResultSet();
+                rs.next();
+                usuario.setIntentos(rs.getInt("intentos") + 1);
+                usuario.setId(rs.getInt("id"));
+                if(usuario.getIntentos() > 5){
                     writeMessages(new Object[]{
                         "login.msg.bloquear",
                         "login.msg.bloquear.title",
-                        JOptionPane.WARNING_MESSAGE
+                        JOptionPane.ERROR_MESSAGE
+                    });
+                    return false;
+                }
+                response = initializeHandler(Constants.UPDATEINTENTOS, usuario);
+                if(response.getStatus() == Response.STATUS_UPDATED){
+                    writeMessages(new Object[]{
+                        "login.msg.error.auth",
+                        "login.msg.error.auth.title",
+                        JOptionPane.ERROR_MESSAGE
                     });
 
-                    this.data = new String[]{data[0].toString()};
-                    createRequestJSON("BLOCKUSER", null);
-                    //block the user
-                    peticion = new Peticiones(requestJSON);
-                    JSONObject result = peticion.execute();
-
-                    if (!result.isEmpty()) {
-                        if (((int) result.get("response")) == Constants.QUERY_SUCCESS) {
+                    if(usuario.getIntentos() == this.ATTEMPTS_ALLOWED){
+                        response = initializeHandler(Constants.BLOCKUSER, usuario);
+                        if(response.getStatus() == Response.STATUS_UPDATED){
                             writeMessages(new Object[]{
                                 "login.msg.bloquear",
                                 "login.msg.bloquear.title",
                                 JOptionPane.ERROR_MESSAGE
                             });
-                        } else {
-                            writeMessages(new Object[]{
-                                "login.msg.error.bloquear",
-                                "login.msg.error.bloquear.title",
-                                JOptionPane.ERROR_MESSAGE
-                            });
                         }
-                    } else {
-                        //error on server
-                        writeMessages(new Object[]{
-                            "login.msg.error.conndb",
-                            "login.msg.error.conndb.title",
-                            JOptionPane.ERROR_MESSAGE
-                        });
                     }
                 }
-            } else {
-                //validate if the profile is the correct one
-                Logger.log("validating profile");
-                //getting the only object UsuarioVO
-                this.usuario = (UsuarioVO) ((Object[]) response.get("obj"))[0];
-                if (!this.usuario.getPerfil().equals(Frame_LogIn.perfil)) {
-                    writeMessages(new Object[]{
-                        "login.msg.error.profile",
-                        "login.msg.error.profile.title",
-                        JOptionPane.WARNING_MESSAGE
-                    });
-                } else {
-                    messageProps = null;
-                    /*
-                        if the login is successful
-                        Create a new SessionVO
-                     */
-                    Logger.log("Creating the user's session");
-                    this.session = this.usuario.createSession();
-                }
+            }else{
+                writeMessages(new Object[]{
+                    "login.msg.error.username",
+                    "login.msg.error.username.title",
+                    JOptionPane.ERROR_MESSAGE
+                });
             }
-
-        } else {
+        } else if (response.getStatus() == Response.STATUS_FAILURE) {
             //error on server
             writeMessages(new Object[]{
                 "login.msg.error.conndb",
                 "login.msg.error.conndb.title",
                 JOptionPane.ERROR_MESSAGE
             });
+            return false;
         }
-        return this;
+        return false;
     }
 
     public Validacion usernameAlreadyExists() {
@@ -836,12 +862,16 @@ public class Validacion implements Runnable {
     }
 
     private void writeMessages(Object[] Props) {
-        messageProps = new HashMap();
-        messageProps.put("message",
-                ReadProperties.props.getProperty(Props[0].toString()));
-        messageProps.put("title",
-                ReadProperties.props.getProperty(Props[0].toString()));
-        messageProps.put("type", (int) Props[2]);
+//        messageProps = new HashMap();
+//        messageProps.put("message",
+//                ReadProperties.props.getProperty(Props[0].toString()));
+//        messageProps.put("title",
+//                ReadProperties.props.getProperty(Props[1].toString()));
+//        messageProps.put("type", (int) Props[2]);
+        JOptionPane.showMessageDialog(null, 
+                ReadProperties.props.getProperty(Props[0].toString()),
+                ReadProperties.props.getProperty(Props[1].toString()),
+                (int) Props[2]);
     }
 
     public static String generateDate() {

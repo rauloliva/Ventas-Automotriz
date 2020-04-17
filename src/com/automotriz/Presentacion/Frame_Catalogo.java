@@ -104,9 +104,9 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             if (flag.equals("")) {
                 model.constructCatalogoModel();
             } else if (flag.equals("next")) {
-                model.constructNextBtnCatalogo();
+                model.constructNextButton();
             } else {
-                model.constructBackBtnCatalogo();
+                model.constructBackBtnComentarios();
             }
         } else {
             btn_atras.setEnabled(false);
