@@ -13,6 +13,8 @@ public class Response {
     public static int STATUS_RESULTSET_EMPTY = 3;
     public static int STATUS_UPDATED = 4;
     public static int STATUS_DID_NOT_UPDATE = 5;
+    public static int STATUS_INSERTED = 6;
+    public static int STATUS_DID_NOT_INSERTED = 7;
 
     public void setStatus(int status) {
         this.status = status;

@@ -125,21 +125,20 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
 
     public void validacion() {
         try{
-        Validacion validacion = new Validacion(new Object[]{
-            txt_username.getText().trim(),
-            new Hashing(txt_password.getText().trim()).encrypt(),
-            perfil
-        }, new UsuarioVO());
-        boolean validationSuccess = validacion.validarLogIn();
-        //HashMap propMensaje = validacion.getMessage();
+            Validacion validacion = new Validacion(new Object[]{
+                txt_username.getText().trim(),
+                new Hashing(txt_password.getText().trim()).encrypt(),
+                perfil
+            }, new UsuarioVO());
+            boolean validationSuccess = validacion.validarLogIn();
 
-        if (validationSuccess) { //if an error message is ready to show up
-            this.dispose();
-            //send the session to menuPrincipal
-            new Frame_Inicio(validacion.getSession());
-        }
+            if (validationSuccess) {
+                this.dispose();
+                new Frame_Inicio(validacion.getSession());
+            }
         }catch(Exception e){
-            e.printStackTrace();
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
         }
     }
 

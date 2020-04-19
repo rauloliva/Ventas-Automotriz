@@ -45,6 +45,12 @@ public class GestorDB {
         this.query = query;
     }
     
+    /**
+     * Sends the query to GestorDB so it can be executed
+     *
+     * @return An instance of Response that contains what the query
+     * returns 
+     */
     public Response executeQuery() {
         Conexion conexion = new Conexion();
 
@@ -56,7 +62,7 @@ public class GestorDB {
                 case Constants.SELECT:
                     return SELECT();
                 case Constants.INSERT:
-                    return INSERT(conexion, request);
+                    return INSERT();
                 case Constants.UPDATE:
                     return UPDATE();
 //                default:
@@ -67,6 +73,12 @@ public class GestorDB {
         return null;
     }
     
+    /**
+     * Executes a SELECT SQL query
+     * 
+     * @return the data fetched by the query
+     * in an instance of Response
+     */
     private Response SELECT() {
         Response response = new Response();
         try {
@@ -88,6 +100,36 @@ public class GestorDB {
         }
     }
     
+    /**
+     * Executes a INSERT SQL query
+     * 
+     * @return Response.STATUS_INSERTED if the data was inserted
+     * or Response.STATUS_DID_NOT_INSERTED if the data could not 
+     * be inserted
+     */
+    private Response INSERT() {
+        Response response = new Response();
+        try {
+            Logger.log("Applying INSERT query");
+            ps = cnn.prepareStatement(query);
+            int res = ps.executeUpdate();
+            response.setStatus((res > 0) ? Response.STATUS_INSERTED : Response.STATUS_DID_NOT_INSERTED);
+            return response;
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+            response.setStatus(Response.STATUS_FAILURE);
+            return response;
+        }
+    }
+    
+    /**
+     * Executes an UPDATE SQL query
+     * 
+     * @return Response.STATUS_UPDATED if the data was updated
+     * or Response.STATUS_DID_NOT_UPDATE if the data could not 
+     * be updated
+     */
     private Response UPDATE() {
         Response response = new Response();
         try {
@@ -126,33 +168,6 @@ public class GestorDB {
     }
 
     /**
-     * Sends the query to GestorDB so it can be executed
-     *
-     * @param request The JSON object that acts as a request to the server
-     * @return A JSON object that acts as a response to the client
-     */
-    public JSONObject executeQuery(JSONObject request) {
-        Conexion conexion = new Conexion();
-
-        if (conexion.getConnectionStatus() == Constants.CONEXION_SUCCESS) {
-            Logger.log("Connection Success");
-            LoggerQuery.logQuery(this.query);
-            switch (this.query.charAt(0)) {
-                case Constants.SELECT:
-                    return SELECT(conexion);
-                case Constants.INSERT:
-                    return INSERT(conexion, request);
-                case Constants.UPDATE:
-                    return UPDATE(conexion, request);
-                default:
-                    return DBTables(conexion);
-            }
-        }
-        Logger.error("Connection Failure");
-        return null;
-    }
-
-    /**
      * Creates a JSON object that will be sent as a response to the client
      *
      * @param values Values captured from a SQL SELECT query
@@ -168,140 +183,6 @@ public class GestorDB {
         response.put("obj", values);
         response.put("estatus", Constants.QUERY_GOT_SOMETHING);
         return response;
-    }
-
-    /**
-     * Executes a SELECT SQL query
-     *
-     * @param conexion The database connection
-     * @return A JSON object that acts as a response created by the
-     * 'createResponseJSON' method
-     */
-    private JSONObject SELECT(Conexion conexion) {
-        cnn = conexion.getConnection();
-        try {
-            Logger.log("Applying SELECT query");
-            ps = cnn.prepareStatement(query);
-            rs = ps.executeQuery();
-            ResultSet rsTemp = rs;
-            int rowsFetched = resultSetCount(rsTemp);
-
-            Object[] obj = new Object[rowsFetched];
-            int i = 0;
-            while (rs.next()) {
-                if (objVO instanceof UsuarioVO) {
-                    obj[i] = new UsuarioVO(
-                            rs.getInt("id"),
-                            rs.getString("usuario"),
-                            rs.getString("contrasena"),
-                            rs.getString("correo"),
-                            rs.getString("perfil"),
-                            rs.getString("estatus"),
-                            rs.getString("telefono"),
-                            rs.getString("nombre"),
-                            rs.getString("permisos")
-                    );
-                } else if (objVO instanceof AutoVO) {
-                    obj[i] = new AutoVO(
-                            rs.getInt("id"),
-                            rs.getInt("modelo"),
-                            rs.getString("imagenes"),
-                            rs.getInt("kilometros"),
-                            rs.getString("descripcion"),
-                            rs.getString("marca"),
-                            rs.getString("cambio"),
-                            rs.getDouble("precio"),
-                            rs.getString("color"),
-                            rs.getString("estatus"),
-                            rs.getInt("id_usuario")
-                    );
-                } else if (objVO instanceof ComentarioVO) {
-                    obj[i] = new ComentarioVO(
-                            rs.getInt("id"),
-                            rs.getString("nombre"),
-                            rs.getString("comentario"),
-                            rs.getInt("valoracion"),
-                            rs.getInt("id_usuario"),
-                            rs.getString("fecha")
-                    );
-                }
-                i++;
-            }
-            return createResponseJSON(obj);
-        } catch (Exception e) {
-            Logger.error(e.getMessage());
-            Logger.error(e.getStackTrace());
-            return new JSONObject();
-        } finally {
-            try {
-                closeConnection();
-            } catch (Exception e) {
-                Logger.error(e.toString());
-                Logger.error(e.getStackTrace());
-            }
-        }
-    }
-
-    /**
-     * Executes a INSERT SQL query
-     *
-     * @param conexion The database connection
-     * @param request The JSON request that acts as a request
-     * @return A JSON object that acts as a response created by the
-     * 'createResponseJSON' method
-     */
-    private JSONObject INSERT(Conexion conexion, JSONObject request) {
-        cnn = conexion.getConnection();
-        try {
-            Logger.log("Applying INSERT query");
-            ps = cnn.prepareStatement(query);
-            int res = ps.executeUpdate();
-            request.put("response", (res > 0) ? Constants.QUERY_SUCCESS : Constants.QUERY_FAILURE);
-            return request;
-        } catch (Exception e) {
-            Logger.error(e.getMessage());
-            Logger.error(e.getStackTrace());
-            return new JSONObject();
-        } finally {
-            try {
-                closeConnection();
-            } catch (Exception e) {
-                Logger.error(e.toString());
-                Logger.error(e.getStackTrace());
-            }
-        }
-    }
-
-    /**
-     * Executes a UPDATE SQL query
-     *
-     * @param conexion The database connection
-     * @param request The JSON request that acts as a request
-     * @return A JSON object that acts as a response created by the
-     * 'createResponseJSON' method
-     */
-    private JSONObject UPDATE(Conexion conexion, JSONObject request) {
-        cnn = conexion.getConnection();
-        try {
-            Logger.log("Applying UPDATE query");
-            ps = cnn.prepareStatement(query);
-            int res = ps.executeUpdate();
-            request.put("response", (res > 0) ? Constants.QUERY_SUCCESS : Constants.QUERY_FAILURE);
-            return request;
-
-        } catch (Exception e) {
-            Logger.error(e.getMessage());
-            Logger.error(e.getStackTrace());
-            request.put("response", Constants.QUERY_FAILURE);
-            return request;
-        } finally {
-            try {
-                closeConnection();
-            } catch (Exception e) {
-                Logger.error(e.toString());
-                Logger.error(e.getStackTrace());
-            }
-        }
     }
 
     /**

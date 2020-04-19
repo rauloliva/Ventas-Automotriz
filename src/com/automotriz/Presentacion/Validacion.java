@@ -23,7 +23,6 @@ public class Validacion implements Runnable {
 
     public static final int ATTEMPTS_ALLOWED = 5;
     public static int loginTries = 0;
-    private HashMap messageProps;
     private Object[] data;
     private JSONObject requestJSON;
     private SessionVO session;
@@ -33,6 +32,7 @@ public class Validacion implements Runnable {
     private ArrayList<UsuarioVO> usuariosVO;
     private ArrayList<AutoVO> autosVO;
     private ArrayList<ComentarioVO> comentariosVO;
+    private Response response;
     public static Thread hiloVaidacion;
 
     /**
@@ -66,7 +66,6 @@ public class Validacion implements Runnable {
      * @return
      */
     public Validacion validateInputLength() {
-
         if (isEmpty(data[0])) {
             return this;
         }
@@ -82,38 +81,6 @@ public class Validacion implements Runnable {
         }
         return this;
     }
-
-    /**
-     * @param datadic the datadic that contains the query to be executed
-     * @param columns columns to get from a table in db. set to null when an
-     * INSERT or an UPDATE query is going to be executed
-     */
-    private void createRequestJSON(String datadic, String[] columns) {
-        requestJSON = new JSONObject();
-        requestJSON.put("0", datadic);
-        if (data != null) {
-            for (int i = 0; i < data.length; i++) {
-                requestJSON.put("" + (i + 1), data[i]);
-            }
-        }
-
-        requestJSON.put("response", columns);
-    }
-
-    /**
-     * @param datadic the datadic that contains the query to be executed
-     * @param columns columns to get from a table in db. set to null when an
-     * @param data the data that will be sent to GestorDB INSERT or an UPDATE
-     * query is going to be executed
-     */
-    private void createRequestJSON(String datadic, String[] columns, Object[] data) {
-        requestJSON = new JSONObject();
-        requestJSON.put("0", datadic);
-        for (int i = 0; i < data.length; i++) {
-            requestJSON.put("" + (i + 1), data[i]);
-        }
-        requestJSON.put("response", columns);
-    }
     
     /**
      * Initialize the class Handler in order to
@@ -123,33 +90,37 @@ public class Validacion implements Runnable {
      * @param objVO The data needed to execute the operation
      * @return A new instance of Response class
      */
-    private Response initializeHandler(String operation, Object objVO){
+    private void initializeHandler(String operation, Object objVO){
+        Logger.log("Creating new Handler");
         Handler handler = new Handler(operation, objVO);
-        Response response = handler.createNewOperation();
-        return response;
+        this.response = handler.createNewOperation();
     } 
 
-    
+
+    /**
+     * 
+     * @return True if the login access is successful, otherwise returns false
+     * @throws Exception 
+     */
     public boolean validarLogIn() throws Exception {
-        messageProps = new HashMap();
-        Logger.log("validating log in form");
+        Logger.log("validating logging");
         if (isEmpty(data[0]) || isEmpty(data[1])) {
             writeMessages(new Object[]{
                 "login.msg.error.empty",
                 "login.msg.error.empty.title",
                 JOptionPane.ERROR_MESSAGE
             });
+            Logger.error("Username and/or password empty");
             return false;
         }
         
-        Logger.log("Creating new Request");
         usuario = new UsuarioVO();
         usuario.setUsuario(data[0].toString());
         usuario.setContraseña(data[1].toString());
 
-        Response response = initializeHandler(Constants.VALIDATEUSER, usuario);
+        initializeHandler(Constants.VALIDATEUSER, usuario);
 
-        if (response.getStatus() == Response.STATUS_SUCCESS) {
+        if (this.response.getStatus() == Response.STATUS_SUCCESS) {
             //validate if the profile is the correct one
             Logger.log("validating profile");
             ResultSet rs = response.getResultSet();
@@ -162,8 +133,10 @@ public class Validacion implements Runnable {
                 this.usuario.setTelefono(rs.getString("telefono"));
                 this.usuario.setPerfil(rs.getString("perfil"));
                 this.usuario.setEstatus(rs.getString("estatus"));
+                this.usuario.setIntentos(rs.getInt("intentos"));
             }
             if(this.usuario.getEstatus().equals("BLOCKED")){
+                Logger.log("The user is blocked");
                 writeMessages(new Object[]{
                     "login.msg.bloquear",
                     "login.msg.bloquear.title",
@@ -171,7 +144,8 @@ public class Validacion implements Runnable {
                 });
                 return false;
             }
-            if (!this.usuario.getPerfil().equals(Frame_LogIn.perfil)) {
+            if (!this.usuario.getPerfil().equals(data[2].toString())) {
+                Logger.log("The user's profile does not match the current profile");
                 writeMessages(new Object[]{
                     "login.msg.error.profile",
                     "login.msg.error.profile.title",
@@ -179,25 +153,32 @@ public class Validacion implements Runnable {
                 });
                 return false;
             } else {
+                if (this.usuario.getIntentos() > 0) {
+                    Logger.log("Reseting the number of attempts");
+                    this.usuario.setIntentos(0);
+                    initializeHandler(Constants.UPDATEINTENTOS, usuario);
+                } 
                 //If the login is successful a new SessionVO is created
                 Logger.log("Creating the user's session");
                 this.session = this.usuario.createSession();
-                return true;
             }
         } 
         /* Incorrect Credentials */ 
         else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
             // Verify if the username exists in order to register the attempts
+            Logger.log("ResultSet empty, verifying if the username exits");
             usuario = new UsuarioVO();
             usuario.setUsuario(data[0].toString());
-            response = initializeHandler(Constants.USERNAMEEXISTS, usuario);
+            initializeHandler(Constants.USERNAMEEXISTS, usuario);
             if(response.getStatus() == Response.STATUS_SUCCESS){
                 //Update the number of attempts 
+                Logger.log("The username exits, counting the attempts");
                 ResultSet rs = response.getResultSet();
                 rs.next();
                 usuario.setIntentos(rs.getInt("intentos") + 1);
                 usuario.setId(rs.getInt("id"));
                 if(usuario.getIntentos() > 5){
+                    Logger.log("The user is blocked");
                     writeMessages(new Object[]{
                         "login.msg.bloquear",
                         "login.msg.bloquear.title",
@@ -205,8 +186,9 @@ public class Validacion implements Runnable {
                     });
                     return false;
                 }
-                response = initializeHandler(Constants.UPDATEINTENTOS, usuario);
+                initializeHandler(Constants.UPDATEINTENTOS, usuario);
                 if(response.getStatus() == Response.STATUS_UPDATED){
+                    Logger.log("The credentials are incorrect");
                     writeMessages(new Object[]{
                         "login.msg.error.auth",
                         "login.msg.error.auth.title",
@@ -214,8 +196,9 @@ public class Validacion implements Runnable {
                     });
 
                     if(usuario.getIntentos() == this.ATTEMPTS_ALLOWED){
-                        response = initializeHandler(Constants.BLOCKUSER, usuario);
+                        initializeHandler(Constants.BLOCKUSER, usuario);
                         if(response.getStatus() == Response.STATUS_UPDATED){
+                            Logger.log("The user will be blocked");
                             writeMessages(new Object[]{
                                 "login.msg.bloquear",
                                 "login.msg.bloquear.title",
@@ -224,15 +207,17 @@ public class Validacion implements Runnable {
                         }
                     }
                 }
+                return false;
             }else{
+                Logger.log("The username does not exits");
                 writeMessages(new Object[]{
                     "login.msg.error.username",
                     "login.msg.error.username.title",
                     JOptionPane.ERROR_MESSAGE
                 });
+                return false;
             }
         } else if (response.getStatus() == Response.STATUS_FAILURE) {
-            //error on server
             writeMessages(new Object[]{
                 "login.msg.error.conndb",
                 "login.msg.error.conndb.title",
@@ -240,34 +225,34 @@ public class Validacion implements Runnable {
             });
             return false;
         }
-        return false;
+        return true;
     }
 
-    public Validacion usernameAlreadyExists() {
+    /**
+     * Validates if the username already exists
+     * @return True if the username exists, otherwise returns false
+     */
+    public boolean usernameAlreadyExists() {
         Logger.log("checking if username already exists");
         if (!isEmpty(data[0])) {
-            messageProps = new HashMap();
-            createRequestJSON("VALIDATEUSERNAME", new String[]{"usuario"});
+            usuario = new UsuarioVO();
+            usuario.setUsuario(data[0].toString());
+            initializeHandler(Constants.VALIDATEUSERNAME, usuario);
 
-            Logger.log("Creating new Request");
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.execute();
-            if (!response.isEmpty()) {
-                if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-                    Logger.log("Username already exists");
-                    writeMessages(new Object[]{
-                        "signin.msg.usernameExists",
-                        "signin.msg.usernameExists.title",
-                        JOptionPane.ERROR_MESSAGE
-                    });
-                } else {
-                    Logger.log("Username available");
-                    messageProps = null;
-                }
+            if (response.getStatus() == Response.STATUS_SUCCESS) {
+                Logger.log("Username already exists");
+                writeMessages(new Object[]{
+                    "signin.msg.usernameExists",
+                    "signin.msg.usernameExists.title",
+                    JOptionPane.ERROR_MESSAGE
+                });
+                return true;
+            }else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
+                Logger.log("Username available");
             }
+            return false;
         }
-        //if the field is empty nothing happens
-        return this;
+        return true;
     }
 
     public boolean askAdminRights() {
@@ -278,7 +263,7 @@ public class Validacion implements Runnable {
         return credentials.isAllowed();
     }
 
-    public Validacion validateForm(String form, String datadic) {
+    public Validacion validateForm(String form, String operation) {
         boolean allow = false;
         Logger.log("validating " + form + " form ");
         if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || isEmpty(data[3]) || isEmpty(data[4]) || isEmpty(data[5])) {
@@ -289,7 +274,7 @@ public class Validacion implements Runnable {
             });
             return this;
         }
-        if (data[3].toString().equals("Administrador") && datadic.equals("CREATENEWUSER")) {
+        if (data[3].toString().equals("Administrador") && operation.equals(Constants.CREATENEWUSER)) {
             allow = askAdminRights();
         } else {
             allow = true;
@@ -298,23 +283,16 @@ public class Validacion implements Runnable {
         //admin rigths
         if (allow) {
             Logger.log("Creating new Request");
-            messageProps = new HashMap();
-            createRequestJSON(datadic, null);
+            initializeHandler(operation, usuario);
 
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.execute();
-            if (!response.isEmpty()) {
-                if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
-                    writeMessages(new Object[]{
-                        datadic.equals("CREATENEWUSER")
-                        ? "signin.msg.userCreated" : "perfil.msg.userUpdated",
-                        datadic.equals("CREATENEWUSER")
-                        ? "signin.msg.userCreated.title" : "perfil.msg.userUpdated.title",
-                        JOptionPane.INFORMATION_MESSAGE
-                    });
-                } else {
-                    messageProps = null;
-                }
+            if (response.getStatus() == Response.STATUS_INSERTED) {
+                writeMessages(new Object[]{
+                    operation.equals(Constants.CREATENEWUSER)
+                    ? "signin.msg.userCreated" : "perfil.msg.userUpdated",
+                    operation.equals(Constants.CREATENEWUSER)
+                    ? "signin.msg.userCreated.title" : "perfil.msg.userUpdated.title",
+                    JOptionPane.INFORMATION_MESSAGE
+                });
             }
         }
         return this;
@@ -354,7 +332,6 @@ public class Validacion implements Runnable {
 
     public Validacion removeUser() {
         Logger.log("Creating new Request");
-        messageProps = new HashMap();
         createRequestJSON("REMOVEUSER", null);
 
         Peticiones peticion = new Peticiones(requestJSON);
@@ -366,8 +343,6 @@ public class Validacion implements Runnable {
                     "perfil.msg.userDeleted.title",
                     JOptionPane.INFORMATION_MESSAGE
                 });
-            } else {
-                messageProps = null;
             }
         }
         return this;
@@ -844,10 +819,6 @@ public class Validacion implements Runnable {
 
     public void setTableModel(DefaultTableModel model) {
         this.model = model;
-    }
-
-    public HashMap getMessage() {
-        return this.messageProps;
     }
 
     public SessionVO getSession() {

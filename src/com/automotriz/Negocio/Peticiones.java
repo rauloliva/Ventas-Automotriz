@@ -72,22 +72,7 @@ public class Peticiones {
         }
     };
 
-    /**
-     * Sends an email to destinatarios with a attached file
-     *
-     * @param destinatarios
-     * @param asunto
-     * @param mensaje
-     * @param objFile
-     */
-    public static void sendMail(String destinatarios, String asunto, String mensaje, Object objFile) {
-        Mail mail = new Mail(destinatarios, asunto, mensaje);
-        if (objFile != null) {
-            File file = (File) objFile;
-            mail.attachFiles(file.getName(), file.getAbsolutePath());
-        }
-        mail.send();
-    }
+    
 
     /**
      * Creates a new request to the server

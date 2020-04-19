@@ -1,66 +1,72 @@
 package com.automotriz.Negocio;
 
 import com.automotriz.Datos.GestorDB;
+import com.automotriz.Datos.Mail;
 import com.automotriz.VO.UsuarioVO;
+import java.io.File;
 
 public class Handler {
-    
+
     private String action;
     private String query;
     private Object data;
-    
-    public Handler(String action, Object data){
+
+    public Handler(String action, Object data) {
         this.action = action;
         this.query = "";
         this.data = data;
     }
-    
-    public Handler(String action){
+
+    public Handler(String action) {
         this.action = action;
         this.query = "";
     }
-    
-    public Response createNewOperation(){
+
+    public Response createNewOperation() {
         this.createNewQuery();
         return this.sendToGestorDB();
     }
-    
-    private Response sendToGestorDB(){
+
+    private Response sendToGestorDB() {
         GestorDB db = new GestorDB(this.query);
         return db.executeQuery();
     }
 
+    /**
+     * 
+     */
     private void createNewQuery() {
         Queries queries = new Queries() {
-            
+
             @Override
             public String VALIDATEUSER(UsuarioVO usuario) {
                 return "SELECT * FROM usuarios "
                         + "WHERE usuario = '" + usuario.getUsuario() + "' "
-                        + "AND contrasena = '" + usuario.getContraseña()+"'";
+                        + "AND contrasena = '" + usuario.getContraseña() + "'";
             }
-            
+
             @Override
             public String USERNAMEEXISTS(UsuarioVO usuario) {
                 return "SELECT id,usuario,intentos FROM usuarios "
                         + "WHERE usuario = '" + usuario.getUsuario() + "'";
             }
-            
+
             @Override
             public String UPDATEINTENTOS(UsuarioVO usuario) {
                 return "UPDATE usuarios SET "
-                        + "intentos = "+usuario.getIntentos()+" WHERE id = "+usuario.getId();
+                        + "intentos = " + usuario.getIntentos() + " WHERE id = " + usuario.getId();
             }
 
             @Override
             public String BLOCKUSER(UsuarioVO usuario) {
                 return "UPDATE usuarios SET "
-                        + "estatus = 'BLOCKED' WHERE id = "+usuario.getId();
+                        + "estatus = 'BLOCKED' WHERE id = " + usuario.getId();
             }
 
             @Override
-            public String VALIDATEUSERNAME() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            public String VALIDATEUSERNAME(UsuarioVO usuario) {
+                return "SELECT usuario FROM usuarios "
+                        + "WHERE usuario = '" + usuario.getUsuario() + "'";
             }
 
             @Override
@@ -153,12 +159,17 @@ public class Handler {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
         };
-        
+
         this.query = this.getQuery(queries);
     }
-    
-    private String getQuery(Queries queries){
-        switch(this.action){
+
+    /**
+     * 
+     * @param queries
+     * @return 
+     */
+    private String getQuery(Queries queries) {
+        switch (this.action) {
             case "VALIDATEUSER":
                 return queries.VALIDATEUSER((UsuarioVO) this.data);
             case "USERNAMEEXISTS":
@@ -167,23 +178,42 @@ public class Handler {
                 return queries.UPDATEINTENTOS((UsuarioVO) this.data);
             case "BLOCKUSER":
                 return queries.BLOCKUSER((UsuarioVO) this.data);
+            case "VALIDATEUSERNAME":
+                return queries.VALIDATEUSERNAME((UsuarioVO) this.data);
             default:
                 return "";
         }
+    }
+    
+    /**
+     * Sends an email to destinatarios with a attached file
+     *
+     * @param destinatarios
+     * @param asunto
+     * @param mensaje
+     * @param objFile
+     */
+    public static void sendMail(String destinatarios, String asunto, String mensaje, Object objFile) {
+        Mail mail = new Mail(destinatarios, asunto, mensaje);
+        if (objFile != null) {
+            File file = (File) objFile;
+            mail.attachFiles(file.getName(), file.getAbsolutePath());
+        }
+        mail.send();
     }
 }
 
 interface Queries {
 
     String VALIDATEUSER(UsuarioVO usuario);
-    
+
     String USERNAMEEXISTS(UsuarioVO usuario);
-    
+
     String UPDATEINTENTOS(UsuarioVO usuario);
 
     String BLOCKUSER(UsuarioVO usuario);
 
-    String VALIDATEUSERNAME();
+    String VALIDATEUSERNAME(UsuarioVO usuario);
 
     String CREATENEWUSER();
 
@@ -220,8 +250,7 @@ interface Queries {
     String LISTAUTOSBYID();
 
     String UPDATEAUTOESTATUS();
-    
-    
+
 }
 
 interface ExecuteQuery {

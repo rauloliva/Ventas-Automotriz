@@ -95,7 +95,7 @@ public class Frame_Perfil extends javax.swing.JInternalFrame implements Constant
             global.getSession().getPerfil(),
             txt_telefono.getText(),
             txt_name.getText().trim()
-        }).validateForm("the update user", "UPDATEUSER");
+        }).validateForm("the update user", Constants.UPDATEUSER);
 
         HashMap propMensaje = validacion.getMessage();
 

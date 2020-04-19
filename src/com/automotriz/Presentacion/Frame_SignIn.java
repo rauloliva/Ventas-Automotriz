@@ -53,7 +53,7 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
             Frame_LogIn.perfil,
             txt_telefono.getText(),
             txt_name.getText()
-        }).validateForm("the SignIn", "CREATENEWUSER");
+        }).validateForm("the SignIn", Constants.CREATENEWUSER);
 
         HashMap propMensaje = validacion.getMessage();
 
@@ -79,22 +79,17 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
         }
     }
 
+    /**
+     * Validates if the username already exists
+     */
     private void validateUserName() {
-        /*validate if the user already exists
-         if so, send an alert*/
         Validacion validacion = new Validacion(new Object[]{
-            txt_username.getText().trim()}).usernameAlreadyExists();
-
-        HashMap propMensaje = validacion.getMessage();
-
-        if (propMensaje != null) { //if an error message is ready to show up
-            JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    Integer.parseInt(propMensaje.get("type").toString()));
+            txt_username.getText().trim()}
+        );
+        if(validacion.usernameAlreadyExists()){
             txt_username.setForeground(Color.black);
             txt_username.setText(null);
-        } else {
+        }else{
             txt_username.setForeground(Color.green.darker());
         }
     }
