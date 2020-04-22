@@ -3,7 +3,6 @@ package com.automotriz.Presentacion;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Frame;
-import java.util.HashMap;
 import javax.swing.*;
 import javax.swing.border.BevelBorder;
 import com.automotriz.Constantes.Constants;
@@ -53,29 +52,21 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
             Frame_LogIn.perfil,
             txt_telefono.getText(),
             txt_name.getText()
-        }).validateForm("the SignIn", Constants.CREATENEWUSER);
+        });
+        boolean response = validacion.validateForm("the SignIn", Constants.CREATENEWUSER);
 
-        HashMap propMensaje = validacion.getMessage();
-
-        if (propMensaje != null) { //if a message is ready to show up
-            int typeOfMsg;
+        if (response) {
+            //clean the fields
+            txt_name.setText(null);
+            txt_username.setText(null);
+            txt_password.setText(null);
+            txt_correo.setText(null);
+            txt_telefono.setText(null);
+            //message to specify to go back to log in
             JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    typeOfMsg = Integer.parseInt(propMensaje.get("type").toString()));
-            if (typeOfMsg == JOptionPane.INFORMATION_MESSAGE) {
-                //clean the fields
-                txt_name.setText(null);
-                txt_username.setText(null);
-                txt_password.setText(null);
-                txt_correo.setText(null);
-                txt_telefono.setText(null);
-                //message to specify to go back to log in
-                JOptionPane.showMessageDialog(this,
-                        ReadProperties.props.getProperty("signin.msg.goToLogIn"),
-                        ReadProperties.props.getProperty("signin.msg.goToLogIn.title"),
-                        JOptionPane.INFORMATION_MESSAGE);
-            }
+                    ReadProperties.props.getProperty("signin.msg.goToLogIn"),
+                    ReadProperties.props.getProperty("signin.msg.goToLogIn.title"),
+                    JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -99,15 +90,8 @@ public class Frame_SignIn extends javax.swing.JDialog implements Constants<Frame
             field.getText().trim(),
             ReadProperties.props.getProperty(props),
             evt
-        }).validateInputLength();
-
-        HashMap propMensaje = validacion.getMessage();
-        if (propMensaje != null) {
-            JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    Integer.parseInt(propMensaje.get("type").toString()));
-        }
+        });
+        validacion.validateInputLength();
     }
 
     @SuppressWarnings("unchecked")

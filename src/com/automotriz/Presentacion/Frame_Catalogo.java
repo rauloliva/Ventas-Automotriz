@@ -11,19 +11,20 @@ import javax.swing.border.EtchedBorder;
 import static com.automotriz.Constantes.Global.global;
 import javax.swing.JPanel;
 import com.automotriz.Constantes.Constants;
+import com.automotriz.logger.Logger;
 import javax.swing.JOptionPane;
 
 public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_Catalogo> {
-
+    
     private List<AutoVO> autosVO;
     private Object[][] components;
-
+    
     public Frame_Catalogo() {
         initComponents();
         initFrame(this);
         this.setVisible(true);
     }
-
+    
     @Override
     public void initFrame(Frame_Catalogo c) {
         panelFiltros.setVisible(false);
@@ -41,7 +42,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
          */
         new Thread(this).start();
     }
-
+    
     @Override
     public void run() {
         while (true) {
@@ -57,7 +58,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             System.out.print("");
         }
     }
-
+    
     private void saveComponents() {
         components = new Object[][]{
             {lbl_marca1, lbl_modelo1, lbl_precio1, lbl_imagenes1},
@@ -74,19 +75,24 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             {lbl_marca12, lbl_modelo12, lbl_precio12, lbl_imagenes12}
         };
     }
-
+    
     private void getCatalogo(String flag) {
-        Validacion validacion = new Validacion(new Object[]{
-            global.getSession().getId()
-        }, new AutoVO()).getCatalogo();
-        autosVO = validacion.getAutos();
-        setCatalogo(flag);
+        try {
+            Validacion validacion = new Validacion(new Object[]{
+                global.getSession().getId()
+            });
+            autosVO = validacion.getCatalogo();
+            setCatalogo(flag);
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }
-
+    
     private void setCatalogo(String flag) {
         if (autosVO != null) {
             DataModel model = new DataModel(components, autosVO, btn_atras, btn_siguiente);
-
+            
             model.setPaneles(new JPanel[]{
                 panelAuto1,
                 panelAuto2,
@@ -113,7 +119,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             btn_siguiente.setEnabled(false);
         }
     }
-
+    
     private void setMarcas() {
         cmb_marca.addItem("--Seleccionar--");
         String marcas[] = ReadProperties.props.getProperty("vender.marcas").split(";");
@@ -122,7 +128,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }
         cmb_marca.addItem("Otros");
     }
-
+    
     private void setModeloValue() {
         Calendar c = new GregorianCalendar();
         int year = c.get(Calendar.YEAR);
@@ -131,7 +137,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         SpinnerNumberModel model1 = new SpinnerNumberModel(year, 0, year, 1.0);
         spn_modelo.setModel(model1);
     }
-
+    
     private void setColores() {
         cmb_color.addItem("--Seleccionar--");
         String colores[] = ReadProperties.props.getProperty("vender.colores").split(";");
@@ -139,7 +145,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             cmb_color.addItem(color);
         }
     }
-
+    
     private void setCambios() {
         cmb_cambio.addItem("--Seleccionar--");
         String cambios[] = ReadProperties.props.getProperty("vender.cambios").split(";");
@@ -147,7 +153,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             cmb_cambio.addItem(cambio);
         }
     }
-
+    
     private void enableFiltros(boolean flag) {
         cmb_marca.setEnabled(flag);
         cmb_cambio.setEnabled(flag);
@@ -157,77 +163,77 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         btn_cleanFields.setEnabled(flag);
         btn_listarTodo.setEnabled(!flag);
     }
-
+    
     private void clearFiltros() {
         cmb_marca.setSelectedItem("--Seleccionar--");
         cmb_color.setSelectedItem("--Seleccionar--");
         cmb_cambio.setSelectedItem("--Seleccionar--");
         spn_modelo.setValue(0);
     }
-
+    
     private void resetCatalogo() {
         lbl_marca1.setText("Marca:");
         lbl_modelo1.setText("Modelo:");
         lbl_precio1.setText("Precio:");
         lbl_imagenes1.setText("Imagenes:");
-
+        
         lbl_marca2.setText("Marca:");
         lbl_modelo2.setText("Modelo:");
         lbl_precio2.setText("Precio:");
         lbl_imagenes2.setText("Imagenes:");
-
+        
         lbl_marca3.setText("Marca:");
         lbl_modelo3.setText("Modelo:");
         lbl_precio3.setText("Precio:");
         lbl_imagenes3.setText("Imagenes:");
-
+        
         lbl_marca4.setText("Marca:");
         lbl_modelo4.setText("Modelo:");
         lbl_precio4.setText("Precio:");
         lbl_imagenes4.setText("Imagenes:");
-
+        
         lbl_marca5.setText("Marca:");
         lbl_modelo5.setText("Modelo:");
         lbl_precio5.setText("Precio:");
         lbl_imagenes5.setText("Imagenes:");
-
+        
         lbl_marca6.setText("Marca:");
         lbl_modelo6.setText("Modelo:");
         lbl_precio6.setText("Precio:");
         lbl_imagenes6.setText("Imagenes:");
-
+        
         lbl_marca7.setText("Marca:");
         lbl_modelo7.setText("Modelo:");
         lbl_precio7.setText("Precio:");
         lbl_imagenes7.setText("Imagenes:");
-
+        
         lbl_marca8.setText("Marca:");
         lbl_modelo8.setText("Modelo:");
         lbl_precio8.setText("Precio:");
         lbl_imagenes8.setText("Imagenes:");
-
+        
         lbl_marca9.setText("Marca:");
         lbl_modelo9.setText("Modelo:");
         lbl_precio9.setText("Precio:");
         lbl_imagenes9.setText("Imagenes:");
-
+        
         lbl_marca10.setText("Marca:");
         lbl_modelo10.setText("Modelo:");
         lbl_precio10.setText("Precio:");
         lbl_imagenes10.setText("Imagenes:");
-
+        
         lbl_marca11.setText("Marca:");
         lbl_modelo11.setText("Modelo:");
         lbl_precio11.setText("Precio:");
         lbl_imagenes11.setText("Imagenes:");
-
+        
         lbl_marca12.setText("Marca:");
         lbl_modelo12.setText("Modelo:");
         lbl_precio12.setText("Precio:");
         lbl_imagenes12.setText("Imagenes:");
     }
-
-    private void filtrar() {
+    
+    private void filtrar() throws Exception {
         DataModel.resetIndice();
         Validacion validacion = new Validacion(new Object[]{
             cmb_marca.getSelectedItem().toString(),
@@ -235,10 +241,10 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
             cmb_color.getSelectedItem().toString(),
             cmb_cambio.getSelectedItem().toString(),
             global.getSession().getId()
-        }, new AutoVO()).filtrarAutos();
-
-        autosVO = validacion.getAutos();
-        if (autosVO == null) {
+        });
+        autosVO = validacion.filtrarAutos();
+        
+        if (autosVO.isEmpty()) {
             resetCatalogo();
             JOptionPane.showMessageDialog(this,
                     ReadProperties.props.getProperty("catalogo.empty"),
@@ -247,7 +253,7 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
         }
         setCatalogo("");
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -1431,7 +1437,12 @@ public class Frame_Catalogo extends javax.swing.JInternalFrame implements Runnab
     }//GEN-LAST:event_btn_filtrosActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
-        filtrar();
+        try {
+            filtrar();
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }//GEN-LAST:event_btn_filtrarActionPerformed
 
     private void chb_filtarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_chb_filtarActionPerformed

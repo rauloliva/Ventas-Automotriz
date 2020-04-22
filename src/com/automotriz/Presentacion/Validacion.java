@@ -9,6 +9,7 @@ import org.json.simple.JSONObject;
 import com.automotriz.VO.SessionVO;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.VO.ComentarioVO;
+import com.automotriz.VO.MailVO;
 import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -18,22 +19,33 @@ import com.automotriz.Constantes.Constants;
 import com.automotriz.Negocio.Handler;
 import com.automotriz.Negocio.Response;
 import java.sql.ResultSet;
+import java.util.List;
 
 public class Validacion implements Runnable {
 
     public static final int ATTEMPTS_ALLOWED = 5;
-    public static int loginTries = 0;
+    //public static int loginTries = 0;
     private Object[] data;
-    private JSONObject requestJSON;
+    //private JSONObject requestJSON;
     private SessionVO session;
     private UsuarioVO usuario;
-    private Object objVo;
-    private DefaultTableModel model;
+    private AutoVO auto;
+    private ComentarioVO comentario;
+    private MailVO mail;
+    //private Object objVo;
+    //private DefaultTableModel model;
     private ArrayList<UsuarioVO> usuariosVO;
     private ArrayList<AutoVO> autosVO;
     private ArrayList<ComentarioVO> comentariosVO;
     private Response response;
     public static Thread hiloVaidacion;
+
+    /**
+     * askAdminRights() has a method that needs to be handle by a thread
+     */
+    @Override
+    public void run() {
+    }
 
     /**
      * initializes a new Validacion object to start validating some data and
@@ -45,18 +57,29 @@ public class Validacion implements Runnable {
         this.data = data;
     }
 
+//    public Validacion(Object[] data, Object obj) {
+//        this.data = data;
+//        this.objVo = obj;
+//    }
+//
+//    public void setObjectVO(Object objVO) {
+//        this.objVo = objVO;
+//    }
     /**
      *
-     * @param data
-     * @param obj
+     * @param reportTitle
      */
-    public Validacion(Object[] data, Object obj) {
-        this.data = data;
-        this.objVo = obj;
-    }
-
-    public void setObjectVO(Object objVO) {
-        this.objVo = objVO;
+    public void requestReport(String reportTitle) {
+        initializeHandler(Constants.DB_CONNECTION, null);
+        Connection cnn = response.getConnection();
+        if (cnn != null) {
+            new Report(reportTitle, cnn).generateReport();
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    ReadProperties.props.getProperty("usuario.msg.error.reporte"),
+                    ReadProperties.props.getProperty("usuario.msg.error.reporte.title"),
+                    JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -65,9 +88,9 @@ public class Validacion implements Runnable {
      *
      * @return
      */
-    public Validacion validateInputLength() {
+    public void validateInputLength() {
         if (isEmpty(data[0])) {
-            return this;
+            return;
         }
 
         if (data[0].toString().length() >= Integer.parseInt(data[1].toString())) {
@@ -77,30 +100,31 @@ public class Validacion implements Runnable {
                 "signin.msg.warn.fieldLength.title",
                 JOptionPane.WARNING_MESSAGE
             });
-
         }
-        return this;
     }
-    
+
     /**
-     * Initialize the class Handler in order to
-     * prepare a new database operation
-     * 
+     * Initialize the class Handler in order to prepare a new database operation
+     *
      * @param operation The operation's name to execute
      * @param objVO The data needed to execute the operation
      * @return A new instance of Response class
      */
-    private void initializeHandler(String operation, Object objVO){
+    private void initializeHandler(String operation, Object objVO) {
         Logger.log("Creating new Handler");
-        Handler handler = new Handler(operation, objVO);
+        Handler handler;
+        if (objVO != null) {
+            handler = new Handler(operation, objVO);
+        } else {
+            handler = new Handler(operation);
+        }
         this.response = handler.createNewOperation();
-    } 
-
+    }
 
     /**
-     * 
+     *
      * @return True if the login access is successful, otherwise returns false
-     * @throws Exception 
+     * @throws Exception
      */
     public boolean validarLogIn() throws Exception {
         Logger.log("validating logging");
@@ -113,7 +137,7 @@ public class Validacion implements Runnable {
             Logger.error("Username and/or password empty");
             return false;
         }
-        
+
         usuario = new UsuarioVO();
         usuario.setUsuario(data[0].toString());
         usuario.setContraseña(data[1].toString());
@@ -125,6 +149,14 @@ public class Validacion implements Runnable {
             Logger.log("validating profile");
             ResultSet rs = response.getResultSet();
             if (rs.next()) {
+                if (rs.getString("estatus").equals("DISABLED")) {
+                    writeMessages(new Object[]{
+                        "login.msg.user.disabled",
+                        "login.msg.user.disabled.title",
+                        JOptionPane.ERROR_MESSAGE
+                    });
+                    return false;
+                }
                 this.usuario.setId(rs.getInt("id"));
                 this.usuario.setNombre(rs.getString("nombre"));
                 this.usuario.setUsuario(rs.getString("usuario"));
@@ -135,7 +167,7 @@ public class Validacion implements Runnable {
                 this.usuario.setEstatus(rs.getString("estatus"));
                 this.usuario.setIntentos(rs.getInt("intentos"));
             }
-            if(this.usuario.getEstatus().equals("BLOCKED")){
+            if (this.usuario.getEstatus().equals("BLOCKED")) {
                 Logger.log("The user is blocked");
                 writeMessages(new Object[]{
                     "login.msg.bloquear",
@@ -157,27 +189,25 @@ public class Validacion implements Runnable {
                     Logger.log("Reseting the number of attempts");
                     this.usuario.setIntentos(0);
                     initializeHandler(Constants.UPDATEINTENTOS, usuario);
-                } 
+                }
                 //If the login is successful a new SessionVO is created
                 Logger.log("Creating the user's session");
                 this.session = this.usuario.createSession();
             }
-        } 
-        /* Incorrect Credentials */ 
-        else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
+        } /* Incorrect Credentials */ else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
             // Verify if the username exists in order to register the attempts
             Logger.log("ResultSet empty, verifying if the username exits");
             usuario = new UsuarioVO();
             usuario.setUsuario(data[0].toString());
             initializeHandler(Constants.USERNAMEEXISTS, usuario);
-            if(response.getStatus() == Response.STATUS_SUCCESS){
+            if (response.getStatus() == Response.STATUS_SUCCESS) {
                 //Update the number of attempts 
                 Logger.log("The username exits, counting the attempts");
                 ResultSet rs = response.getResultSet();
                 rs.next();
                 usuario.setIntentos(rs.getInt("intentos") + 1);
                 usuario.setId(rs.getInt("id"));
-                if(usuario.getIntentos() > 5){
+                if (usuario.getIntentos() > 5) {
                     Logger.log("The user is blocked");
                     writeMessages(new Object[]{
                         "login.msg.bloquear",
@@ -187,7 +217,7 @@ public class Validacion implements Runnable {
                     return false;
                 }
                 initializeHandler(Constants.UPDATEINTENTOS, usuario);
-                if(response.getStatus() == Response.STATUS_UPDATED){
+                if (response.getStatus() == Response.STATUS_UPDATED) {
                     Logger.log("The credentials are incorrect");
                     writeMessages(new Object[]{
                         "login.msg.error.auth",
@@ -195,9 +225,9 @@ public class Validacion implements Runnable {
                         JOptionPane.ERROR_MESSAGE
                     });
 
-                    if(usuario.getIntentos() == this.ATTEMPTS_ALLOWED){
+                    if (usuario.getIntentos() == this.ATTEMPTS_ALLOWED) {
                         initializeHandler(Constants.BLOCKUSER, usuario);
-                        if(response.getStatus() == Response.STATUS_UPDATED){
+                        if (response.getStatus() == Response.STATUS_UPDATED) {
                             Logger.log("The user will be blocked");
                             writeMessages(new Object[]{
                                 "login.msg.bloquear",
@@ -208,7 +238,7 @@ public class Validacion implements Runnable {
                     }
                 }
                 return false;
-            }else{
+            } else {
                 Logger.log("The username does not exits");
                 writeMessages(new Object[]{
                     "login.msg.error.username",
@@ -230,6 +260,7 @@ public class Validacion implements Runnable {
 
     /**
      * Validates if the username already exists
+     *
      * @return True if the username exists, otherwise returns false
      */
     public boolean usernameAlreadyExists() {
@@ -247,7 +278,7 @@ public class Validacion implements Runnable {
                     JOptionPane.ERROR_MESSAGE
                 });
                 return true;
-            }else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
+            } else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
                 Logger.log("Username available");
             }
             return false;
@@ -263,16 +294,23 @@ public class Validacion implements Runnable {
         return credentials.isAllowed();
     }
 
-    public Validacion validateForm(String form, String operation) {
+    /**
+     *
+     * @param form
+     * @param operation
+     * @return
+     */
+    public boolean validateForm(String form, String operation) {
         boolean allow = false;
         Logger.log("validating " + form + " form ");
-        if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || isEmpty(data[3]) || isEmpty(data[4]) || isEmpty(data[5])) {
+        if (isEmpty(data[0]) || isEmpty(data[1]) || isEmpty(data[2]) || isEmpty(data[3])
+                || isEmpty(data[4]) || isEmpty(data[5])) {
             writeMessages(new Object[]{
                 "signin.msg.error.emptyFields",
                 "signin.msg.error.emptyFields.title",
                 JOptionPane.WARNING_MESSAGE
             });
-            return this;
+            return false;
         }
         if (data[3].toString().equals("Administrador") && operation.equals(Constants.CREATENEWUSER)) {
             allow = askAdminRights();
@@ -282,10 +320,16 @@ public class Validacion implements Runnable {
 
         //admin rigths
         if (allow) {
-            Logger.log("Creating new Request");
+            usuario = new UsuarioVO();
+            usuario.setUsuario(data[0].toString());
+            usuario.setContraseña(data[1].toString());
+            usuario.setCorreo(data[2].toString());
+            usuario.setPerfil(data[3].toString());
+            usuario.setTelefono(data[4].toString());
+            usuario.setNombre(data[5].toString());
             initializeHandler(operation, usuario);
 
-            if (response.getStatus() == Response.STATUS_INSERTED) {
+            if (response.getStatus() == Response.STATUS_INSERTED || response.getStatus() == Response.STATUS_UPDATED) {
                 writeMessages(new Object[]{
                     operation.equals(Constants.CREATENEWUSER)
                     ? "signin.msg.userCreated" : "perfil.msg.userUpdated",
@@ -295,100 +339,108 @@ public class Validacion implements Runnable {
                 });
             }
         }
-        return this;
+        return true;
     }
 
-    @Override
-    public void run() {
-    }
-
-    public Validacion validateAdminRights(String username, String password) {
-        //for this action is a requirement fot another admin
-        //to allow this operation
+    /**
+     *
+     * @param username
+     * @param password
+     * @return
+     */
+    public boolean validateAdminRights(String username, String password) {
+        /*for this action is a requirement fot another admin
+        to allow this operation*/
         if (isEmpty(username) || isEmpty(password)) {
             writeMessages(new Object[]{
                 "signin.msg.error.emptyFields",
                 "signin.msg.error.emptyFields.title",
                 JOptionPane.WARNING_MESSAGE
             });
-            return this;
+            return false;
         }
-
-        createRequestJSON("VALIDATEADMIN",
-                new String[]{"id"},
-                new Object[]{username, password});
-        Logger.log("Creating new Request");
-        Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_NOTHING) {
+        usuario = new UsuarioVO();
+        usuario.setUsuario(username);
+        usuario.setContraseña(password);
+        initializeHandler(Constants.VALIDATEADMIN, usuario);
+        if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
             writeMessages(new Object[]{
                 "signin.msg.error.permissionDenied",
                 "signin.msg.error.permissionDenied.title",
                 JOptionPane.ERROR_MESSAGE
             });
+            return false;
         }
-        return this;
+        return true;
     }
 
-    public Validacion removeUser() {
-        Logger.log("Creating new Request");
-        createRequestJSON("REMOVEUSER", null);
+    /**
+     *
+     * @return
+     */
+    public boolean removeUser() {
+        session = (SessionVO) data[0];
+        initializeHandler(Constants.REMOVEUSER, session);
 
-        Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.execute();
-        if (!response.isEmpty()) {
-            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
-                writeMessages(new Object[]{
-                    "perfil.msg.userDeleted",
-                    "perfil.msg.userDeleted.title",
-                    JOptionPane.INFORMATION_MESSAGE
-                });
-            }
+        if (response.getStatus() == Response.STATUS_UPDATED) {
+            writeMessages(new Object[]{
+                "perfil.msg.userDeleted",
+                "perfil.msg.userDeleted.title",
+                JOptionPane.INFORMATION_MESSAGE
+            });
         }
-        return this;
+        return true;
     }
 
-    public Validacion filtrarUsuarios() {
-
+    /**
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    public DefaultTableModel filtrarUsuarios(DefaultTableModel model) throws Exception {
         if (this.data == null) {
-            createRequestJSON("FILTRARTODOSUSUARIOS",
-                    new String[]{"id", "usuario", "contrasena", "correo", "perfil", "estatus", "telefono"});
+            initializeHandler(Constants.FILTRARTODOSUSUARIOS, null);
         } else {
-            createRequestJSON("FILTRARUSUARIOS",
-                    new String[]{"id", "usuario", "contrasena", "correo", "perfil", "estatus", "telefono"});
+            usuario = new UsuarioVO();
+            usuario.setUsuario(data[0].toString());
+            usuario.setTelefono(data[1].toString());
+            usuario.setEstatus(data[2].toString());
+            usuario.setPerfil(data[3].toString());
+            initializeHandler(Constants.FILTRARUSUARIOS, usuario);
         }
 
-        Logger.log("Creating new Request");
-        Peticiones peticion = new Peticiones(requestJSON);
-        peticion.setObjectVO(objVo);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-            Logger.log("Creating rows for the table");
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
             usuariosVO = new ArrayList<>();
-
-            Object[] objArray = (Object[]) response.get("obj");
-            for (Object obj : objArray) {
-                UsuarioVO vo = (UsuarioVO) obj;
-                usuariosVO.add(vo);
+            ResultSet rs = response.getResultSet();
+            Logger.log("Creating rows for the table");
+            while (rs.next()) {
+                UsuarioVO user = new UsuarioVO();
+                user.setUsuario(rs.getString("usuario"));
+                user.setCorreo(rs.getString("correo"));
+                user.setTelefono(rs.getString("telefono"));
+                user.setEstatus(rs.getString("estatus"));
+                user.setPerfil(rs.getString("perfil"));
                 if (model != null) {
                     model.addRow(new Object[]{
-                        vo.getUsuario(),
-                        vo.getCorreo(),
-                        vo.getPerfil(),
-                        vo.getEstatus(),
-                        vo.getTelefono()
+                        user.getUsuario(),
+                        user.getCorreo(),
+                        user.getPerfil(),
+                        user.getEstatus(),
+                        user.getTelefono()
                     });
                 }
+                usuariosVO.add(user);
             }
-        } else {
+            return model;
+        } else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
             writeMessages(new Object[]{
                 "usuarios.msg.userNotFound",
                 "usuarios.msg.userNotFound.title",
                 JOptionPane.INFORMATION_MESSAGE
             });
         }
-
-        return this;
+        return null;
     }
 
     /**
@@ -403,48 +455,42 @@ public class Validacion implements Runnable {
      *
      * @return the Object class 'Validacion'
      */
-    public Validacion updateUserAsAdmin() {
-
+    public void updateUserAsAdmin() {
         if (/*CASE 1*/(data[0].toString().equals("") && data[2].toString().equals("ACTIVO") && data[3].toString().equals("DISABLED"))
                 || /*CASE 2*/ (!data[0].toString().equals("") && data[2].toString().equals("ACTIVO") && data[3].toString().equals("BLOCKED"))
                 || /*CASE 3*/ (data[0].toString().equals("") && data[2].toString().equals("DISABLED") && data[3].toString().equals("BLOCKED"))
                 || /*CASE 4*/ (data[0].toString().equals("") && data[2].toString().equals("DISABLED") && data[3].toString().equals("ACTIVO"))) {
 
-            Logger.log("Creating new Request");
-            Peticiones peticion;
-            JSONObject response;
             //set the username to position 1, in order to form the query
             Object codigo = data[0];
             data[0] = data[1];
             data[1] = codigo;
 
+            usuario = new UsuarioVO();
+            usuario.setUsuario(data[0].toString());
+            usuario.setEstatus(data[2].toString());
             switch (data[2].toString()) {
                 case "DISABLED":
-                    createRequestJSON("REMOVEUSER", null);
-                    peticion = new Peticiones(requestJSON);
-                    peticion.setObjectVO(objVo);
-                    response = peticion.execute();
-
-                    writeMessages(new Object[]{
-                        "editUser.msg.userdisabled",
-                        "editUser.msg.userdisabled.title",
-                        JOptionPane.INFORMATION_MESSAGE
-                    });
+                    initializeHandler(Constants.REMOVEUSER, usuario);
+                    if (response.getStatus() == Response.STATUS_UPDATED) {
+                        writeMessages(new Object[]{
+                            "editUser.msg.userdisabled",
+                            "editUser.msg.userdisabled.title",
+                            JOptionPane.INFORMATION_MESSAGE
+                        });
+                    }
                     break;
                 case "ACTIVO":
-                    createRequestJSON("ACTIVARUSER", null);
-                    peticion = new Peticiones(requestJSON);
-                    peticion.setObjectVO(objVo);
-                    response = peticion.execute();
+                    initializeHandler(Constants.ACTIVARUSER, usuario);
 
-                    //send the notification to the user
                     String bodyMessage = ReadProperties.props.getProperty("email.msg.userActived")
                             .replace("*", new Hashing(codigo.toString()).decrypt());
-                    Peticiones.sendMail(
-                            data[4].toString(),
-                            "VEHICLE SELL| USUARIO REACTIVADO",
-                            bodyMessage,
-                            null);
+                    //send the notification to the user
+                    mail = new MailVO();
+                    mail.setDestinatario(data[4].toString());
+                    mail.setAsunto("VEHICLE SELL| USUARIO REACTIVADO");
+                    mail.setMensaje(bodyMessage);
+                    initializeHandler(Constants.SENDMAIL, mail);
 
                     writeMessages(new Object[]{
                         "editUser.msg.userActivado",
@@ -459,9 +505,7 @@ public class Validacion implements Runnable {
                 "editUser.msg.avd.noOperation.title",
                 JOptionPane.WARNING_MESSAGE
             });
-            return this;
         }
-        return this;
     }
 
     /**
@@ -472,8 +516,7 @@ public class Validacion implements Runnable {
      * @param isAnUpdate will execute operations related to an UPDATE to a car,
      * otherwise will execute an INSERT
      */
-    public Validacion saveAutomobile(boolean isAnUpdate) {
-
+    public boolean saveAutomobile(boolean isAnUpdate) {
         if (data[2].toString().equals("--Seleccionar--")) {
             if (data[3].toString().equals("")) {
                 writeMessages(new Object[]{
@@ -481,7 +524,7 @@ public class Validacion implements Runnable {
                     "vender.msg.invalid.marca.title",
                     JOptionPane.WARNING_MESSAGE
                 });
-                return this;
+                return false;
             }
             //if the combo does not select a marca take the value from the textfield
             data[2] = data[3];
@@ -493,7 +536,7 @@ public class Validacion implements Runnable {
                 "vender.msg.invalid.cambio.title",
                 JOptionPane.WARNING_MESSAGE
             });
-            return this;
+            return false;
         }
 
         if (data[6].toString().equals("--Seleccionar--")) {
@@ -502,7 +545,7 @@ public class Validacion implements Runnable {
                 "vender.msg.invalid.color.title",
                 JOptionPane.WARNING_MESSAGE
             });
-            return this;
+            return false;
         }
 
         if (data[7].toString().equals("")) {
@@ -511,15 +554,24 @@ public class Validacion implements Runnable {
                 "vender.msg.invalid.descripcion.title",
                 JOptionPane.WARNING_MESSAGE
             });
-            return this;
+            return false;
         }
 
+        auto = new AutoVO();
+        auto.setModelo((int) data[0]);
+        auto.setKilometros((int) data[1]);
+        auto.setMarca(data[2].toString());
+        auto.setCambio(data[4].toString());
+        auto.setPrecio((double) data[5]);
+        auto.setColor(data[6].toString());
+        auto.setDescripcion(data[7].toString());
+        auto.setImagenes(data[8].toString());
+        auto.setId_usuario((int) data[9]);
         if (isAnUpdate) {
-            createRequestJSON("UPDATEAUTO", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.execute();
 
-            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
+            initializeHandler(Constants.UPDATEAUTO, auto);
+
+            if (response.getStatus() == Response.STATUS_UPDATED) {
                 writeMessages(new Object[]{
                     "vender.msg.autoUpdated",
                     "vender.msg.autoUpdated.title",
@@ -531,13 +583,12 @@ public class Validacion implements Runnable {
                     "vender.msg.error.autoNotUpdated.title",
                     JOptionPane.ERROR_MESSAGE
                 });
+                return false;
             }
         } else {
-            createRequestJSON("INSERTNEWAUTO", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.execute();
+            initializeHandler(Constants.INSERTNEWAUTO, auto);
 
-            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
+            if (response.getStatus() == Response.STATUS_SUCCESS) {
                 writeMessages(new Object[]{
                     "vender.msg.autoInserted",
                     "vender.msg.autoInserted.title",
@@ -549,30 +600,45 @@ public class Validacion implements Runnable {
                     "vender.msg.error.autoNotInserted.title",
                     JOptionPane.ERROR_MESSAGE
                 });
+                return false;
             }
         }
-
-        return this;
+        return true;
     }
 
-    public Validacion listUserAutos() {
-        createRequestJSON("GETCARS", null);
-        Peticiones peticion = new Peticiones(requestJSON);
-        peticion.setObjectVO(objVo);
-        JSONObject response = peticion.execute();
-
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-
+    /**
+     *
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    public DefaultTableModel listUserAutos(DefaultTableModel model) throws Exception {
+        session = new SessionVO();
+        session.setId(Integer.parseInt(data[0].toString()));
+        initializeHandler(Constants.GETCARS, session);
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
             autosVO = new ArrayList<>();
-            Object[] objArray = (Object[]) response.get("obj");
-            if (objArray != null) {
-                for (Object obj : objArray) {
-                    AutoVO vo = (AutoVO) obj;
-                    autosVO.add(vo);
+            ResultSet rs = response.getResultSet();
+            while (rs.next()) {
+                auto = new AutoVO();
+                auto.setId(rs.getInt("id"));
+                auto.setMarca(rs.getString("marca"));
+                auto.setModelo(rs.getInt("modelo"));
+                auto.setPrecio(rs.getDouble("precio"));
+                auto.setColor(rs.getString("color"));
+                auto.setEstatus(rs.getString("estatus"));
+                if (model != null) {
+                    model.addRow(new Object[]{
+                        auto.getId(),
+                        auto.getMarca(),
+                        auto.getModelo(),
+                        auto.getPrecio(),
+                        auto.getColor(),
+                        auto.getEstatus()
+                    });
                 }
             }
-
-            setRowsTable(objArray);
+            autosVO.add(auto);
         } else {
             writeMessages(new Object[]{
                 "usuarios.msg.userNotFound",
@@ -580,25 +646,7 @@ public class Validacion implements Runnable {
                 JOptionPane.INFORMATION_MESSAGE
             });
         }
-        return this;
-    }
-
-    private void setRowsTable(Object[] autos) {
-        if (model != null) {
-            Logger.log("Creating rows for the table");
-            for (Object obj : autos) {
-                AutoVO vo = (AutoVO) obj;
-                autosVO.add(vo);
-                model.addRow(new Object[]{
-                    vo.getId(),
-                    vo.getMarca(),
-                    vo.getModelo(),
-                    vo.getPrecio(),
-                    vo.getColor(),
-                    vo.getEstatus()
-                });
-            }
-        }
+        return model;
     }
 
     /**
@@ -607,7 +655,7 @@ public class Validacion implements Runnable {
      *
      * @return
      */
-    public Validacion submitComentario() {
+    public boolean submitComentario() {
         if (data[0].toString().equals("")) {
             if (!Boolean.parseBoolean(data[1].toString())) {
                 writeMessages(new Object[]{
@@ -615,7 +663,7 @@ public class Validacion implements Runnable {
                     "clientView.msg.error.empty.title",
                     JOptionPane.WARNING_MESSAGE
                 });
-                return this;
+                return false;
             }
             data[0] = "Anonimo";
         }
@@ -627,36 +675,46 @@ public class Validacion implements Runnable {
                     "clientView.msg.error.empty.title",
                     JOptionPane.WARNING_MESSAGE
                 });
-                return this;
+                return false;
             }
         }
+        comentario = new ComentarioVO();
+        comentario.setNombre(data[0].toString());
+        comentario.setComentario(data[2].toString());
+        comentario.setValoracion(Integer.parseInt(data[3].toString()));
+        comentario.setId_usuario(Integer.parseInt(data[4].toString()));
+        comentario.setFecha(data[5].toString());
+        initializeHandler(Constants.SUBMITCOMENTARIO, comentario);
 
-        createRequestJSON("SUBMITCOMENTARIO", null);
-        Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
+        if (response.getStatus() == Response.STATUS_INSERTED) {
             writeMessages(new Object[]{
                 "clientView.msg.submit.successfully",
                 "clientView.msg.submit.successfully.title",
                 JOptionPane.INFORMATION_MESSAGE
             });
         }
-        return this;
+        return true;
     }
 
-    public Validacion getFeedBack() {
-        createRequestJSON("GETFEEDBACK", null);
-        Peticiones peticion = new Peticiones(requestJSON);
-        peticion.setObjectVO(objVo);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-            Object[] obj = (Object[]) response.get("obj");
-            comentariosVO = new ArrayList<>();
-            for (Object vo : obj) {
-                comentariosVO.add((ComentarioVO) vo);
+    /**
+     *
+     * @return @throws Exception
+     */
+    public List<ComentarioVO> getFeedBack() throws Exception {
+        initializeHandler(Constants.GETFEEDBACK, auto);
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
+            ResultSet rs = response.getResultSet();
+            while (rs.next()) {
+                comentario = new ComentarioVO();
+                comentario.setNombre(rs.getString("nombre"));
+                comentario.setComentario(rs.getString("comentario"));
+                comentario.setValoracion(rs.getInt("valoracion"));
+                comentario.setId_usuario(rs.getInt("id_usuario"));
+                comentario.setFecha(rs.getString("fecha"));
+                comentariosVO.add(comentario);
             }
         }
-        return this;
+        return comentariosVO;
     }
 
     /**
@@ -664,63 +722,91 @@ public class Validacion implements Runnable {
      *
      * @return
      */
-    public Validacion getCatalogo() {
-        createRequestJSON("GETCATALOGO", null);
-        Peticiones peticion = new Peticiones(requestJSON);
-        peticion.setObjectVO(objVo);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-            Object[] obj = (Object[]) response.get("obj");
-            autosVO = new ArrayList<>();
-            for (Object vo : obj) {
-                autosVO.add((AutoVO) vo);
+    public ArrayList<AutoVO> getCatalogo() throws Exception {
+        autosVO = new ArrayList<>();
+        auto = new AutoVO();
+        auto.setId_usuario(Integer.parseInt(data[0].toString()));
+        initializeHandler(Constants.GETCATALOGO, auto);
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
+            ResultSet rs = response.getResultSet();
+            while (rs.next()) {
+                auto = new AutoVO();
+                auto.setCambio(rs.getString("cambio"));
+                auto.setColor(rs.getString("color"));
+                auto.setDescripcion(rs.getString("descripcion"));
+                auto.setEstatus(rs.getString("estatus"));
+                auto.setId(rs.getInt("id"));
+                auto.setId_usuario(rs.getInt("id_usuario"));
+                auto.setImagenes(rs.getString("imagenes"));
+                auto.setKilometros(rs.getInt("kilometros"));
+                auto.setMarca(rs.getString("marca"));
+                auto.setModelo(rs.getInt("modelo"));
+                auto.setPrecio(rs.getDouble("precio"));
+                autosVO.add(auto);
             }
         }
-        return this;
+        return autosVO;
     }
 
-    public Validacion getVendedor() {
-        createRequestJSON("GETVENDEDOR", null);
-        Peticiones peticion = new Peticiones(requestJSON);
-        peticion.setObjectVO(objVo);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-            usuariosVO = new ArrayList<>();
-            usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
+    /**
+     *
+     * @return @throws Exception
+     */
+    public UsuarioVO getVendedor() throws Exception {
+        usuario = new UsuarioVO();
+        usuario.setId(Integer.parseInt(data[0].toString()));
+        initializeHandler(Constants.GETVENDEDOR, usuario);
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
+            ResultSet rs = response.getResultSet();
+            if (rs.next()) {
+                usuario.setCorreo(rs.getString("correo"));
+                usuario.setEstatus(rs.getString("estatus"));
+                usuario.setTelefono(rs.getString("telefono"));
+                usuario.setNombre(rs.getString("nombre"));
+            }
         }
-        return this;
+        return usuario;
     }
 
-    public Validacion getVendedorName() {
+    /**
+     *
+     * @return @throws Exception
+     */
+    public String getVendedorName() throws Exception {
+        String vendedorName = "";
         if (!isEmpty(data[0])) {
-            createRequestJSON("GETVENDEDORNAME", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            peticion.setObjectVO(objVo);
-            JSONObject response = peticion.execute();
-            if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-                usuariosVO = new ArrayList<>();
-                usuariosVO.add((UsuarioVO) ((Object[]) response.get("obj"))[0]);
+            usuario = new UsuarioVO();
+            usuario.setCorreo(data[0].toString());
+            initializeHandler(Constants.GETVENDEDORNAME, usuario);
+            if (response.getStatus() == Response.STATUS_SUCCESS) {
+                ResultSet rs = response.getResultSet();
+                if (rs.next()) {
+                    vendedorName = rs.getString("nombre");
+                }
             }
         }
-        return this;
+        return vendedorName;
     }
 
-    public Validacion sendMailToVendedor() {
+    public boolean sendMailToVendedor() {
         if (!isEmpty(data[0]) && !isEmpty(data[1]) && !isEmpty(data[2])) {
-            Peticiones.sendMail(
-                    data[0].toString(),
-                    data[1].toString(),
-                    data[2].toString(),
-                    data[3]);
+            mail = new MailVO();
+            mail.setDestinatario(data[0].toString());
+            mail.setAsunto(data[1].toString());
+            mail.setMensaje(data[2].toString());
+            mail.setAttachFile(data[3]);
+            initializeHandler(Constants.SENDMAIL, mail);
             /*update the vehicle's status, this vehicle will not be available in
             catalogo*/
             data = new Object[]{
                 Constants.PROCCESS_PURCHASE,
                 data[4]
             };
-            createRequestJSON("UPDATEAUTOESTATUS", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            peticion.execute();
+            auto = new AutoVO();
+            auto.setId(Integer.parseInt(data[1].toString()));
+            auto.setEstatus(data[0].toString());
+            initializeHandler(Constants.UPDATEAUTOESTATUS, auto);
+            return (response.getStatus() == Response.STATUS_UPDATED);
         } else {
             writeMessages(new Object[]{
                 "mail.empty.fields",
@@ -728,32 +814,40 @@ public class Validacion implements Runnable {
                 JOptionPane.WARNING_MESSAGE
             });
         }
-        return this;
+        return false;
     }
 
-    public Validacion filtrarAutos() {
-        autosVO = null;
+    public ArrayList<AutoVO> filtrarAutos() throws Exception {
+        autosVO = new ArrayList<>();
         if (!isEmpty(data[0]) || !isEmpty(data[1]) || !isEmpty(data[2]) || !isEmpty(data[3])) {
-            createRequestJSON("FILTRARAUTOS", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            peticion.setObjectVO(objVo);
-            JSONObject response = peticion.execute();
-            if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-                autosVO = new ArrayList<>();
-                for (Object obj : (Object[]) response.get("obj")) {
-                    AutoVO auto = (AutoVO) obj;
+            initializeHandler(Constants.FILTRARAUTOS, auto);
+            if (response.getStatus() == Response.STATUS_SUCCESS) {
+                ResultSet rs = response.getResultSet();
+                while (rs.next()) {
+                    auto = new AutoVO();
+                    auto.setCambio(rs.getString("cambio"));
+                    auto.setColor(rs.getString("color"));
+                    auto.setDescripcion(rs.getString("descripcion"));
+                    auto.setEstatus(rs.getString("estatus"));
+                    auto.setId(rs.getInt("id"));
+                    auto.setId_usuario(rs.getInt("id_usuario"));
+                    auto.setImagenes(rs.getString("imagenes"));
+                    auto.setKilometros(rs.getInt("kilometros"));
+                    auto.setMarca(rs.getString("marca"));
+                    auto.setModelo(rs.getInt("modelo"));
+                    auto.setPrecio(rs.getDouble("precio"));
                     autosVO.add(auto);
                 }
             }
         }
-        return this;
+        return autosVO;
     }
 
     public Validacion deleteAuto() {
         if (!isEmpty(data[0]) || !isEmpty(data[1])) {
-            createRequestJSON("UPDATEAUTOESTATUS", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.execute();
+            auto = new AutoVO();
+            
+            initializeHandler(Constants.UPDATEAUTOESTATUS, auto);
             if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
                 writeMessages(new Object[]{
                     "msg.auto.deleted.success",
@@ -797,28 +891,12 @@ public class Validacion implements Runnable {
         return new HashMap();
     }
 
-    public static Connection requestSQLConnection() {
-        return Peticiones.requestSQLConnection();
-    }
-
     public ArrayList<UsuarioVO> getUsuarios() {
         return usuariosVO;
     }
 
     public ArrayList<AutoVO> getAutos() {
         return autosVO;
-    }
-
-    public ArrayList<ComentarioVO> getComentarios() {
-        return comentariosVO;
-    }
-
-    public DefaultTableModel getTableModel() {
-        return model;
-    }
-
-    public void setTableModel(DefaultTableModel model) {
-        this.model = model;
     }
 
     public SessionVO getSession() {
@@ -833,13 +911,7 @@ public class Validacion implements Runnable {
     }
 
     private void writeMessages(Object[] Props) {
-//        messageProps = new HashMap();
-//        messageProps.put("message",
-//                ReadProperties.props.getProperty(Props[0].toString()));
-//        messageProps.put("title",
-//                ReadProperties.props.getProperty(Props[1].toString()));
-//        messageProps.put("type", (int) Props[2]);
-        JOptionPane.showMessageDialog(null, 
+        JOptionPane.showMessageDialog(null,
                 ReadProperties.props.getProperty(Props[0].toString()),
                 ReadProperties.props.getProperty(Props[1].toString()),
                 (int) Props[2]);

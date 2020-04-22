@@ -15,6 +15,7 @@ import javax.swing.*;
 import com.automotriz.Presentacion.ReadProperties;
 import com.automotriz.logger.Logger;
 import com.automotriz.Constantes.Constants;
+import com.automotriz.VO.MailVO;
 
 public class Mail implements Runnable {
 
@@ -31,10 +32,10 @@ public class Mail implements Runnable {
      * @param asunto The reason why the email is sending to destinatario
      * @param mensaje The message
      */
-    public Mail(String destinatario, String asunto, String mensaje) {
-        this.destinatario = destinatario;
-        this.asunto = asunto;
-        this.mensaje = mensaje;
+    public Mail(MailVO mail) {
+        this.destinatario = mail.getDestinatario();
+        this.asunto = mail.getAsunto();
+        this.mensaje = mail.getMensaje();
     }
 
     /**

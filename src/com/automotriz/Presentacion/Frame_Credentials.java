@@ -26,19 +26,11 @@ public class Frame_Credentials extends javax.swing.JDialog implements Constants<
     }
 
     private void validateAdminRights() {
-        Validacion validacion = new Validacion(null)
-                .validateAdminRights(txt_username.getText(),
+        Validacion validacion = new Validacion(null);
+        boolean response = validacion.validateAdminRights(txt_username.getText(),
                         new Hashing(txt_password.getText()).encrypt());
 
-        HashMap message = validacion.getMessage();
-
-        if (message != null) {
-            JOptionPane.showMessageDialog(this,
-                    message.get("message").toString(),
-                    message.get("title").toString(),
-                    Integer.parseInt(message.get("type").toString()));
-            txt_password.setText(null);
-        } else {
+        if (response) {
             /*No message of error, therefor continue with the operation*/
             isAllowed = true;
             this.dispose();

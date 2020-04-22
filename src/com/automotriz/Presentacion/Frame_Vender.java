@@ -193,18 +193,11 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             txa_descripcion.getText(),
             imagesPath,
             global.getSession().getId()
-        }).saveAutomobile(false);
+        });
+        boolean response = validacion.saveAutomobile(false);
         
-        HashMap message = validacion.getMessage();
-        if (message != null) {
-            JOptionPane.showMessageDialog(this,
-                    message.get("message").toString(),
-                    message.get("title").toString(),
-                    Integer.parseInt(message.get("type").toString())
-            );
-            if (Integer.parseInt(message.get("type").toString()) == JOptionPane.INFORMATION_MESSAGE) {
-                clearForm();
-            }
+        if (response) {
+           clearForm();
         }
     }
     
@@ -247,31 +240,16 @@ public class Frame_Vender extends javax.swing.JInternalFrame implements Constant
             txa_descripcion.getText(),
             imagesPath,
             autoVO.getId()
-        }).saveAutomobile(true);
+        });
+        boolean response = validacion.saveAutomobile(true);
         
-        HashMap message = validacion.getMessage();
-        if (message != null) {
-            JOptionPane.showMessageDialog(this,
-                    message.get("message").toString(),
-                    message.get("title").toString(),
-                    Integer.parseInt(message.get("type").toString())
-            );
-            if (Integer.parseInt(message.get("type").toString()) == JOptionPane.INFORMATION_MESSAGE) {
-                clearForm();
-            }
+        if (response) {
+            clearForm();
         }
     }
     
     private void generateReport() {
-        Connection cnn = Validacion.requestSQLConnection();
-        if (cnn != null) {
-            new Report("Autos", cnn).generateReport();
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    ReadProperties.props.getProperty("usuario.msg.error.reporte"),
-                    ReadProperties.props.getProperty("usuario.msg.error.reporte.title"),
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        new Validacion(null).requestReport("Autos");
     }
     
     private void exportCSVTemplate() {

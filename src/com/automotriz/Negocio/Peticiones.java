@@ -9,7 +9,6 @@ import java.sql.Connection;
 import java.util.HashMap;
 import java.nio.file.Files;
 import java.nio.file.*;
-import com.automotriz.Datos.Mail;
 import com.automotriz.Constantes.Constants;
 
 public class Peticiones {

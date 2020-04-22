@@ -1,12 +1,13 @@
 package com.automotriz.Negocio;
 
-import java.sql.ResultSet;
+import java.sql.*;
 
 public class Response {
 
     private int status;
     private ResultSet rs = null;
     private int rowsFetched = 0;
+    private Connection cnn;
 
     public static int STATUS_SUCCESS = 1;
     public static int STATUS_FAILURE = 2;
@@ -38,5 +39,13 @@ public class Response {
     
     public int getRowsFetched(){
         return rowsFetched;
+    }
+    
+    public void setConnection(Connection cnn){
+        this.cnn = cnn;
+    }
+    
+    public Connection getConnection(){
+        return this.cnn;
     }
 }

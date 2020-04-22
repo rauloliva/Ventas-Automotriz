@@ -93,16 +93,15 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame implements Consta
         model = (DefaultTableModel) tbl_usuarios.getModel();
     }
 
-    public void exportCSV() {
+    public void exportCSV() throws Exception{
         JFileChooser chooser = new JFileChooser();
         chooser.setSelectedFile(new File(
                 ReadProperties.props.getProperty("usuario.csv.name")));
         if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
             //getting the users from database
-            Validacion validacion = new Validacion(null, new UsuarioVO())
-                    .filtrarUsuarios();
+            Validacion validacion = new Validacion(null);
+            validacion.filtrarUsuarios(null);
             ArrayList<UsuarioVO> usuarioVO = validacion.getUsuarios();
-            //
             List<String[][]> data = UsuarioVO.usuariosAsMatrix(usuarioVO);
 
             //filling the CSV with the users data
@@ -128,15 +127,7 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame implements Consta
     }
 
     private void generateReport() {
-        Connection cnn = Validacion.requestSQLConnection();
-        if (cnn != null) {
-            new Report("Usuarios", cnn).generateReport();
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    ReadProperties.props.getProperty("usuario.msg.error.reporte"),
-                    ReadProperties.props.getProperty("usuario.msg.error.reporte.title"),
-                    JOptionPane.ERROR_MESSAGE);
-        }
+        new Validacion(null).requestReport("Usuarios");
     }
 
     @SuppressWarnings("unchecked")
@@ -419,46 +410,47 @@ public class Frame_Usuarios extends javax.swing.JInternalFrame implements Consta
     }//GEN-LAST:event_chb_filtarActionPerformed
 
     private void btn_filtrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_filtrarActionPerformed
-        resetTable();
-        Validacion validacion = new Validacion(new Object[]{
-            txt_username.getText().trim(),
-            txt_telefono.getText().trim(),
-            cmb_estatus.getSelectedItem().toString() == "--Seleccionar--"
-            ? cmb_estatus.getSelectedItem().toString() : cmb_estatus.getSelectedItem().toString().toUpperCase(),
-            cmb_perfil.getSelectedItem().toString()
-        }, new UsuarioVO());
+        try{
+            resetTable();
+            Validacion validacion = new Validacion(new Object[]{
+                txt_username.getText().trim(),
+                txt_telefono.getText().trim(),
+                cmb_estatus.getSelectedItem().toString() == "--Seleccionar--"
+                ? cmb_estatus.getSelectedItem().toString() : cmb_estatus.getSelectedItem().toString().toUpperCase(),
+                cmb_perfil.getSelectedItem().toString()
+            });
+            //validacion.setTableModel(model);
+            model = validacion.filtrarUsuarios(model);
+            tbl_usuarios.setModel(model);
 
-        validacion.setTableModel(model);
-        validacion.filtrarUsuarios();
-        tbl_usuarios.setModel(validacion.getTableModel());
-
-        HashMap propMensaje = validacion.getMessage();
-
-        if (propMensaje != null) { //if an error message is ready to show up
-            //if there is no user, dont show the table
-            scrollTable.setVisible(false);
-            JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    Integer.parseInt(propMensaje.get("type").toString()));
-
-        } else {
-            //show the table with the data
-            scrollTable.setVisible(true);
-            pack();
-            usuariosVO = validacion.getUsuarios();
+            if (model == null) { //if an error message is ready to show up
+                //if there is no user, dont show the table
+                scrollTable.setVisible(false);
+            } else {
+                //show the table with the data
+                scrollTable.setVisible(true);
+                pack();
+                usuariosVO = validacion.getUsuarios();
+            }
+        }catch(Exception e){
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
         }
     }//GEN-LAST:event_btn_filtrarActionPerformed
 
     private void btn_listarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_listarTodoActionPerformed
-        resetTable();
-        Validacion validacion = new Validacion(null, new UsuarioVO());
-        validacion.setTableModel(model);
-        validacion.filtrarUsuarios();
-        tbl_usuarios.setModel(validacion.getTableModel());
-        usuariosVO = validacion.getUsuarios();
-        scrollTable.setVisible(true);
-        pack();
+        try{
+            resetTable();
+            Validacion validacion = new Validacion(null);
+            model = validacion.filtrarUsuarios(model);
+            tbl_usuarios.setModel(model);
+            usuariosVO = validacion.getUsuarios();
+            scrollTable.setVisible(true);
+            pack();
+        }catch(Exception e){
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }//GEN-LAST:event_btn_listarTodoActionPerformed
 
     private void btn_cleanFieldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_cleanFieldsActionPerformed

@@ -74,6 +74,7 @@ public interface Constants<Class> {
     public String ZIP_NAME = ReadProperties.props.getProperty("zip.name");
     public String BACKUP_FILES_EXTENSION = ReadProperties.props.getProperty("file.extension");
 
+    public String SENDMAIL = "SENDMAIL";
     // DATABASE ACTIONS
     public String VALIDATEUSER = "VALIDATEUSER";
     public String USERNAMEEXISTS = "USERNAMEEXISTS";
@@ -98,4 +99,5 @@ public interface Constants<Class> {
     public String FILTRARAUTOS = "FILTRARAUTOS";
     public String LISTAUTOSBYID = "LISTAUTOSBYID";
     public String UPDATEAUTOESTATUS = "UPDATEAUTOESTATUS";
+    public String DB_CONNECTION = "DB_CONNECTION";
 }

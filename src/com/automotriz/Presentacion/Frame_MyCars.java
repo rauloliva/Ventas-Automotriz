@@ -25,15 +25,19 @@ public class Frame_MyCars extends javax.swing.JDialog implements Constants<Frame
 
     @Override
     public void initFrame(Frame_MyCars c) {
-        String name = ReadProperties.props.getProperty("name.MyCars");
-        c.setName(name);
-        c.setTitle(name);
-        lbl_title_frame.setText(name);
-        Logger.log("Starting " + c.getName() + " frame...");
-        panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-        initTable();
-        getCars();
-        Constants.metohds.setCloseIcon(lbl_close, c);
+        try {
+            String name = ReadProperties.props.getProperty("name.MyCars");
+            c.setName(name);
+            c.setTitle(name);
+            lbl_title_frame.setText(name);
+            Logger.log("Starting " + c.getName() + " frame...");
+            panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
+            initTable();
+            getCars();
+            Constants.metohds.setCloseIcon(lbl_close, c);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void initTable() {
@@ -41,14 +45,11 @@ public class Frame_MyCars extends javax.swing.JDialog implements Constants<Frame
         tbl_cars.getTableHeader().setFont(new Font("Segoe UI", Font.PLAIN, 18));
     }
 
-    private void getCars() {
+    private void getCars() throws Exception{
         setTable();
         model = (DefaultTableModel) tbl_cars.getModel();
-        Validacion validacion = new Validacion(new Object[]{global.getSession().getId()}, new AutoVO());
-
-        validacion.setTableModel(model);
-        validacion.listUserAutos();
-        model = validacion.getTableModel();
+        Validacion validacion = new Validacion(new Object[]{global.getSession().getId()});
+        model = validacion.listUserAutos(model);
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(
                     this,
@@ -56,7 +57,7 @@ public class Frame_MyCars extends javax.swing.JDialog implements Constants<Frame
                     ReadProperties.props.getProperty("vender.msg.adv.noCars.title"),
                     JOptionPane.INFORMATION_MESSAGE);
         } else {
-            tbl_cars.setModel(validacion.getTableModel());
+            tbl_cars.setModel(model);
             scrollTable.setVisible(true);
             pack();
             //getting all the autosVo

@@ -4,9 +4,7 @@ import com.automotriz.VO.UsuarioVO;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Image;
-import java.util.HashMap;
 import javax.swing.ImageIcon;
-import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import com.automotriz.Constantes.Constants;
 
@@ -86,16 +84,8 @@ public class Frame_EditUser extends javax.swing.JDialog implements Constants<Fra
             cmb_estatus.getSelectedItem().toString(),
             usuario.getEstatus().toUpperCase(),
             usuario.getCorreo()
-        }).updateUserAsAdmin();
-
-        HashMap propsMessage = validacion.getMessage();
-        if (propsMessage != null) {
-            JOptionPane.showMessageDialog(
-                    this,
-                    propsMessage.get("message"),
-                    propsMessage.get("title").toString(),
-                    Integer.parseInt(propsMessage.get("type").toString()));
-        }
+        });
+        validacion.updateUserAsAdmin();
     }
 
     private void closeWindow() {

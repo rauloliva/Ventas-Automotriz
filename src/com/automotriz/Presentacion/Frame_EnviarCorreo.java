@@ -16,20 +16,20 @@ import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
 
 public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Runnable, Constants<Frame_EnviarCorreo> {
-
+    
     private final String destinatario;
     private Thread hiloProgress = new Thread();
     private File fileAttached = null;
     private Thread hiloSend;
     private String vendedorName;
-
+    
     public Frame_EnviarCorreo(String dest) {
         initComponents();
         destinatario = dest;
         initFrame(this);
         setVisible(true);
     }
-
+    
     @Override
     public void initFrame(Frame_EnviarCorreo c) {
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
@@ -60,34 +60,37 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
      * @return the body message
      */
     private String setBodyMsg() {
-        vendedorName = vendedorName == null ? getNombreVendedor() : vendedorName;
-
-        Calendar c = new GregorianCalendar();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        String time;
-        if (hour >= 1 && hour < 12) {
-            time = "Buenos Dias";
-        } else if (hour >= 12 && hour < 6) {
-            time = "Buenas Tardes";
-        } else {
-            time = "Buenas Noches";
+        try {
+            vendedorName = vendedorName == null ? getNombreVendedor() : vendedorName;
+            
+            Calendar c = new GregorianCalendar();
+            int hour = c.get(Calendar.HOUR_OF_DAY);
+            String time;
+            if (hour >= 1 && hour < 12) {
+                time = "Buenos Dias";
+            } else if (hour >= 12 && hour < 6) {
+                time = "Buenas Tardes";
+            } else {
+                time = "Buenas Noches";
+            }
+            return time + " " + vendedorName.split(" ")[0];
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+            return "";
         }
-        return time + " " + vendedorName.split(" ")[0];
     }
 
     /**
      * This method gets the name of the vendedor in the body of the mail, it
      * uses their emails (destinatario) to get their names
      */
-    private String getNombreVendedor() {
+    private String getNombreVendedor() throws Exception {
         Validacion validacion = new Validacion(new Object[]{this.destinatario});
-        validacion.setObjectVO(new UsuarioVO());
-        validacion = validacion.getVendedorName();
-        //getting the only vendedor from the list
-        UsuarioVO vendedor = validacion.getUsuarios().get(0);
-        return vendedor.getNombre();
+        String vendedor = validacion.getVendedorName();
+        return vendedor;
     }
-
+    
     @Override
     public void run() {
         //this part pf the thread is for sending the email
@@ -120,7 +123,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
         }
         hiloSend = null;
     }
-
+    
     private void attachFile() {
         JFileChooser chooser = new JFileChooser();
         chooser.setName("Attach File");
@@ -134,7 +137,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
             hiloProgress.start();
         }
     }
-
+    
     private void sendMail() {
         lbl_send.setBorder(new BevelBorder(BevelBorder.LOWERED));
         Validacion validacion = new Validacion(new Object[]{
@@ -142,20 +145,15 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
             txt_asunto.getText().trim(),
             txa_mensaje.getText().trim(),
             fileAttached
-        }).sendMailToVendedor();
-
-        HashMap props = validacion.getMessage();
-        if (props != null) {
-            JOptionPane.showMessageDialog(this,
-                    props.get("message").toString(),
-                    props.get("title").toString(),
-                    Integer.parseInt(props.get("type").toString()));
-        } else {
+        });
+        boolean response = validacion.sendMailToVendedor();
+        
+        if (response) {
             cleanForm();
         }
         lbl_send.setBorder(new BevelBorder(BevelBorder.RAISED));
     }
-
+    
     private void cleanForm() {
         txt_asunto.setText(null);
         txa_mensaje.setText(setBodyMsg());
@@ -163,7 +161,7 @@ public class Frame_EnviarCorreo extends javax.swing.JInternalFrame implements Ru
         fileAttached = null;
         attachFile_loader.setValue(0);
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {

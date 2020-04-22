@@ -11,14 +11,18 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
 
     public Frame_Comentarios() {
         initComponents();
-        this.setVisible(true);
-        initFrame(this);
-        this.setTitle("Comentarios");
-        getFeedBack("");
-        /* start a thread to know when the frame closes 
-            so it can reset the index from DataModel class
-         */
-        new Thread(this).start();
+        try{
+            this.setVisible(true);
+            initFrame(this);
+            this.setTitle("Comentarios");
+            getFeedBack("");
+            /* start a thread to know when the frame closes 
+                so it can reset the index from DataModel class
+             */
+            new Thread(this).start();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -64,9 +68,9 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         start5.setIcon(imageStart);
     }
 
-    private void getFeedBack(String flag) {
-        Validacion validacion = new Validacion(null, new ComentarioVO()).getFeedBack();
-        List<ComentarioVO> comentariosVO = validacion.getComentarios();
+    private void getFeedBack(String flag) throws Exception{
+        Validacion validacion = new Validacion(null);
+        List<ComentarioVO> comentariosVO = validacion.getFeedBack();
         if (comentariosVO != null) {
             lbl_no_comments.setText(null);
             DataModel model = new DataModel(new Object[][]{

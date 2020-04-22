@@ -3,6 +3,7 @@ package com.automotriz.Presentacion;
 import com.automotriz.Constantes.Constants;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.VO.AutoVO;
+import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
 
     @Override
     public void initFrame(Frame_AutoStatus c) {
+        try{
         setLocationRelativeTo(null);
         Constants.metohds.setCloseIcon(lbl_close, c);
         panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
@@ -33,6 +35,10 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         Constants.metohds.setIconToButton(this, btn_eliminarAuto, "icon.delete", 35, 35);
         boolean existCars = getCars();
         c.setVisible(existCars);
+        }catch(Exception e){
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }
 
     private void setAutoEstatus() {
@@ -48,14 +54,11 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         tbl_cars.getTableHeader().setFont(new Font("Segoe UI", Font.PLAIN, 18));
     }
 
-    private boolean getCars() {
+    private boolean getCars() throws Exception{
         setTable();
         model = (DefaultTableModel) tbl_cars.getModel();
-        Validacion validacion = new Validacion(new Object[]{global.getSession().getId()}, new AutoVO());
-
-        validacion.setTableModel(model);
-        validacion.listUserAutos();
-        model = validacion.getTableModel();
+        Validacion validacion = new Validacion(new Object[]{global.getSession().getId()});
+        model = validacion.listUserAutos(model);
         if (model.getRowCount() == 0) {
             JOptionPane.showMessageDialog(
                     this,
@@ -64,7 +67,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
                     JOptionPane.INFORMATION_MESSAGE);
             return false;
         } else {
-            tbl_cars.setModel(validacion.getTableModel());
+            tbl_cars.setModel(model);
             pack();
             //getting all the autosVo
             autosVO = validacion.getAutos();

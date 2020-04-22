@@ -76,15 +76,8 @@ public class Frame_Perfil extends javax.swing.JInternalFrame implements Constant
             field.getText().trim(),
             ReadProperties.props.getProperty(props),
             evt
-        }).validateInputLength();
-
-        HashMap propMensaje = validacion.getMessage();
-        if (propMensaje != null) {
-            JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    Integer.parseInt(propMensaje.get("type").toString()));
-        }
+        });
+        validacion.validateInputLength();
     }
 
     private void updateUser() {
@@ -95,25 +88,17 @@ public class Frame_Perfil extends javax.swing.JInternalFrame implements Constant
             global.getSession().getPerfil(),
             txt_telefono.getText(),
             txt_name.getText().trim()
-        }).validateForm("the update user", Constants.UPDATEUSER);
+        });
+        boolean response = validacion.validateForm("the update user", Constants.UPDATEUSER);
 
-        HashMap propMensaje = validacion.getMessage();
-
-        if (propMensaje != null) { //if a message is ready to show up
-            int typeOfMsg;
+        if (response) {
+            //message to specify to go back to log in
             JOptionPane.showMessageDialog(this,
-                    propMensaje.get("message").toString(),
-                    propMensaje.get("title").toString(),
-                    typeOfMsg = Integer.parseInt(propMensaje.get("type").toString()));
-            if (typeOfMsg == JOptionPane.INFORMATION_MESSAGE) {
-                //message to specify to go back to log in
-                JOptionPane.showMessageDialog(this,
-                        ReadProperties.props.getProperty("perfil.msg.sessionOver"),
-                        ReadProperties.props.getProperty("perfil.msg.sessionOver.title"),
-                        JOptionPane.INFORMATION_MESSAGE);
-                global.getParent().dispose();
-                Frame_LogIn.main(null);
-            }
+                    ReadProperties.props.getProperty("perfil.msg.sessionOver"),
+                    ReadProperties.props.getProperty("perfil.msg.sessionOver.title"),
+                    JOptionPane.INFORMATION_MESSAGE);
+            global.getParent().dispose();
+            Frame_LogIn.main(null);
         } else {
             JOptionPane.showMessageDialog(this,
                     ReadProperties.props.getProperty("perfil.msg.error.userUpdate"),
@@ -132,16 +117,10 @@ public class Frame_Perfil extends javax.swing.JInternalFrame implements Constant
 
         if (option == JOptionPane.YES_OPTION) {
             Validacion validacion = new Validacion(new Object[]{
-                global.getSession().getUsername()
-            }).removeUser();
-
-            HashMap message = validacion.getMessage();
-            if (message != null) {
-                JOptionPane.showMessageDialog(this,
-                        message.get("message").toString(),
-                        message.get("title").toString(),
-                        Integer.parseInt(message.get("type").toString()));
-
+                global.getSession()
+            });
+            boolean response = validacion.removeUser();
+            if (response) {
                 //Close the session
                 global.getParent().dispose();
                 Frame_LogIn.main(null);

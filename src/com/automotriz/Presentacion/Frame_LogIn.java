@@ -4,15 +4,12 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import javax.swing.border.BevelBorder;
-import javax.swing.JOptionPane;
-import java.util.HashMap;
 import com.automotriz.logger.Logger;
 import com.automotriz.logger.LoggerQuery;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
-import com.automotriz.VO.UsuarioVO;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constants<Frame_LogIn> {
 
@@ -129,7 +126,7 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
                 txt_username.getText().trim(),
                 new Hashing(txt_password.getText().trim()).encrypt(),
                 perfil
-            }, new UsuarioVO());
+            });
             boolean validationSuccess = validacion.validarLogIn();
 
             if (validationSuccess) {
@@ -435,6 +432,12 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Frame_LogIn.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
         //</editor-fold>
         //</editor-fold>
 

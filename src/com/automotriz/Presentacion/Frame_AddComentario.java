@@ -45,19 +45,11 @@ public class Frame_AddComentario extends javax.swing.JInternalFrame implements C
             valoracion,
             global.getSession().getId(),
             Validacion.generateDate()
-        }).submitComentario();
+        });
+        boolean response = validacion.submitComentario();
 
-        HashMap propsMessage = validacion.getMessage();
-        if (propsMessage != null) {
-            JOptionPane.showMessageDialog(this,
-                    propsMessage.get("message"),
-                    propsMessage.get("title").toString(),
-                    Integer.parseInt(propsMessage.get("type").toString())
-            );
-
-            if (Integer.parseInt(propsMessage.get("type").toString()) == JOptionPane.INFORMATION_MESSAGE) {
-                clearFields();
-            }
+        if (response) {
+            clearFields();
         }
     }
 

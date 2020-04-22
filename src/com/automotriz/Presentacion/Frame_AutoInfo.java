@@ -20,19 +20,19 @@ import java.io.File;
 import java.util.HashMap;
 
 public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Constants<Frame_AutoInfo> {
-
+    
     private final AutoVO auto;
     private List<String> imgs;
     private int count_imgs = 0;
     private Thread hiloSend;
-
+    
     public Frame_AutoInfo(java.awt.Frame parent, boolean modal, AutoVO auto) {
         super(parent, modal);
         this.auto = auto;
         initComponents();
         initFrame(this);
     }
-
+    
     @Override
     public void run() {
         //this part pf the thread is for sending the email
@@ -44,7 +44,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
             Logger.error(e.getStackTrace());
         }
     }
-
+    
     @Override
     public void initFrame(Frame_AutoInfo c) {
         String name = ReadProperties.props.getProperty("name.infoAuto");
@@ -59,29 +59,31 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
         setLocationRelativeTo(null);
         setVisible(true);
     }
-
+    
     private void getDatosVendedor() {
-        int id_vendedor = auto.getId_usuario();
-        Validacion validacion = new Validacion(new Object[]{id_vendedor});
-        validacion.setObjectVO(new UsuarioVO());
-        validacion = validacion.getVendedor();
-        //getting the only vendedor from the list
-        UsuarioVO vendedor = validacion.getUsuarios().get(0);
-        lbl_tel_vendedor.setText("Telefono: " + vendedor.getTelefono());
-        lbl_correo_vendedor.setText("Correo: " + vendedor.getCorreo());
-        //setting email and tel icons
-        lbl_tel_icon.setIcon(new ImageIcon(
-                new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.telefono")))
-                        .getImage()
-                        .getScaledInstance(lbl_tel_icon.getWidth(), lbl_tel_icon.getHeight(), Image.SCALE_DEFAULT))
-        );
-        lbl_email_icon.setIcon(new ImageIcon(
-                new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.email")))
-                        .getImage()
-                        .getScaledInstance(lbl_email_icon.getWidth(), lbl_email_icon.getHeight(), Image.SCALE_DEFAULT))
-        );
+        try {
+            int id_vendedor = auto.getId_usuario();
+            Validacion validacion = new Validacion(new Object[]{id_vendedor});
+            UsuarioVO vendedor = validacion.getVendedor();
+            lbl_tel_vendedor.setText("Telefono: " + vendedor.getTelefono());
+            lbl_correo_vendedor.setText("Correo: " + vendedor.getCorreo());
+            //setting email and tel icons
+            lbl_tel_icon.setIcon(new ImageIcon(
+                    new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.telefono")))
+                            .getImage()
+                            .getScaledInstance(lbl_tel_icon.getWidth(), lbl_tel_icon.getHeight(), Image.SCALE_DEFAULT))
+            );
+            lbl_email_icon.setIcon(new ImageIcon(
+                    new ImageIcon(getClass().getResource(ReadProperties.props.getProperty("icon.email")))
+                            .getImage()
+                            .getScaledInstance(lbl_email_icon.getWidth(), lbl_email_icon.getHeight(), Image.SCALE_DEFAULT))
+            );
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }
-
+    
     private void setAutoInfo() {
         lbl_marca.setText("Marca: \t" + auto.getMarca());
         lbl_modelo.setText("Modelo: \t" + auto.getModelo());
@@ -103,20 +105,20 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
             siguiente_status = "DISABLED";
             siguiente_icon = "icon.siguiente.off";
         }
-
+        
         setIcon(ReadProperties.props.getProperty("icon.atras.off"), lbl_atras);
         ((ImageIcon) lbl_atras.getIcon()).setDescription("DISABLED");
         setIcon(ReadProperties.props.getProperty(siguiente_icon), lbl_siguiente);
         ((ImageIcon) lbl_siguiente.getIcon()).setDescription(siguiente_status);
     }
-
+    
     private void setIcon(String imagePath, JLabel lbl) {
         lbl.setIcon(null);
         Image image = new ImageIcon(getClass().getResource(imagePath)).getImage();
         image = image.getScaledInstance(57, 47, Image.SCALE_DEFAULT);
         lbl.setIcon(new ImageIcon(image));
     }
-
+    
     private void setImages(int i) {
         ImageIcon image;
         if (!auto.getImagenes().equals("")) {
@@ -130,11 +132,11 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
         img = img.getScaledInstance(299, 242, Image.SCALE_DEFAULT);
         lbl_imagenes.setIcon(new ImageIcon(img));
     }
-
+    
     private boolean hasNext() {
         return count_imgs + 1 == imgs.size();
     }
-
+    
     private void atrasAction() {
         setImages(--count_imgs);
         String atras_status = "ACTIVE", atras_icon = "icon.atras.on";
@@ -144,13 +146,13 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
         }
         //update the label
         lbl_n_images.setText((count_imgs + 1) + "/" + imgs.size());
-
+        
         setIcon(ReadProperties.props.getProperty(atras_icon), lbl_atras);
         ((ImageIcon) lbl_atras.getIcon()).setDescription(atras_status);
         setIcon(ReadProperties.props.getProperty("icon.siguiente.on"), lbl_siguiente);
         ((ImageIcon) lbl_siguiente.getIcon()).setDescription("ACTIVE");
     }
-
+    
     private void siguienteAction() {
         setImages(++count_imgs);
         String siguiente_status = "ACTIVE", siguiente_icon = "icon.siguiente.on";
@@ -160,19 +162,19 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
         }
         //update the label
         lbl_n_images.setText((count_imgs + 1) + "/" + imgs.size());
-
+        
         setIcon(ReadProperties.props.getProperty("icon.atras.on"), lbl_atras);
         ((ImageIcon) lbl_atras.getIcon()).setDescription("ACTIVE");
         setIcon(ReadProperties.props.getProperty(siguiente_icon), lbl_siguiente);
         ((ImageIcon) lbl_siguiente.getIcon()).setDescription(siguiente_status);
     }
-
+    
     private void goToMail() {
         int option = JOptionPane.showOptionDialog(this,
                 ReadProperties.props.getProperty("msg.redireccion.correo"),
                 ReadProperties.props.getProperty("msg.redireccion.correo.title"),
                 JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, new Object[]{"CONTINUAR", "NO"}, "NO");
-
+        
         if (option == JOptionPane.YES_OPTION) {
             for (JInternalFrame frame : global.getContainer().getAllFrames()) {
                 frame.dispose();
@@ -182,7 +184,7 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
             global.getContainer().add(new Frame_EnviarCorreo(lbl_correo_vendedor.getText().replace("Correo:", "").trim()));
         }
     }
-
+    
     private void sendNotification() {
         lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.LOWERED));
         Validacion validacion = new Validacion(new Object[]{
@@ -196,18 +198,11 @@ public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Con
             /*Sending an image of the desire vehicle*/
             new File(auto.getImagenes().split(";")[0]),
             auto.getId()
-        }).sendMailToVendedor();
-
-        HashMap props = validacion.getMessage();
-        if (props != null) {
-            JOptionPane.showMessageDialog(this,
-                    props.get("message").toString(),
-                    props.get("title").toString(),
-                    Integer.parseInt(props.get("type").toString()));
-        }
+        });
+        validacion.sendMailToVendedor();
         lbl_set_favorite.setBorder(new BevelBorder(BevelBorder.RAISED));
     }
-
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
