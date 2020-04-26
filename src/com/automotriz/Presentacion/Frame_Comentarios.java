@@ -11,7 +11,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
 
     public Frame_Comentarios() {
         initComponents();
-        try{
+        try {
             this.setVisible(true);
             initFrame(this);
             this.setTitle("Comentarios");
@@ -20,7 +20,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
                 so it can reset the index from DataModel class
              */
             new Thread(this).start();
-        }catch(Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -68,7 +68,7 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
         start5.setIcon(imageStart);
     }
 
-    private void getFeedBack(String flag) throws Exception{
+    private void getFeedBack(String flag) throws Exception {
         Validacion validacion = new Validacion(null);
         List<ComentarioVO> comentariosVO = validacion.getFeedBack();
         if (comentariosVO != null) {
@@ -538,11 +538,21 @@ public class Frame_Comentarios extends javax.swing.JInternalFrame implements Run
     }// </editor-fold>//GEN-END:initComponents
 
     private void btn_siguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_siguienteActionPerformed
-        getFeedBack("next");
+        try {
+            getFeedBack("next");
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }//GEN-LAST:event_btn_siguienteActionPerformed
 
     private void btn_atrasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btn_atrasActionPerformed
-        getFeedBack("back");
+        try {
+            getFeedBack("back");
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
+        }
     }//GEN-LAST:event_btn_atrasActionPerformed
 
 

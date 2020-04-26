@@ -1,2 +1,1 @@
- - QUERY - SELECT * FROM usuarios WHERE usuario = 'miguel' AND contrasena = 'Xuq6t7Fr/Dg='
- - QUERY - SELECT * FROM autos WHERE id_usuario != 2 AND estatus = 'ENVENTA'
+ - QUERY - SELECT * FROM usuarios WHERE usuario = 'admin' AND contrasena = 'Xuq6t7Fr/Dg='

@@ -5,7 +5,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 
 /**
- * global veraibles such as the session and other useful information through the
+ * global variables such as the session and other useful information through the
  * program
  *
  * @author oliva

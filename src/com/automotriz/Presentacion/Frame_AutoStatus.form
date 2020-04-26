@@ -24,7 +24,7 @@
   <Layout>
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
-          <Component id="jPanel1" pref="719" max="32767" attributes="0"/>
+          <Component id="jPanel1" pref="723" max="32767" attributes="0"/>
           <Component id="panelContent" alignment="0" max="32767" attributes="0"/>
       </Group>
     </DimensionLayout>
@@ -66,7 +66,7 @@
               <Component id="lbl_close" alignment="1" max="32767" attributes="0"/>
               <Group type="102" alignment="1" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="lbl_title_frame" pref="33" max="32767" attributes="0"/>
+                  <Component id="lbl_title_frame" pref="29" max="32767" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
               </Group>
           </Group>

@@ -17,7 +17,6 @@ import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
 import java.io.File;
-import java.util.HashMap;
 
 public class Frame_AutoInfo extends javax.swing.JDialog implements Runnable, Constants<Frame_AutoInfo> {
     

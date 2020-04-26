@@ -2,10 +2,8 @@ package com.automotriz.Presentacion;
 
 import java.util.HashMap;
 import javax.swing.JOptionPane;
-import com.automotriz.Negocio.Peticiones;
 import com.automotriz.VO.AutoVO;
 import com.automotriz.logger.Logger;
-import org.json.simple.JSONObject;
 import com.automotriz.VO.SessionVO;
 import com.automotriz.VO.UsuarioVO;
 import com.automotriz.VO.ComentarioVO;
@@ -16,7 +14,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.table.DefaultTableModel;
 import com.automotriz.Constantes.Constants;
-import com.automotriz.Negocio.Handler;
+import com.automotriz.Negocio.Request;
 import com.automotriz.Negocio.Response;
 import java.sql.ResultSet;
 import java.util.List;
@@ -24,16 +22,12 @@ import java.util.List;
 public class Validacion implements Runnable {
 
     public static final int ATTEMPTS_ALLOWED = 5;
-    //public static int loginTries = 0;
     private Object[] data;
-    //private JSONObject requestJSON;
     private SessionVO session;
     private UsuarioVO usuario;
     private AutoVO auto;
     private ComentarioVO comentario;
     private MailVO mail;
-    //private Object objVo;
-    //private DefaultTableModel model;
     private ArrayList<UsuarioVO> usuariosVO;
     private ArrayList<AutoVO> autosVO;
     private ArrayList<ComentarioVO> comentariosVO;
@@ -56,15 +50,7 @@ public class Validacion implements Runnable {
     public Validacion(Object[] data) {
         this.data = data;
     }
-
-//    public Validacion(Object[] data, Object obj) {
-//        this.data = data;
-//        this.objVo = obj;
-//    }
-//
-//    public void setObjectVO(Object objVO) {
-//        this.objVo = objVO;
-//    }
+    
     /**
      *
      * @param reportTitle
@@ -104,7 +90,7 @@ public class Validacion implements Runnable {
     }
 
     /**
-     * Initialize the class Handler in order to prepare a new database operation
+     * Initialize the class Request in order to prepare a new database operation
      *
      * @param operation The operation's name to execute
      * @param objVO The data needed to execute the operation
@@ -112,11 +98,11 @@ public class Validacion implements Runnable {
      */
     private void initializeHandler(String operation, Object objVO) {
         Logger.log("Creating new Handler");
-        Handler handler;
+        Request handler;
         if (objVO != null) {
-            handler = new Handler(operation, objVO);
+            handler = new Request(operation, objVO);
         } else {
-            handler = new Handler(operation);
+            handler = new Request(operation);
         }
         this.response = handler.createNewOperation();
     }
@@ -126,7 +112,7 @@ public class Validacion implements Runnable {
      * @return True if the login access is successful, otherwise returns false
      * @throws Exception
      */
-    public boolean validarLogIn() throws Exception {
+    public SessionVO validarLogIn() throws Exception {
         Logger.log("validating logging");
         if (isEmpty(data[0]) || isEmpty(data[1])) {
             writeMessages(new Object[]{
@@ -135,7 +121,7 @@ public class Validacion implements Runnable {
                 JOptionPane.ERROR_MESSAGE
             });
             Logger.error("Username and/or password empty");
-            return false;
+            return null;
         }
 
         usuario = new UsuarioVO();
@@ -155,7 +141,7 @@ public class Validacion implements Runnable {
                         "login.msg.user.disabled.title",
                         JOptionPane.ERROR_MESSAGE
                     });
-                    return false;
+                    return null;
                 }
                 this.usuario.setId(rs.getInt("id"));
                 this.usuario.setNombre(rs.getString("nombre"));
@@ -174,7 +160,7 @@ public class Validacion implements Runnable {
                     "login.msg.bloquear.title",
                     JOptionPane.ERROR_MESSAGE
                 });
-                return false;
+                return null;
             }
             if (!this.usuario.getPerfil().equals(data[2].toString())) {
                 Logger.log("The user's profile does not match the current profile");
@@ -183,7 +169,7 @@ public class Validacion implements Runnable {
                     "login.msg.error.profile.title",
                     JOptionPane.WARNING_MESSAGE
                 });
-                return false;
+                return null;
             } else {
                 if (this.usuario.getIntentos() > 0) {
                     Logger.log("Reseting the number of attempts");
@@ -192,7 +178,7 @@ public class Validacion implements Runnable {
                 }
                 //If the login is successful a new SessionVO is created
                 Logger.log("Creating the user's session");
-                this.session = this.usuario.createSession();
+                return this.usuario.createSession();
             }
         } /* Incorrect Credentials */ else if (response.getStatus() == Response.STATUS_RESULTSET_EMPTY) {
             // Verify if the username exists in order to register the attempts
@@ -214,7 +200,7 @@ public class Validacion implements Runnable {
                         "login.msg.bloquear.title",
                         JOptionPane.ERROR_MESSAGE
                     });
-                    return false;
+                    return null;
                 }
                 initializeHandler(Constants.UPDATEINTENTOS, usuario);
                 if (response.getStatus() == Response.STATUS_UPDATED) {
@@ -237,7 +223,7 @@ public class Validacion implements Runnable {
                         }
                     }
                 }
-                return false;
+                return null;
             } else {
                 Logger.log("The username does not exits");
                 writeMessages(new Object[]{
@@ -245,7 +231,7 @@ public class Validacion implements Runnable {
                     "login.msg.error.username.title",
                     JOptionPane.ERROR_MESSAGE
                 });
-                return false;
+                return null;
             }
         } else if (response.getStatus() == Response.STATUS_FAILURE) {
             writeMessages(new Object[]{
@@ -253,9 +239,9 @@ public class Validacion implements Runnable {
                 "login.msg.error.conndb.title",
                 JOptionPane.ERROR_MESSAGE
             });
-            return false;
+            return null;
         }
-        return true;
+        return null;
     }
 
     /**
@@ -509,8 +495,6 @@ public class Validacion implements Runnable {
     }
 
     /**
-     * spn_modelo, spn_km, cmb_marca, txt_otraMarca, cmb_cambio, spn_precio,
-     * cmb_color, txa_descripcion, imagesPath, txt_dueño
      *
      * @return the object of the class Validacion
      * @param isAnUpdate will execute operations related to an UPDATE to a car,
@@ -637,8 +621,8 @@ public class Validacion implements Runnable {
                         auto.getEstatus()
                     });
                 }
+                autosVO.add(auto);
             }
-            autosVO.add(auto);
         } else {
             writeMessages(new Object[]{
                 "usuarios.msg.userNotFound",
@@ -843,50 +827,37 @@ public class Validacion implements Runnable {
         return autosVO;
     }
 
-    public Validacion deleteAuto() {
+    public boolean updateStatusAuto() {
         if (!isEmpty(data[0]) || !isEmpty(data[1])) {
             auto = new AutoVO();
-            
+            auto.setEstatus(data[0].toString());
+            auto.setId(Integer.parseInt(data[1].toString()));
             initializeHandler(Constants.UPDATEAUTOESTATUS, auto);
-            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
-                writeMessages(new Object[]{
-                    "msg.auto.deleted.success",
-                    "msg.auto.deleted.success.title",
-                    JOptionPane.INFORMATION_MESSAGE
-                });
-            }
-        }
-        return this;
-    }
-
-    public Validacion updateStatusAuto() {
-        if (!isEmpty(data[0]) || !isEmpty(data[1])) {
-            createRequestJSON("UPDATEAUTOESTATUS", null);
-            Peticiones peticion = new Peticiones(requestJSON);
-            JSONObject response = peticion.execute();
-            if (((int) response.get("response")) == Constants.QUERY_SUCCESS) {
-                writeMessages(new Object[]{
+            
+            if (response.getStatus() == Response.STATUS_UPDATED) {
+                if(data[0].toString().equals(Constants.DELETED)){
+                    writeMessages(new Object[]{
+                        "msg.auto.deleted.success",
+                        "msg.auto.deleted.success.title",
+                        JOptionPane.INFORMATION_MESSAGE
+                    });
+                }else{
+                    writeMessages(new Object[]{
                     "msg.update.status",
-                    "msg.update.status.title",
-                    JOptionPane.INFORMATION_MESSAGE
-                });
-            } else {
-                writeMessages(new Object[]{
-                    "msg.update.status.failed",
-                    "msg.update.status.failed.title",
-                    JOptionPane.ERROR_MESSAGE
-                });
+                        "msg.update.status.title",
+                        JOptionPane.INFORMATION_MESSAGE
+                    });
+                }
+                return true;
             }
         }
-        return this;
+        return false;
     }
 
     public HashMap requestDatabaseTables() {
-        createRequestJSON("", null);
-        Peticiones peticion = new Peticiones(requestJSON);
-        JSONObject response = peticion.execute();
-        if (((int) response.get("estatus")) == Constants.QUERY_GOT_SOMETHING) {
-            return (HashMap) ((Object[]) response.get("obj"))[0];
+        initializeHandler(Constants.TABLESSCHEMA, null);
+        if (response.getStatus() == Response.STATUS_SUCCESS) {
+            return (HashMap) response.getObject();
         }
         return new HashMap();
     }
@@ -897,10 +868,6 @@ public class Validacion implements Runnable {
 
     public ArrayList<AutoVO> getAutos() {
         return autosVO;
-    }
-
-    public SessionVO getSession() {
-        return this.session;
     }
 
     private static boolean isEmpty(Object obj) {

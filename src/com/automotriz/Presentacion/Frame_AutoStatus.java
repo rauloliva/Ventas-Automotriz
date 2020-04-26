@@ -7,7 +7,6 @@ import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import javax.swing.table.DefaultTableModel;
@@ -25,17 +24,17 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
 
     @Override
     public void initFrame(Frame_AutoStatus c) {
-        try{
-        setLocationRelativeTo(null);
-        Constants.metohds.setCloseIcon(lbl_close, c);
-        panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
-        initTable();
-        setAutoEstatus();
-        Constants.metohds.setIconToButton(this, btn_cambiarEstatus, "icon.guardar", 35, 35);
-        Constants.metohds.setIconToButton(this, btn_eliminarAuto, "icon.delete", 35, 35);
-        boolean existCars = getCars();
-        c.setVisible(existCars);
-        }catch(Exception e){
+        try {
+            setLocationRelativeTo(null);
+            Constants.metohds.setCloseIcon(lbl_close, c);
+            panelContent.setBackground(Color.decode(ReadProperties.props.getProperty("color.white")));
+            initTable();
+            setAutoEstatus();
+            Constants.metohds.setIconToButton(this, btn_cambiarEstatus, "icon.guardar", 35, 35);
+            Constants.metohds.setIconToButton(this, btn_eliminarAuto, "icon.delete", 35, 35);
+            boolean existCars = getCars();
+            c.setVisible(existCars);
+        } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
         }
@@ -54,7 +53,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         tbl_cars.getTableHeader().setFont(new Font("Segoe UI", Font.PLAIN, 18));
     }
 
-    private boolean getCars() throws Exception{
+    private boolean getCars() throws Exception {
         setTable();
         model = (DefaultTableModel) tbl_cars.getModel();
         Validacion validacion = new Validacion(new Object[]{global.getSession().getId()});
@@ -71,6 +70,7 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             pack();
             //getting all the autosVo
             autosVO = validacion.getAutos();
+            System.out.println("LENGTH: "+autosVO.size());
             return true;
         }
     }
@@ -104,14 +104,10 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
             Validacion validacion = new Validacion(new Object[]{
                 Constants.DELETED,
                 getSelectedCar().getId()
-            }).deleteAuto();
+            });
+            boolean response = validacion.updateStatusAuto();
 
-            HashMap props = validacion.getMessage();
-            if (props != null) {
-                JOptionPane.showMessageDialog(this,
-                        props.get("message").toString(),
-                        props.get("title").toString(),
-                        Integer.parseInt(props.get("type").toString()));
+            if (response) {
                 resetFields();
             }
         }
@@ -122,27 +118,28 @@ public class Frame_AutoStatus extends javax.swing.JDialog implements Constants<F
         Validacion validacion = new Validacion(new Object[]{
             cmb_estatus.getSelectedItem().toString(),
             getSelectedCar().getId()
-        }).updateStatusAuto();
+        });
+        boolean response = validacion.updateStatusAuto();
 
-        HashMap props = validacion.getMessage();
-        if (props != null) {
-            JOptionPane.showMessageDialog(this,
-                    props.get("message").toString(),
-                    props.get("title").toString(),
-                    Integer.parseInt(props.get("type").toString()));
+        if (response) {
             resetFields();
         }
     }
 
     private void resetFields() {
-        tbl_cars.clearSelection();
-        cmb_estatus.setSelectedItem("--Seleccionar--");
-        cmb_estatus.setEnabled(false);
-        btn_cambiarEstatus.setEnabled(false);
-        btn_eliminarAuto.setEnabled(false);
-        boolean existCars = getCars();
-        if (!existCars) {
-            this.dispose();
+        try {
+            tbl_cars.clearSelection();
+            cmb_estatus.setSelectedItem("--Seleccionar--");
+            cmb_estatus.setEnabled(false);
+            btn_cambiarEstatus.setEnabled(false);
+            btn_eliminarAuto.setEnabled(false);
+            boolean existCars = getCars();
+            if (!existCars) {
+                this.dispose();
+            }
+        } catch (Exception e) {
+            Logger.error(e.getMessage());
+            Logger.error(e.getStackTrace());
         }
     }
 

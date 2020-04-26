@@ -2,7 +2,6 @@ package com.automotriz.Presentacion;
 
 import com.automotriz.logger.Logger;
 import java.awt.Color;
-import java.util.HashMap;
 import javax.swing.*;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;

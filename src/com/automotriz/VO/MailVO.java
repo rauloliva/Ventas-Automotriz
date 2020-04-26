@@ -1,6 +1,7 @@
 package com.automotriz.VO;
 
 public class MailVO {
+    
     private String destinatario;
     private String ausnto;
     private String mensaje;

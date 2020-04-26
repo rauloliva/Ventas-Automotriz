@@ -68,6 +68,7 @@ public class Mail implements Runnable {
         try {
             texto.setText(mensaje);
             MimeMultipart multiParte = new MimeMultipart();
+            
             //if dataHandler is ready to attach a file
             if (dataHandler != null) {
                 BodyPart adjunto = new MimeBodyPart();
@@ -95,6 +96,10 @@ public class Mail implements Runnable {
         }
     }
 
+    /**
+     * Gets the SMTP properties from application.properties
+     * @return SMTP properties
+     */
     private Properties getSMTPProps() {
         Logger.log("Reading SMTP Properties");
         Properties props = new Properties();

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
 import java.awt.Image;
-import java.util.HashMap;
 import javax.swing.*;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;

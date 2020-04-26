@@ -5,7 +5,6 @@ import com.automotriz.VO.AutoVO;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.io.File;
-import java.sql.Connection;
 import java.util.*;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;

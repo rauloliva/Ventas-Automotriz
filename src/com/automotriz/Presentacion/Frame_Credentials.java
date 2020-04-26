@@ -1,8 +1,6 @@
 package com.automotriz.Presentacion;
 
 import java.awt.Color;
-import java.util.HashMap;
-import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import com.automotriz.Constantes.Constants;
 

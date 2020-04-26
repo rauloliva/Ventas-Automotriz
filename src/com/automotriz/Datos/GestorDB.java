@@ -6,7 +6,6 @@ import com.automotriz.VO.UsuarioVO;
 import java.sql.*;
 import com.automotriz.logger.Logger;
 import com.automotriz.logger.LoggerQuery;
-import org.json.simple.JSONObject;
 import com.automotriz.Constantes.Constants;
 import com.automotriz.Negocio.Response;
 import java.util.ArrayList;
@@ -19,20 +18,10 @@ public class GestorDB {
     private PreparedStatement ps = null;
     private ResultSet rs = null;
     private Connection cnn;
-    private Object objVO;
 
     public GestorDB() {
     }
 
-    /**
-     * Set the object where the data will be saved after retrieving from
-     * database
-     *
-     * @param objVO The Object VO
-     */
-    public void setObjectVO(Object objVO) {
-        this.objVO = objVO;
-    }
 
     /**
      * Initializing this constructor with a query statement that will be
@@ -65,12 +54,14 @@ public class GestorDB {
                     return INSERT();
                 case Constants.UPDATE:
                     return UPDATE();
-//                default:
-//                    return DBTables(conexion);
+                default:
+                    return DBTables();
             }
         }
         Logger.error("Connection Failure");
-        return null;
+        Response response = new Response();
+        response.setStatus(Response.STATUS_FAILURE);
+        return response;
     }
     
     /**
@@ -146,16 +137,6 @@ public class GestorDB {
         }
     }
 
-    /**
-     * Place the query String into a private attribute so the query only belongs
-     * to the GestorDB object
-     *
-     * @param query The SQL query to execute
-     */
-    public void putQuery(String query) {
-        this.query = query;
-    }
-
     public static Connection sendSQLConnection() {
         Logger.log("Requesting the database connection");
         Connection con = null;
@@ -168,50 +149,27 @@ public class GestorDB {
     }
 
     /**
-     * Creates a JSON object that will be sent as a response to the client
-     *
-     * @param values Values captured from a SQL SELECT query
-     * @return A new JSON object that contains the response that will be sent to
-     * the client
-     */
-    private JSONObject createResponseJSON(Object[] values) {
-        JSONObject response = new JSONObject();
-        if (values == null || values.length == 0) {
-            response.put("estatus", Constants.QUERY_GOT_NOTHING);
-            return response;
-        }
-        response.put("obj", values);
-        response.put("estatus", Constants.QUERY_GOT_SOMETHING);
-        return response;
-    }
-
-    /**
      *
      * @param conexion
      * @return
      */
-    private JSONObject DBTables(Conexion conexion) {
-        cnn = conexion.getConnection();
+    private Response DBTables() {
+        Response response = new Response();
         try {
-            Logger.log("Quering DataBase TablesS");
+            Logger.log("Quering DataBase Tables");
             rs = cnn.getMetaData().getTables("ventas_automotriz", null, "%", new String[]{"TABLE"});
             List<String> tables = new ArrayList();
             while (rs.next()) {
                 tables.add(rs.getString("TABLE_NAME"));
             }
             HashMap data = getDataByTable(tables, cnn);
-            return createResponseJSON(new Object[]{data});
+            response.setObject(data);
+            return response;
         } catch (Exception e) {
             Logger.error(e.getMessage());
             Logger.error(e.getStackTrace());
-            return new JSONObject();
-        } finally {
-            try {
-                closeConnection();
-            } catch (Exception e) {
-                Logger.error(e.toString());
-                Logger.error(e.getStackTrace());
-            }
+            response.setStatus(Response.STATUS_FAILURE);
+            return response;
         }
     }
 
@@ -274,24 +232,6 @@ public class GestorDB {
             allData.put(table, obj);
         }
         return allData;
-    }
-
-    /**
-     * Close the database connection, as well close the preparedStatement object
-     * and the ResultSet object
-     *
-     * @throws Exception if an error occurs when closing Connection,
-     * PreparedStatement and ResultSet
-     */
-    private void closeConnection() throws Exception {
-        Logger.log("Closing Connection");
-        cnn.close();
-        if (ps != null) {
-            ps.close();
-        }
-        if (rs != null) {
-            //rs.close();
-        }
     }
 
     /**

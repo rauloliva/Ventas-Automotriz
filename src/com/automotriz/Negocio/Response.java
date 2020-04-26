@@ -8,6 +8,7 @@ public class Response {
     private ResultSet rs = null;
     private int rowsFetched = 0;
     private Connection cnn;
+    private Object obj;
 
     public static int STATUS_SUCCESS = 1;
     public static int STATUS_FAILURE = 2;
@@ -47,5 +48,13 @@ public class Response {
     
     public Connection getConnection(){
         return this.cnn;
+    }
+    
+    public void setObject(Object obj){
+        this.obj = obj;
+    }
+    
+    public Object getObject(){
+        return this.obj;
     }
 }

@@ -31,7 +31,7 @@ public class GlobalMethods {
     }
 
     /**
-     * sets the system's log
+     * Sets the system's log
      *
      * @param frame the frame where the logo will be located
      */
@@ -45,7 +45,7 @@ public class GlobalMethods {
     }
 
     /**
-     * sets the close icon to a label
+     * Sets the close icon to a label
      *
      * @param lbl the label where the icon will be located
      * @param frame the frame where the label is located

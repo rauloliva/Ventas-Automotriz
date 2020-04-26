@@ -10,43 +10,55 @@ import com.automotriz.VO.ComentarioVO;
 import com.automotriz.VO.SessionVO;
 import java.io.File;
 
-public class Handler {
+public class Request {
 
     private String action;
-    private String query;
+    private String query = "";
     private Object data;
 
-    public Handler(String action, Object data) {
+    /**
+     * Creates an instance of Request
+     * 
+     * @param action database action from the Constants interface
+     * @param data the data used to build the query
+     */
+    public Request(String action, Object data) {
         this.action = action;
-        this.query = "";
         this.data = data;
     }
 
-    public Handler(String action) {
+    /**
+     * Creates an instance of Request
+     * 
+     * @param action database action from the Constants interface
+     */
+    public Request(String action) {
         this.action = action;
-        this.query = "";
     }
 
     /**
-     *
-     * @return
+     * Sends the query to GestorDB class to create a database operation
+     * 
+     * @return The response from GestorDB
      */
     public Response createNewOperation() {
+        Response response = new Response();
         this.createNewQuery();
-        if (this.action.equals(Constants.SENDMAIL)) {
-            this.sendMail((MailVO) this.data);
-            return new Response();
-        } else if (this.action.equals(Constants.DB_CONNECTION)) {
-            Response response = new Response();
-            response.setConnection(GestorDB.sendSQLConnection());
-            return response;
+        switch(this.action){
+            case Constants.SENDMAIL:
+                this.sendMail((MailVO) this.data);
+                return response;
+            case Constants.DB_CONNECTION:
+                response.setConnection(GestorDB.sendSQLConnection());
+                return response;
+            default:
+                GestorDB db = new GestorDB(this.query);
+                return db.executeQuery();
         }
-        GestorDB db = new GestorDB(this.query);
-        return db.executeQuery();
     }
 
     /**
-     *
+     * Creates a new query based in the action requested
      */
     private void createNewQuery() {
         Queries queries = new Queries() {
@@ -201,8 +213,8 @@ public class Handler {
             }
 
             @Override
-            public String GETVENDEDORNAME() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            public String GETVENDEDORNAME(UsuarioVO usuario) {
+                return "SELECT nombre FROM usuarios WHERE correo='"+usuario.getCorreo()+"'";
             }
 
             @Override
@@ -233,23 +245,24 @@ public class Handler {
             }
 
             @Override
-            public String LISTAUTOSBYID() {
-                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-            }
-
-            @Override
             public String UPDATEAUTOESTATUS(AutoVO auto) {
                 return "UPDATE autos SET estatus = '" + auto.getEstatus() + "' "
                         + "WHERE id = " + auto.getId();
+            }
+            
+            @Override
+            public String TABLESSCHEMA(){
+                return "TABLES SCHEMAS";
             }
         };
         this.query = this.getQuery(queries);
     }
 
     /**
-     *
-     * @param queries
-     * @return
+     * Builds the query based in the action requested
+     * 
+     * @param queries Queries interface
+     * @return The query
      */
     private String getQuery(Queries queries) {
         switch (this.action) {
@@ -289,10 +302,14 @@ public class Handler {
                 return queries.GETCATALOGO((AutoVO) this.data);
             case Constants.GETVENDEDOR:
                 return queries.GETVENDEDOR((UsuarioVO) this.data);
+            case Constants.GETVENDEDORNAME:
+                return queries.GETVENDEDORNAME((UsuarioVO) this.data);
             case Constants.UPDATEAUTOESTATUS:
                 return queries.UPDATEAUTOESTATUS((AutoVO) this.data);
             case Constants.FILTRARAUTOS:
                 return queries.FILTRARAUTOS((AutoVO) this.data);
+            case Constants.TABLESSCHEMA:
+                return queries.TABLESSCHEMA();
             default:
                 return "";
         }
@@ -356,16 +373,11 @@ interface Queries {
 
     String GETVENDEDOR(UsuarioVO usuario);
 
-    String GETVENDEDORNAME();
+    String GETVENDEDORNAME(UsuarioVO usuario);
 
     String FILTRARAUTOS(AutoVO auto);
 
-    String LISTAUTOSBYID();
-
     String UPDATEAUTOESTATUS(AutoVO auto);
-}
-
-interface ExecuteQuery {
-
-    Response execute();
+    
+    String TABLESSCHEMA();
 }

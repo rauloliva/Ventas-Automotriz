@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
+import com.automotriz.VO.SessionVO;
 
 public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constants<Frame_LogIn> {
 
@@ -127,11 +128,11 @@ public class Frame_LogIn extends javax.swing.JFrame implements Runnable, Constan
                 new Hashing(txt_password.getText().trim()).encrypt(),
                 perfil
             });
-            boolean validationSuccess = validacion.validarLogIn();
+            SessionVO session = validacion.validarLogIn();
 
-            if (validationSuccess) {
+            if (session != null) {
                 this.dispose();
-                new Frame_Inicio(validacion.getSession());
+                new Frame_Inicio(session);
             }
         }catch(Exception e){
             Logger.error(e.getMessage());

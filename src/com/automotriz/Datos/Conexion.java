@@ -15,6 +15,11 @@ public class Conexion {
         connectionStatus = createNewConnection();
     }
 
+    /**
+     * By default creates a database connection with Mysql8.0
+     * if the connection fails, attempts connecting through Mysql5.0
+     * @return The status of the connection 
+     */
     private int createNewConnection() {
         try {
             String[] credentials = readCredentials();
@@ -41,6 +46,11 @@ public class Conexion {
         }
     }
 
+    /**
+     * Create a database connection through Mysql5.0
+     * @return The status of the connection
+     * @throws Exception if the connection fails
+     */
     private int createConnectionV5() throws Exception {
         String[] credentials = readCredentialsV5();
         Class.forName(credentials[5]);
@@ -53,6 +63,10 @@ public class Conexion {
         return Constants.CONEXION_SUCCESS;
     }
 
+    /**
+     * Read the properties for the connection through Mysql8.0
+     * @return the properties gathered in a String array
+     */
     private static String[] readCredentials() {
         Logger.log("Reading DB's credentials for version 8");
         return new String[]{
@@ -65,6 +79,10 @@ public class Conexion {
         };
     }
 
+    /**
+     * Read the properties for the connection through Mysql5.0
+     * @return the properties gathered in a String array
+     */
     private static String[] readCredentialsV5() {
         Logger.log("Reading DB's credentials for version 5");
         return new String[]{

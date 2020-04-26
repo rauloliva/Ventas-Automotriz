@@ -1,16 +1,13 @@
 package com.automotriz.Presentacion;
 
-import com.automotriz.VO.UsuarioVO;
 import com.automotriz.logger.Logger;
 import java.awt.Color;
 import java.awt.Image;
 import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JOptionPane;
 import javax.swing.border.BevelBorder;
 import static com.automotriz.Constantes.Global.global;
 import com.automotriz.Constantes.Constants;
